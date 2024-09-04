@@ -173,7 +173,7 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
         if (!isStartButtonClicked)
         {
 #if UNITY_EDITOR
-            Debug.Log("StartBtn Should be Clicked");
+   Debug.Log("StartBtn Should be Clicked");
 #endif
             return false ;
         }
@@ -181,7 +181,7 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
         if (!isInitialized)
         {
 #if UNITY_EDITOR
-            Debug.Log("Scene hasn't been initialized yet, Can't be clicked");
+          //  Debug.Log("Scene hasn't been initialized yet, Can't be clicked");
 #endif
             return false;
         }
@@ -202,8 +202,8 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
         On_GmRay_Synced -= OnRaySynced;
         On_GmRay_Synced += OnRaySynced;
 
-        UI_Scene_Button.onBtnShut -= OnStartButtonClicked;
-        UI_Scene_Button.onBtnShut += OnStartButtonClicked;
+        UI_PersistentController.OnStartBtnClickedAction -= OnStartButtonClicked;
+        UI_PersistentController.OnStartBtnClickedAction += OnStartButtonClicked;
     }
 
     protected virtual void OnDestroy()
@@ -212,7 +212,7 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
         
         
         RaySynchronizer.OnGetInputFromUser -= OnOriginallyRaySynced;
-        UI_Scene_Button.onBtnShut -= OnStartButtonClicked;
+        UI_PersistentController.OnStartBtnClickedAction  -= OnStartButtonClicked;
         On_GmRay_Synced -= OnRaySynced;
         DOTween.KillAll();
         Destroy(gameObject);

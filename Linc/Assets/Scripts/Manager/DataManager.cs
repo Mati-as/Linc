@@ -34,7 +34,7 @@ public class DataManager
 
      
 
-        Texts = LoadXml<TextDataLoader, int, TextData>($"{nameof(TextData)}").MakeDict();
+    //    Texts = LoadXml<TextDataLoader, int, TextData>($"{nameof(TextData)}").MakeDict();
     }
 
     private Item LoadSingleXml<Item>(string name)
@@ -73,6 +73,7 @@ public class DataManager
 #endif
     }
 
+    
     public void LoadSettingParams()
     {
  // read the xml document
@@ -106,7 +107,7 @@ public class DataManager
     // load fullscreen setting
     var fullscreen = node.Attributes[nameof(Define.Preferences.Fullscreen)].Value;
     Managers.Data.Preference[(int)Define.Preferences.Fullscreen] = int.Parse(fullscreen);
-    Debug.Log($"fullscreen Value On Load-----------------------{fullscreen}");
+//    Debug.Log($"fullscreen Value On Load-----------------------{fullscreen}");
     
     // load resolution setting
     var resolution = node.Attributes[nameof(Define.Preferences.Resolution)].Value;
@@ -140,7 +141,7 @@ public class DataManager
     var muteBgm = node.Attributes[nameof(Define.Preferences.Mute_Bgm)].Value;
     Managers.Data.Preference[(int)Define.Preferences.Mute_Bgm] = int.Parse(muteBgm);
 
-    Debug.Log("settings loaded successfully.");
+//    Debug.Log("settings loaded successfully.");
     }
 
     public void SaveCurrentSetting()
@@ -227,8 +228,8 @@ public class DataManager
             initSetting.SetAttribute(nameof(Define.Preferences.BgmVol), "0.15");
             initSetting.SetAttribute(nameof(Define.Preferences.Fullscreen), "1");
             initSetting.SetAttribute(nameof(Define.Preferences.Resolution), "1920");
-            initSetting.SetAttribute(nameof(Define.Preferences.GraphicQuality), Define.QaulityLevel.Mid.ToString());
-            initSetting.SetAttribute(nameof(Define.Preferences.EngMode), Define.LanguageMode.Kor.ToString());
+            initSetting.SetAttribute(nameof(Define.Preferences.GraphicQuality), ((int)(Define.QaulityLevel.Mid)).ToString());
+           // initSetting.SetAttribute(nameof(Define.Preferences.EngMode), ((int)(Define.LanguageMode.Kor)).ToString());
             initSetting.SetAttribute(nameof(Define.Preferences.ControlGuide), "1"); //Yes
             initSetting.SetAttribute(nameof(Define.Preferences.Mute_Main), "0"); //No
             initSetting.SetAttribute(nameof(Define.Preferences.Mute_Narration), "0"); //No

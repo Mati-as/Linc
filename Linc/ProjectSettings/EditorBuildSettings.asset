@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Samples/Mirage/149.4.1/Pong/Scenes/Scene.unity
     guid: 89a84548859e3b643b4fb27984dc2b0d
   - enabled: 1
-    path: "Assets/Scenes/Metaedu/B_\uAE30\uBCF8\uCEE8\uD150\uCE20/LINC_Drum.unity"
+    path: "Assets/Scenes/Metaedu/B_\uAE30\uBCF8\uCEE8\uD150\uCE20/LINC_Main_Solo.unity"
     guid: 5e033bb85e25e68479ca842e3e5eb168
   m_configObjects: {}

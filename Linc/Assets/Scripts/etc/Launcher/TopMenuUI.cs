@@ -50,13 +50,13 @@ public class TopMenuUI : UI_PopUp
         
         GetButton((int)Btn_Type.Btn_Quit).gameObject.BindEvent(OnQuit);
         GetButton((int)Btn_Type.Btn_SensorRefresh).gameObject.BindEvent(RefreshSensor);
-        
-        GetButton((int)Btn_Type.Btn_Setting).gameObject.BindEvent(OnSettingBtnClicked,Define.UIEvent.PointerUp);
-        GetButton((int)Btn_Type.SettingCloseButton).gameObject.BindEvent(() =>
-        {
-            GetObject((int)UIType.Setting).gameObject.SetActive(false);
-        });
-        GetObject((int)UIType.Setting).gameObject.SetActive(false);
+       //  
+       //  GetButton((int)Btn_Type.Btn_Setting).gameObject.BindEvent(OnSettingBtnClicked,Define.UIEvent.PointerUp);
+       //  GetButton((int)Btn_Type.SettingCloseButton).gameObject.BindEvent(() =>
+       //  {
+       //      GetObject((int)UIType.Setting).gameObject.SetActive(false);
+       //  });
+       // GetObject((int)UIType.Setting).gameObject.SetActive(false);
 
         SetSlider();
     }

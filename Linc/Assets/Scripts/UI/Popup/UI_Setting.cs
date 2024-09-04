@@ -8,7 +8,8 @@ public class UI_Setting : UI_Popup
 {
     private enum Btns
     {
-        Btn_Close
+        Btn_Close,
+        Btn_SensorRefresh
     }
 
     public enum Sliders
@@ -17,11 +18,11 @@ public class UI_Setting : UI_Popup
         Slider_Narration,
         Slider_Effect,
         Slider_Bgm,
-
+        Slider_HapticStick_Integration
         // -----------------
-        Slider_ScreenMode,
-        Slider_Language,
-        Slider_ControlGuideOn
+       //Slider_ScreenMode,
+        //Slider_Language,
+       // Slider_ControlGuideOn
     }
 
     public enum Toggles
@@ -30,13 +31,14 @@ public class UI_Setting : UI_Popup
         Toggle_Narration_Mute,
         Toggle_Effect_Mute,
         Toggle_Bgm_Mute,
-        Toggle_GraphicQuality_Low,
-        Toggle_GraphicQuality_Mid,
-        Toggle_GraphicQuality_High,
-        Toggle_GraphicQuality_Auto,
-        Toggle_Resolution_1280x720,
-        Toggle_Resolution_1920x1080,
-        Toggle_Resolution_2560x1440
+      
+        // Toggle_GraphicQuality_Low,
+        // Toggle_GraphicQuality_Mid,
+        // Toggle_GraphicQuality_High,
+        // Toggle_GraphicQuality_Auto,
+        // Toggle_Resolution_1280x720,
+        // Toggle_Resolution_1920x1080,
+        // Toggle_Resolution_2560x1440
     }
 
     //sensor-related part.-----------------------------------
@@ -54,8 +56,7 @@ public class UI_Setting : UI_Popup
     // Start is called before the first frame update
     public override bool Init()
     {
-        if (base.Init() == false)
-            return false;
+        if (base.Init() == false)return false;
 
 #if UNITY_EDITOR
         Debug.Log("UI_SETTING INIT------------------------------------------------------");
@@ -67,21 +68,21 @@ public class UI_Setting : UI_Popup
         BindToggle(typeof(Toggles));
         BindSlider(typeof(Sliders));
 
-        GetToggle((int)Toggles.Toggle_Resolution_1280x720).onValueChanged
-            .AddListener(_ => OnResolutionChanged(1280, 720));
-        GetToggle((int)Toggles.Toggle_Resolution_1920x1080).onValueChanged
-            .AddListener(_ => OnResolutionChanged(1920, 1080));
-        GetToggle((int)Toggles.Toggle_Resolution_2560x1440).onValueChanged
-            .AddListener(_ => OnResolutionChanged(2560, 1440));
-
-        GetToggle((int)Toggles.Toggle_GraphicQuality_Low).onValueChanged
-            .AddListener(_ => OnGraphicQualityChanged(Define.QaulityLevel.Low));
-        GetToggle((int)Toggles.Toggle_GraphicQuality_Mid).onValueChanged
-            .AddListener(_ => OnGraphicQualityChanged(Define.QaulityLevel.Mid));
-        GetToggle((int)Toggles.Toggle_GraphicQuality_High).onValueChanged
-            .AddListener(_ => OnGraphicQualityChanged(Define.QaulityLevel.High));
-        GetToggle((int)Toggles.Toggle_GraphicQuality_Auto).onValueChanged
-            .AddListener(_ => OnGraphicQualityChanged(Define.QaulityLevel.Auto));
+        // GetToggle((int)Toggles.Toggle_Resolution_1280x720).onValueChanged
+        //     .AddListener(_ => OnResolutionChanged(1280, 720));
+        // GetToggle((int)Toggles.Toggle_Resolution_1920x1080).onValueChanged
+        //     .AddListener(_ => OnResolutionChanged(1920, 1080));
+        // GetToggle((int)Toggles.Toggle_Resolution_2560x1440).onValueChanged
+        //     .AddListener(_ => OnResolutionChanged(2560, 1440));
+        //
+        // GetToggle((int)Toggles.Toggle_GraphicQuality_Low).onValueChanged
+        //     .AddListener(_ => OnGraphicQualityChanged(Define.QaulityLevel.Low));
+        // GetToggle((int)Toggles.Toggle_GraphicQuality_Mid).onValueChanged
+        //     .AddListener(_ => OnGraphicQualityChanged(Define.QaulityLevel.Mid));
+        // GetToggle((int)Toggles.Toggle_GraphicQuality_High).onValueChanged
+        //     .AddListener(_ => OnGraphicQualityChanged(Define.QaulityLevel.High));
+        // GetToggle((int)Toggles.Toggle_GraphicQuality_Auto).onValueChanged
+        //     .AddListener(_ => OnGraphicQualityChanged(Define.QaulityLevel.Auto));
 
         GetToggle((int)Toggles.Toggle_Main_Mute).onValueChanged.AddListener(isOn =>
         {
@@ -159,27 +160,27 @@ public class UI_Setting : UI_Popup
                 GetToggle((int)Toggles.Toggle_Bgm_Mute).isOn ? 1 : 0;
         });
 
-        GetSlider((int)Sliders.Slider_ScreenMode).onValueChanged.AddListener(_ =>
-        {
-            if (GetSlider((int)Sliders.Slider_ScreenMode).value >= 1)
-                Managers.UI.SetScreenMode(UIManager.FULLSCREEN_MODE);
-            else
-                Managers.UI.SetScreenMode(UIManager.WINDOWED_MODE);
-        });
-
-
-     
-
-
-
-        GetSlider((int)Sliders.Slider_ControlGuideOn).onValueChanged.AddListener(_ =>
-        {
-            if (GetSlider((int)Sliders.Slider_ControlGuideOn).value >= ON)
-                Managers.UI.SetControlGuideOnMode(UIManager.CONTROL_GUIDE_ON);
-            else
-                Managers.UI.SetControlGuideOnMode(UIManager.CONTROL_GUIDE_OFF);
-        });
-
+        // GetSlider((int)Sliders.Slider_ScreenMode).onValueChanged.AddListener(_ =>
+        // {
+        //     if (GetSlider((int)Sliders.Slider_ScreenMode).value >= 1)
+        //         Managers.UI.SetScreenMode(UIManager.FULLSCREEN_MODE);
+        //     else
+        //         Managers.UI.SetScreenMode(UIManager.WINDOWED_MODE);
+        // });
+        //
+        //
+        //
+        //
+        //
+        //
+        // GetSlider((int)Sliders.Slider_ControlGuideOn).onValueChanged.AddListener(_ =>
+        // {
+        //     if (GetSlider((int)Sliders.Slider_ControlGuideOn).value >= ON)
+        //         Managers.UI.SetControlGuideOnMode(UIManager.CONTROL_GUIDE_ON);
+        //     else
+        //         Managers.UI.SetControlGuideOnMode(UIManager.CONTROL_GUIDE_OFF);
+        // });
+        //
 
         GetButton((int)Btns.Btn_Close).gameObject.BindEvent(() =>
         {
@@ -195,13 +196,13 @@ public class UI_Setting : UI_Popup
         
         
         
-        GetSlider((int)Sliders.Slider_Language).onValueChanged.AddListener(_ =>
-        {
-            if (Managers.UI.FindPopup<UI_LanguageChangeConfirmation_Restart>() == null)
-            {
-                Managers.UI.ShowPopupUI<UI_LanguageChangeConfirmation_Restart>();
-            }
-        });
+        // GetSlider((int)Sliders.Slider_Language).onValueChanged.AddListener(_ =>
+        // {
+        //     if (Managers.UI.FindPopup<UI_LanguageChangeConfirmation_Restart>() == null)
+        //     {
+        //         Managers.UI.ShowPopupUI<UI_LanguageChangeConfirmation_Restart>();
+        //     }
+        // });
 
         return true;
     }
@@ -212,23 +213,23 @@ public class UI_Setting : UI_Popup
     /// </summary>
     public void InitialSetting()
     {
-        var resolution = (int)Managers.Data.Preference[(int)Define.Preferences.Resolution];
-
-        switch (resolution)
-        {
-            case 1280:
-                GetToggle((int)Toggles.Toggle_Resolution_1280x720).isOn = true;
-                break;
-            case 1920:
-                GetToggle((int)Toggles.Toggle_Resolution_1920x1080).isOn = true;
-                break;
-            case 2560:
-                GetToggle((int)Toggles.Toggle_Resolution_2560x1440).isOn = true;
-                break;
-            default:
-                Debug.LogError("Set Correct Resolution. It must be 1280, 1920 or 2560");
-                break;
-        }
+        // var resolution = (int)Managers.Data.Preference[(int)Define.Preferences.Resolution];
+        //
+        // switch (resolution)
+        // {
+        //     case 1280:
+        //         GetToggle((int)Toggles.Toggle_Resolution_1280x720).isOn = true;
+        //         break;
+        //     case 1920:
+        //         GetToggle((int)Toggles.Toggle_Resolution_1920x1080).isOn = true;
+        //         break;
+        //     case 2560:
+        //         GetToggle((int)Toggles.Toggle_Resolution_2560x1440).isOn = true;
+        //         break;
+        //     default:
+        //         Debug.LogError("Set Correct Resolution. It must be 1280, 1920 or 2560");
+        //         break;
+        // }
 
 
         _volumeSliders[(int)SoundManager.Sound.Main].value = Managers.Data.Preference[(int)Define.Preferences.MainVol];
@@ -250,12 +251,12 @@ public class UI_Setting : UI_Popup
         GetToggle((int)Toggles.Toggle_Bgm_Mute).isOn =
             (int)Managers.Data.Preference[(int)Define.Preferences.Mute_Bgm] == Define.OFF ? false : true;
 
-
-        Managers.UI.languageSetting = (int)Managers.Data.Preference[(int)Define.Preferences.EngMode];
-        GetSlider((int)Sliders.Slider_Language).value = Managers.Data.Preference[(int)Define.Preferences.EngMode];
-        GetSlider((int)Sliders.Slider_ScreenMode).value = Managers.Data.Preference[(int)Define.Preferences.Fullscreen];
-        GetSlider((int)Sliders.Slider_ControlGuideOn).value =
-            Managers.Data.Preference[(int)Define.Preferences.ControlGuide];
+        //
+        // Managers.UI.languageSetting = (int)Managers.Data.Preference[(int)Define.Preferences.EngMode];
+        // GetSlider((int)Sliders.Slider_Language).value = Managers.Data.Preference[(int)Define.Preferences.EngMode];
+        // GetSlider((int)Sliders.Slider_ScreenMode).value = Managers.Data.Preference[(int)Define.Preferences.Fullscreen];
+        // GetSlider((int)Sliders.Slider_ControlGuideOn).value =
+        //     Managers.Data.Preference[(int)Define.Preferences.ControlGuide];
 
 
         var count = 0;
@@ -266,22 +267,22 @@ public class UI_Setting : UI_Popup
         }
         
         
-        var graphicQuality = (Define.QaulityLevel)(Managers.Data.Preference[(int)Define.Preferences.GraphicQuality]);
-        switch (graphicQuality)
-        {
-            case Define.QaulityLevel.Low:
-                GetToggle((int)Toggles.Toggle_GraphicQuality_Low).isOn = true;
-                break;
-            case Define.QaulityLevel.Mid: 
-                GetToggle((int)Toggles.Toggle_GraphicQuality_Mid).isOn = true;
-                break;
-            case Define.QaulityLevel.High:
-                GetToggle((int)Toggles.Toggle_GraphicQuality_High).isOn = true;
-                break;
-            case Define.QaulityLevel.Auto:
-                GetToggle((int)Toggles.Toggle_GraphicQuality_Auto).isOn = true;
-                break;
-        }
+        // var graphicQuality = (Define.QaulityLevel)(Managers.Data.Preference[(int)Define.Preferences.GraphicQuality]);
+        // switch (graphicQuality)
+        // {
+        //     case Define.QaulityLevel.Low:
+        //         GetToggle((int)Toggles.Toggle_GraphicQuality_Low).isOn = true;
+        //         break;
+        //     case Define.QaulityLevel.Mid: 
+        //         GetToggle((int)Toggles.Toggle_GraphicQuality_Mid).isOn = true;
+        //         break;
+        //     case Define.QaulityLevel.High:
+        //         GetToggle((int)Toggles.Toggle_GraphicQuality_High).isOn = true;
+        //         break;
+        //     case Define.QaulityLevel.Auto:
+        //         GetToggle((int)Toggles.Toggle_GraphicQuality_Auto).isOn = true;
+        //         break;
+        // }
 
     }
 
@@ -406,30 +407,45 @@ public class UI_Setting : UI_Popup
     {
     }
 
-    public void SetLanguageWithConfirmation()
+//     public void SetLanguageWithConfirmation()
+//     {
+//         Managers.UI.languageSetting = (int)GetSlider((int)Sliders.Slider_Language).value;
+//
+//         if (GetSlider((int)Sliders.Slider_Language).value >= 1)
+//         {
+//             Managers.Data.Preference[(int)Define.Preferences.EngMode] = 1;
+//             Managers.UI.SetEngMode(UIManager.ENG);
+// #if UNITY_EDITOR
+//             Debug.Log("Preference Changed --------------------------EngMode On");
+// #endif
+//         }
+//
+//         else
+//         {
+// #if UNITY_EDITOR
+//             Debug.Log("Preference Changed --------------------------EngMode off");
+// #endif
+//             Managers.Data.Preference[(int)Define.Preferences.EngMode] = 0;
+//             Managers.UI.SetEngMode(UIManager.KOR);
+//         }
+//     }
+
+    private const int REFRESH_INTERIM_MIN = 10;
+    private readonly WaitForSeconds _wait = new(REFRESH_INTERIM_MIN);
+    private IEnumerator ResetSensorRefreshableCo()
     {
-        Managers.UI.languageSetting = (int)GetSlider((int)Sliders.Slider_Language).value;
-
-        if (GetSlider((int)Sliders.Slider_Language).value >= 1)
-        {
-            Managers.Data.Preference[(int)Define.Preferences.EngMode] = 1;
-            Managers.UI.SetEngMode(UIManager.ENG);
-#if UNITY_EDITOR
-            Debug.Log("Preference Changed --------------------------EngMode On");
-#endif
-        }
-
-        else
-        {
-#if UNITY_EDITOR
-            Debug.Log("Preference Changed --------------------------EngMode off");
-#endif
-            Managers.Data.Preference[(int)Define.Preferences.EngMode] = 0;
-            Managers.UI.SetEngMode(UIManager.KOR);
-        }
+        _isSensorRefreshable = false;
+        yield return _wait;
+        _isSensorRefreshable = true;
     }
+    private bool _isSensorRefreshable = true;
+    private void RefreshSensor()
+    {
+        if (!_isSensorRefreshable) return;
 
-
+        StartCoroutine(ResetSensorRefreshableCo());
+        OnRefreshEvent?.Invoke();
+    }
 
 
 

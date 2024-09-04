@@ -12,10 +12,17 @@ public class Define
 	public static int ON = 1;
 	public static bool YES_BOOL = true;
 	public static bool No_BOOL = false;
-	public enum LanguageMode
+
+	public enum Instrument
 	{
-		Kor,
-		Eng
+		Drum,
+		HandBell
+	}
+	
+	public enum PlayMode
+	{
+		Free,
+		RhythmGame
 	}
 
 	public enum QaulityLevel
@@ -48,6 +55,9 @@ public class Define
 		Unknown,
 		Dev,
 		Release,
+		linc_main_solo,
+		linc_multimode
+		
 	}
 
 	public enum UIEvent
