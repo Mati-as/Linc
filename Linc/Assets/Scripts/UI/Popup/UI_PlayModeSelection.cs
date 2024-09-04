@@ -6,26 +6,28 @@ public class UI_PlayModeSelection : UI_Popup
 {
     public enum Btns
     {
-        Btn_MultiPlay,
-        Btn_SinglePlay
+        Btn_FreePlayMode,
+        Btn_RhythmGameMode
     }
 
     public override bool Init()
     {
-        BindObject(typeof(Btns));
-        GetButton((int)Btns.Btn_SinglePlay).gameObject.BindEvent(OnSinglePlayBtnClicked);
-        GetButton((int)Btns.Btn_MultiPlay).gameObject.BindEvent(OnMultiPlayBtnClicked);
+        BindButton(typeof(Btns));
+        GetButton((int)Btns.Btn_RhythmGameMode).gameObject.BindEvent(OnRythmGameModeBtnClicked);
+        GetButton((int)Btns.Btn_FreePlayMode).gameObject.BindEvent(Btn_FreePlayMode);
         return base.Init();
     }
 
 
-    public void OnSinglePlayBtnClicked()
+    public void OnRythmGameModeBtnClicked()
     {
-        
+        Managers.UI.ClosePopupUI(this);
+        Managers.UI.ShowPopupUI<UI_InstrumentSelection>();
     }
 
-    public void OnMultiPlayBtnClicked()
+    public void Btn_FreePlayMode()
     {
-        
+        Managers.UI.ClosePopupUI(this);
+        Managers.UI.ShowPopupUI<UI_InstrumentSelection>();
     }
 }

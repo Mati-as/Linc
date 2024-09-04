@@ -52,10 +52,14 @@ public class Solo_BeadsDrum_GameManager : Base_NetworkGameManager
 
     public override void OnRaySynced()
     {
+        
         if (!PreCheckOnRaySync()) return;
-        if (Physics.Raycast(GameManager_Ray, out GameManager_Hits[0]))
+   
+        
+        foreach (var hit in GameManager_Hits)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(GameManager_Hits[0].point, clickRadius);
+            if(hit.transform.gameObject.name.Contains("Wall")) continue; // WallCollider는 비즈랑만 상호작용
+            Collider[] hitColliders = Physics.OverlapSphere(hit.point, clickRadius);
             foreach (var hitCollider in hitColliders)
             {
                 IBeadOnClicked clickable = hitCollider.GetComponent<IBeadOnClicked>();
@@ -64,44 +68,41 @@ public class Solo_BeadsDrum_GameManager : Base_NetworkGameManager
                     clickable.OnClicked();
                 }
             }
+        }
             
-            
-            foreach (var hit in GameManager_Hits)
-            {
-                if (hit.transform.gameObject.name.Contains("DrumLeft"))
-                {
-                    var randomChar = (char)Random.Range('A', 'B' + 1);
-                    Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/기본컨텐츠/비즈드럼/Drum"+randomChar);
-                    OnLeftDrumClicked?.Invoke();
-                    return;
-                }
-                if (hit.transform.gameObject.name.Contains("DrumRight"))
-                {
-                    var randomChar = (char)Random.Range('A', 'B' + 1);
-                    Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/기본컨텐츠/비즈드럼/Drum"+randomChar);
-                    OnRightDrumClicked?.Invoke();
-                    return;
-                }
-                
-                if (hit.transform.gameObject.name.Contains("Frame"))
-                {
-                    var randomChar = (char)Random.Range('A', 'C' + 1);
-                    Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/기본컨텐츠/비즈드럼/Plastic" + randomChar);
-                    return;
-                }
-                
-              
-
-            }
-            
-            if (GameManager_Hits[0].transform.gameObject.name.Contains("Background"))
-            {
-                var randomChar = (char)Random.Range('A', 'D' + 1);
-                Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/기본컨텐츠/비즈드럼/Bubble"+randomChar,0.25f);
+        if (GameManager_Hits[0].transform.gameObject.name.Contains("Background"))
+        {
+            var randomChar = (char)Random.Range('A', 'D' + 1);
+            Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/Effect/Bubble"+randomChar,0.25f);
                   
+        }
+    
+        foreach (var hit in GameManager_Hits)
+        {
+            if (hit.transform.gameObject.name.Contains("DrumLeft"))
+            {
+                var randomChar = (char)Random.Range('A', 'B' + 1);
+                Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/Effect/Drum" + randomChar);
+                OnLeftDrumClicked?.Invoke();
+                return;
+            }
+
+            if (hit.transform.gameObject.name.Contains("DrumRight"))
+            {
+                var randomChar = (char)Random.Range('A', 'B' + 1);
+                Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/Effect/Drum" + randomChar);
+                OnRightDrumClicked?.Invoke();
+                return;
+            }
+
+            if (hit.transform.gameObject.name.Contains("Frame"))
+            {
+                var randomChar = (char)Random.Range('A', 'C' + 1);
+                Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/Effect/Plastic" + randomChar);
+                return;
             }
         }
-        
+
     }
     
     private void OnGameStart()

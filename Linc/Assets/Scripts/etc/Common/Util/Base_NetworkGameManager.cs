@@ -173,7 +173,7 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
         if (!isStartButtonClicked)
         {
 #if UNITY_EDITOR
-   Debug.Log("StartBtn Should be Clicked");
+  Debug.Log("StartBtn Should be Clicked");
 #endif
             return false ;
         }
@@ -185,7 +185,7 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
 #endif
             return false;
         }
-
+        Debug.Log("CLICKING");
         return true;
     }
 

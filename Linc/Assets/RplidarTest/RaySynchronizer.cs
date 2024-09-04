@@ -98,8 +98,6 @@ public class RaySynchronizer : MonoBehaviour
     {
         ShootRay();
 
-        //GameManager의 RayCast를 발생 
-        OnGetInputFromUser?.Invoke();
     }
 
 
@@ -127,7 +125,8 @@ public class RaySynchronizer : MonoBehaviour
 
         raycastResults = new List<RaycastResult>();
         GR.Raycast(PED, raycastResults);
-        
+
+        var isUiOnResult = false;
         foreach (RaycastResult result in raycastResults)
         {
             result.gameObject.TryGetComponent(out btn);
@@ -135,9 +134,21 @@ public class RaySynchronizer : MonoBehaviour
             
             result.gameObject.TryGetComponent(out UI_EventHandler eventHandler);
             eventHandler?.OnClickHandler?.Invoke();
+            eventHandler?.OnPointerUpHandler?.Invoke();
+
+            if (btn?.onClick != null || eventHandler?.OnClickHandler != null ||   eventHandler?.OnPointerUpHandler !=null)
+            {
+                Debug.Log("UIClicked");
+                isUiOnResult = true;
+            }
+
         }
 
+        if (isUiOnResult) return;
+        
+        //UI클릭이 아닌경우만 GameManager의 RayCast를 발생
         OnGetInputFromUser?.Invoke();
+
 
 #if UNITY_EDITOR
 

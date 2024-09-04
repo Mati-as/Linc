@@ -15,9 +15,10 @@ public class UI_PersistentController : UI_Scene
         Btn_Start,
         Btn_HideMenu,
         Btn_Play,
-        Btn_Pause,
         Btn_Replay,
-        Btn_Home
+        Btn_Quit,
+        Btn_ApplicationQuit,
+        Btn_Setting
         
     }
 
@@ -54,10 +55,19 @@ public class UI_PersistentController : UI_Scene
         GetButton((int)Btns.Btn_Start).gameObject.GetComponentInChildren<TextMeshProUGUI>().DOFade(0, 0.01f);
         _canvas = GetComponent<Canvas>();
         _canvas.sortingOrder = -321; // 항상플레이 화면에만 있을수 있도록
+
+        SetInGameUIs(false);
+            
         
-        
-        GetButton((int)Btns.Btn_Home).gameObject.BindEvent(OnHomeBtnClicked);
+        GetButton((int)Btns.Btn_Quit).gameObject.BindEvent(OnQuitBtnClicked);
         return base.Init();
+    }
+
+    private void SetInGameUIs(bool value)
+    {
+        GetButton((int)Btns.Btn_Quit).gameObject.SetActive(value);
+        GetButton((int)Btns.Btn_Setting).gameObject.SetActive(value);
+        GetButton((int)Btns.Btn_ApplicationQuit).gameObject.SetActive(value);
     }
 
     public void ShowStartBtn()
@@ -70,7 +80,7 @@ public class UI_PersistentController : UI_Scene
 
     }
 
-    private void OnHomeBtnClicked()
+    private void OnQuitBtnClicked()
     {
         Managers.UI.CloseAllPopupUI();
         Managers.Scene.ChangeScene(Define.Scene.linc_main_solo);
@@ -79,9 +89,21 @@ public class UI_PersistentController : UI_Scene
     {
         Debug.Log("Clicked");
         _bg.DOFade(0, 1f);
-        OnStartBtnClickedAction?.Invoke();
+       
         GetButton((int)Btns.Btn_Start).gameObject.GetComponent<Image>().DOFade(0, 0.5f);
-        GetButton((int)Btns.Btn_Start).gameObject.GetComponentInChildren<TextMeshProUGUI>().DOFade(0, 0.5f);
+        GetButton((int)Btns.Btn_Start).gameObject.GetComponentInChildren<TextMeshProUGUI>().DOFade(0, 0.5f).OnComplete(
+            () =>
+            {
+                GetButton((int)Btns.Btn_Start).gameObject.SetActive(false);
+            });
+        SetInGameUIs(true);
+        
+        OnStartBtnClickedAction?.Invoke();
+    }
+
+    private void OnApplicationQuitClicked()
+    {
+        
     }
 
     private void ToggleAnimation()

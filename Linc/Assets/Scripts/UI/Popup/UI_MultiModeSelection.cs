@@ -24,12 +24,13 @@ public class UI_MultiModeSelection : UI_Popup
     private void OnSinglePlayBtnClicked()
     {
         Managers.UI.ClosePopupUI(this);
-        Managers.UI.ShowPopupUI<UI_InstrumentSelection>();
+        Managers.UI.ShowPopupUI<UI_PlayModeSelection>();
     }
 
     private void OnMultipPlayBtnClicked()
     {
         Managers.UI.ClosePopupUI(this);
-        Managers.Scene.ChangeScene(Define.Scene.linc_multimode);
+        Managers.UI.ShowPopupUI<UI_Lobby>();
+       // Managers.Scene.ChangeScene(Define.Scene.linc_multimode);
     }
 }

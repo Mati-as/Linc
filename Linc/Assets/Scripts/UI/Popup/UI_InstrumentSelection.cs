@@ -19,8 +19,8 @@ public class UI_InstrumentSelection : UI_Popup
         
         if (base.Init() == false) return false;
         BindButton(typeof(Btns));
-        GetButton((int)Btns.Btn_HandBell).gameObject.BindEvent(OnDrumPlayBtnClicked);
-        GetButton((int)Btns.Btn_Drum).gameObject.BindEvent(OnHandBellBtnClicked);
+        GetButton((int)Btns.Btn_HandBell).gameObject.BindEvent(OnHandBellBtnClicked);
+        GetButton((int)Btns.Btn_Drum).gameObject.BindEvent(OnDrumPlayBtnClicked);
         return base.Init();
     }
     
