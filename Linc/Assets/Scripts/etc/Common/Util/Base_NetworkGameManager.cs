@@ -168,12 +168,21 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
     /// 2. 이는 씬이동간 에러방지, 게임내에서 로직충돌등을 방지하기 위해 사용합니다.
     /// 3. 이를 일괄적으로 검사 및 클릭가능여부를 반환합니다. 
     /// </summary>
+
+#if UNITY_EDITOR
+    private bool _loggerDisplayable =true;
+#endif
     protected virtual bool PreCheckOnRaySync()
     {
         if (!isStartButtonClicked)
         {
 #if UNITY_EDITOR
-  Debug.Log("StartBtn Should be Clicked");
+            if (_loggerDisplayable)
+            {
+                _loggerDisplayable =false;
+                Debug.Log("StartBtn Should be Clicked");
+                DOVirtual.Float(0, 0, 1.5f, _ => { _loggerDisplayable = true;});
+            }
 #endif
             return false ;
         }

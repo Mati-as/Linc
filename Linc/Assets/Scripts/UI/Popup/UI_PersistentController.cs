@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
 using DG.Tweening;
+using Mirage;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,11 +37,13 @@ public class UI_PersistentController : UI_Scene
 
     private Image _bg;
     private Color _defaultColor;
- 
+
+
+
     public static event Action OnStartBtnClickedAction;
     public override bool Init()
     {
-       
+
         BindObject(typeof(UIObjs));
         BindButton(typeof(Btns));
         
