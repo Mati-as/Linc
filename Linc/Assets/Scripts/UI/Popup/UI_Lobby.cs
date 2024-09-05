@@ -28,6 +28,7 @@ public class UI_Lobby : UI_Popup
     private readonly float _waitAmount = 0.8f;
     private Sequence _onConnectTMPSeq;
     private NetworkManager _networkManager;
+    private INetworkPlayer _player;
 
     public override bool Init()
     {
@@ -38,14 +39,17 @@ public class UI_Lobby : UI_Popup
        
         _networkManager.Server.Connected.AddListener(player =>
         {
+            
             // Check if the connected client is NOT the local player (host)
             if (!player.IsHost)
             {
+                
                 Debug.Log("A non-host client connected to the server.");
                 OnClientConnected(); // Trigger server-side logic for non-host clients
             }
             else
             {
+                
                 Debug.Log("Host client connected, skipping OnClientConnected logic.");
             }
         });
@@ -53,6 +57,7 @@ public class UI_Lobby : UI_Popup
         // Client-side connection listener (no RPC calls here)
         _networkManager.Client.Connected.AddListener(player =>
         {
+            
             Debug.Log("Connected to server.");
             if (!player.IsHost)
             {
@@ -89,7 +94,16 @@ public class UI_Lobby : UI_Popup
         GetButton((int)Btns.Btn_StartGame).gameObject.BindEvent(() =>
         {
             Managers.UI.CloseAllPopupUI();
-            Managers.Scene.ChangeScene(Define.Scene.linc_multimode);
+
+            if (_networkManager.Server.IsHost)
+            {
+                Managers.UI.ShowPopupUI<UI_PlayModeSelection>();
+            }
+            else
+            {
+                Managers.UI.ShowPopupUI<UI_WaitForHost>();
+            }
+           
         });
         GetButton((int)Btns.Btn_StartGame).gameObject.SetActive(false);
       
@@ -108,8 +122,11 @@ public class UI_Lobby : UI_Popup
         _onConnectTMPSeq.AppendCallback(() => { _tmp.text += "."; });
         _onConnectTMPSeq.SetLoops(5, LoopType.Restart);
         
-        GetButton((int)Btns.Btn_StartHost).gameObject.SetActive(false);
-        GetButton((int)Btns.Btn_StartClient).gameObject.SetActive(false);
+        DOVirtual.Float(0, 0, 0.5f, _ =>
+        {
+            GetButton((int)Btns.Btn_StartHost).gameObject.SetActive(false);
+            GetButton((int)Btns.Btn_StartClient).gameObject.SetActive(false);
+        });
         GetButton((int)Btns.Btn_QuitConnection).gameObject.SetActive(true);
         GetObject((int)UIs.TryingConnection).SetActive(true);
     }
@@ -151,10 +168,14 @@ public class UI_Lobby : UI_Popup
         _onConnectTMPSeq.AppendInterval(0.7f);
         _onConnectTMPSeq.AppendCallback(() => { _tmp.text += "."; });
         _onConnectTMPSeq.SetLoops(5, LoopType.Restart);
-        
-         
-        GetButton((int)Btns.Btn_StartHost).gameObject.SetActive(false);
-        GetButton((int)Btns.Btn_StartClient).gameObject.SetActive(false);
+
+
+        DOVirtual.Float(0, 0, 0.5f, _ =>
+        {
+            GetButton((int)Btns.Btn_StartHost).gameObject.SetActive(false);
+            GetButton((int)Btns.Btn_StartClient).gameObject.SetActive(false);
+        });
+     
         GetButton((int)Btns.Btn_QuitConnection).gameObject.SetActive(true);
         GetObject((int)UIs.TryingConnection).SetActive(true);
     }
