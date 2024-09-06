@@ -14,15 +14,15 @@ public class Managers : MonoBehaviour
     private static ContentPlayManager s_contentPlayManager = new(); 
     private static ResourceManager s_resourceManager = new ResourceManager();
     private static A_SettingManager s_settingManager = new A_SettingManager();
-    //private static NetworkManager s_networkManager;
+    private static NetworkManager s_networkManager;
     public static DataManager Data
     { get { Init(); return _sDataManager; }}
 
-    // public static NetworkManager Network
-    // {
-    //     get { return s_networkManager; }
-    //     set { s_networkManager = value; }
-    // }
+    public static NetworkManager Network
+    {
+        get { return s_networkManager; }
+        set { s_networkManager = value; }
+    }
 
     public static ContentPlayManager ContentInfo  { get { Init(); return s_contentPlayManager;}}
     public static A_SettingManager Setting  { get { Init(); return s_settingManager;}}

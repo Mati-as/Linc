@@ -86,7 +86,7 @@ public class UI_Lobby : UI_Popup
 
     private void OnDestroy()
     {
-        UI_MainController_NetworkInvolved.OnClientConnected -= OnClientConnected;
+        UI_MainController_NetworkInvolved.OnClientConnected -= (var_=>OnClientConnected(var_));
         UI_MainController_NetworkInvolved.OnConnectedToLocalServer -= OnConnectedToLocalServer;
         UI_MainController_NetworkInvolved.OnConnectFailed -= OnConnectFailed;
     }
@@ -111,7 +111,7 @@ public class UI_Lobby : UI_Popup
     }
 
 
-    private void OnConnectedToLocalServer()
+    private void OnConnectedToLocalServer(INetworkPlayer player)
     {
         Debug.Log("OnConnectedToServer called on the client.");
         _onConnectTMPSeq?.Kill();
@@ -160,10 +160,10 @@ public class UI_Lobby : UI_Popup
     }
 
 
-    private void OnClientConnected()
+    private void OnClientConnected(INetworkPlayer player)
     {
         Debug.Log("OnClientConnected called on the server.");
-        OnConnectedToLocalServer(); // Call ClientRpc from server
+        OnConnectedToLocalServer(player); // Call ClientRpc from server
         _onConnectTMPSeq?.Kill();
         StartCoroutine(OnClientConnectedCo());
     }
@@ -178,6 +178,7 @@ public class UI_Lobby : UI_Popup
         GetObject((int)UIs.TryingConnection).SetActive(false);
         GetObject((int)UIs.Opponent).SetActive(true);
         _isGamePlayable = true;
+        
     }
 
 

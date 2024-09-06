@@ -518,7 +518,7 @@ GameObject:
   - component: {fileID: 3452184714034446544}
   - component: {fileID: 8142623919640661457}
   - component: {fileID: 8048553394634836103}
-  - component: {fileID: 5669280600343555403}
+  - component: {fileID: 5097319701206698688}
   m_Layer: 5
   m_Name: UI_InstrumentSelection
   m_TagString: Untagged
@@ -604,7 +604,8 @@ MonoBehaviour:
     To: 3
     Timing: 0
     Interval: 0.1
---- !u!114 &5669280600343555403
+  networkManager: {fileID: 0}
+--- !u!114 &5097319701206698688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class UI_MainController_NetworkInvolved : UI_Scene
 {
 
-    public NetworkManager networkManager;
+ 
     public enum Btns
     {
         Btn_Start,
@@ -43,22 +43,21 @@ public class UI_MainController_NetworkInvolved : UI_Scene
     public GameObject UI_Lobby;
 
 
-    public static event Action OnStartBtnClickedAction;
     
     //network
-    public static event Action OnConnectedToLocalServer;
-    public static event Action OnClientConnected;
+    public static event Action<INetworkPlayer> OnConnectedToLocalServer;
+    public static event Action<INetworkPlayer> OnClientConnected;
+    public static event Action OnStartBtnClickedAction;
     public static event Action OnConnectFailed;
 
     public override bool Init()
     {
-        if (networkManager == null)
-        {
-            networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>();
-        }
+        
+        Managers.Network = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>();
+        
   
        
-        networkManager.Server.Connected.AddListener(player =>
+        Managers.Network.Server.Connected.AddListener(player =>
         {
             
             // Check if the connected client is NOT the local player (host)
@@ -66,7 +65,7 @@ public class UI_MainController_NetworkInvolved : UI_Scene
             {
                 
                 Debug.Log("A non-host client connected to the server.");
-                OnClientConnected?.Invoke(); // Trigger server-side logic for non-host clients
+                OnClientConnected?.Invoke(player); // Trigger server-side logic for non-host clients
             }
             else
             {
@@ -76,14 +75,14 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         });
 
         // Client-side connection listener (no RPC calls here)
-       networkManager.Client.Connected.AddListener(player =>
+       Managers.Network.Client.Connected.AddListener(player =>
         {
             
             Debug.Log("Connected to server.");
             if (!player.IsHost)
             {
                 Debug.Log("A non-host client connected to the server.");
-                OnConnectedToLocalServer?.Invoke();; // Trigger server-side logic for non-host clients
+                OnConnectedToLocalServer?.Invoke(player);; // Trigger server-side logic for non-host clients
             }
             else
             {
@@ -92,7 +91,7 @@ public class UI_MainController_NetworkInvolved : UI_Scene
            
         });
 
-       networkManager.Client.Disconnected.AddListener(_ =>
+       Managers.Network.Client.Disconnected.AddListener(_ =>
         {
             Debug.Log("Disconnected from server.");
             OnConnectFailed?.Invoke();;
@@ -123,20 +122,13 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         
         GetButton((int)Btns.Btn_Quit).gameObject.BindEvent(OnQuitBtnClicked);
         
-        //event setting
-        global::UI_Lobby.OnHostStartSetting -=ClientRPCEvent_OnHostStartSetting;
-        global::UI_Lobby.OnHostStartSetting +=ClientRPCEvent_OnHostStartSetting;
-
-        UI_InstrumentSelection.OnInstrumentSelected -= RPCEvent_OnHostGameSettingFinished;
-        UI_InstrumentSelection.OnInstrumentSelected += RPCEvent_OnHostGameSettingFinished;
+   
         return base.Init();
     }
 
     private void OnDestroy()
     {
-        //event setting
-        global::UI_Lobby.OnHostStartSetting -=ClientRPCEvent_OnHostStartSetting;
-        UI_InstrumentSelection.OnInstrumentSelected -= RPCEvent_OnHostGameSettingFinished;
+        
     }
 
     private void SetInGameUIs(bool value)
@@ -188,56 +180,7 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         _menuAnimator.SetBool(UI_ON,_isUiOn);
     }
     
-  
-    private void RPCEvent_OnHostGameSettingFinished()
-    {
-        if (!Identity.isActiveAndEnabled)
-        {
-            Logger.LogError("xxxxxxxxxxx netId Is inactive.");
-        }
-        else
-        {
-            Logger.Log("ooooooooo netId is Active.");
-        }
-        RpcInstrumentSelection((int)Define.Instrument.Drum, (int)Define.Instrument.HandBell);
-    }
-    
-    [ClientRpc]
-    private void RpcInstrumentSelection(int hostInstrument, int clientInstrument)
-    {
-        Logger.Log($"Instrument RPC received: HostInstrument={hostInstrument}, ClientInstrument={clientInstrument}");
-        PerformButtonClick();
-    }
 
-    private void PerformButtonClick()
-    {
-        Logger.Log("Performing Button Click (both)");
-        Managers.UI.ClosePopupUI(Managers.UI.FindPopup<UI_WaitForHost>());
-        Managers.UI.SceneUI.GetComponent<UI_MainController_NetworkInvolved>().UI_Lobby.SetActive(false);
-        Managers.UI.SceneUI.GetComponent<UI_MainController_NetworkInvolved>().ShowStartBtn();
-    }
-    
-    
    
-    public void ClientRPCEvent_OnHostStartSetting()
-    {
-        if (!Identity.isActiveAndEnabled)
-        {
-            Logger.LogError("xxxxxxxxxxx netId Is inactive.");
-        }
-        else
-        {
-            Logger.Log("ooooooooooo netId is Active.");
-        }
-        ClientRPC_ShowWaitForHostUI();
-    }
-    
-    [ClientRpc]
-    public void ClientRPC_ShowWaitForHostUI()
-    {
-        Managers.UI.ShowPopupUI<UI_WaitForHost>();
-    }
-    
-    
 
 }

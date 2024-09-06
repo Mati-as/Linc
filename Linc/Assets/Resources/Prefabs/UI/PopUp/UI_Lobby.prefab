@@ -20562,7 +20562,6 @@ GameObject:
   - component: {fileID: 8808464700585751761}
   - component: {fileID: 9027861309629829409}
   - component: {fileID: 7757128527358906647}
-  - component: {fileID: 2923136765061403071}
   m_Layer: 0
   m_Name: UI_Lobby
   m_TagString: Untagged
@@ -20646,29 +20645,7 @@ MonoBehaviour:
     To: 3
     Timing: 0
     Interval: 0.1
---- !u!114 &2923136765061403071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4277590374478607627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpawnSettings:
-    SendPosition: 1
-    SendRotation: 0
-    SendScale: 0
-    SendName: 1
-    SendActive: 1
-  _sceneId: 0
-  ServerObjectManager: {fileID: 0}
-  ClientObjectManager: {fileID: 0}
-  _prefabHash: -1440984536
-  _hasSpawned: 0
+  networkManager: {fileID: 0}
 --- !u!1 &4531273580753153728
 GameObject:
   m_ObjectHideFlags: 0

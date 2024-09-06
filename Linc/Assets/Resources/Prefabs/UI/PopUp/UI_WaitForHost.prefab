@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 8142623919640661457}
   - component: {fileID: 3787435897393457128}
   - component: {fileID: 6026568716550654671}
+  - component: {fileID: 90221063158575057}
   m_Layer: 5
   m_Name: UI_WaitForHost
   m_TagString: Untagged
@@ -332,6 +333,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c485d9190c469d429980f85692a19dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SyncSettings:
+    From: 2
+    To: 3
+    Timing: 0
+    Interval: 0.1
+--- !u!114 &90221063158575057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4767172436102596021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnSettings:
+    SendPosition: 1
+    SendRotation: 1
+    SendScale: 0
+    SendName: 0
+    SendActive: 1
+  _sceneId: 0
+  ServerObjectManager: {fileID: 0}
+  ClientObjectManager: {fileID: 0}
+  _prefabHash: 776449890
+  _hasSpawned: 0
 --- !u!1 &5161578183780836480
 GameObject:
   m_ObjectHideFlags: 0
