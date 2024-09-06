@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using Mirage;
@@ -12,7 +13,7 @@ public class UI_Lobby : UI_Popup
         Btn_Back,
         Btn_StartHost,
         Btn_StartClient,
-        Btn_QuitConnection,
+        Btn_QuitConnection
     }
 
     public enum UIs
@@ -27,56 +28,29 @@ public class UI_Lobby : UI_Popup
     private WaitForSeconds _wait;
     private readonly float _waitAmount = 0.8f;
     private Sequence _onConnectTMPSeq;
-    private NetworkManager _networkManager;
-    private INetworkPlayer _player;
 
+    public NetworkManager networkManager;
+
+    public static Action OnHostStartSetting;
+    
     public override bool Init()
     {
         if (base.Init() == false) return false;
+        if (networkManager == null)
+        {
+            networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>();
+        }
+        
+        UI_MainController_NetworkInvolved.OnClientConnected -= OnClientConnected;
+        UI_MainController_NetworkInvolved.OnConnectedToLocalServer -= OnConnectedToLocalServer;
+        UI_MainController_NetworkInvolved.OnConnectFailed -= OnConnectFailed;
 
-        _networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>();
+        UI_MainController_NetworkInvolved.OnClientConnected += OnClientConnected;
+        UI_MainController_NetworkInvolved.OnConnectedToLocalServer += OnConnectedToLocalServer;
+        UI_MainController_NetworkInvolved.OnConnectFailed += OnConnectFailed;
 
        
-        _networkManager.Server.Connected.AddListener(player =>
-        {
-            
-            // Check if the connected client is NOT the local player (host)
-            if (!player.IsHost)
-            {
-                
-                Debug.Log("A non-host client connected to the server.");
-                OnClientConnected(); // Trigger server-side logic for non-host clients
-            }
-            else
-            {
-                
-                Debug.Log("Host client connected, skipping OnClientConnected logic.");
-            }
-        });
-
-        // Client-side connection listener (no RPC calls here)
-        _networkManager.Client.Connected.AddListener(player =>
-        {
-            
-            Debug.Log("Connected to server.");
-            if (!player.IsHost)
-            {
-                Debug.Log("A non-host client connected to the server.");
-                OnConnectedToServer(); // Trigger server-side logic for non-host clients
-            }
-            else
-            {
-                Debug.Log("Host client connected, skipping OnClientConnected logic.");
-            }
-           
-        });
-
-        _networkManager.Client.Disconnected.AddListener(_ =>
-        {
-            Debug.Log("Disconnected from server.");
-            OnConnectFailed();
-        });
-
+        
         BindObject(typeof(UIs));
         BindButton(typeof(Btns));
 
@@ -94,26 +68,31 @@ public class UI_Lobby : UI_Popup
         GetButton((int)Btns.Btn_StartGame).gameObject.BindEvent(() =>
         {
             Managers.UI.CloseAllPopupUI();
-
-            if (_networkManager.Server.IsHost)
+   
+            if (networkManager.Server.IsHost)
             {
                 Managers.UI.ShowPopupUI<UI_PlayModeSelection>();
+                OnHostStartSetting?.Invoke();
             }
             else
-            {
                 Managers.UI.ShowPopupUI<UI_WaitForHost>();
-            }
-           
         });
         GetButton((int)Btns.Btn_StartGame).gameObject.SetActive(false);
-      
+
         GetButton((int)Btns.Btn_QuitConnection).gameObject.BindEvent(OnQuitBtnClicked);
         GetButton((int)Btns.Btn_QuitConnection).gameObject.SetActive(false);
         return true;
     }
 
+    private void OnDestroy()
+    {
+        UI_MainController_NetworkInvolved.OnClientConnected -= OnClientConnected;
+        UI_MainController_NetworkInvolved.OnConnectedToLocalServer -= OnConnectedToLocalServer;
+        UI_MainController_NetworkInvolved.OnConnectFailed -= OnConnectFailed;
+    }
+
     private void OnClientBtnClicked()
-    {  
+    {
         _onConnectTMPSeq = DOTween.Sequence();
         _onConnectTMPSeq.AppendCallback(() => { _tmp.text = "방 참여 시도 중..."; });
         _onConnectTMPSeq.AppendInterval(0.7f);
@@ -121,7 +100,7 @@ public class UI_Lobby : UI_Popup
         _onConnectTMPSeq.AppendInterval(0.7f);
         _onConnectTMPSeq.AppendCallback(() => { _tmp.text += "."; });
         _onConnectTMPSeq.SetLoops(5, LoopType.Restart);
-        
+
         DOVirtual.Float(0, 0, 0.5f, _ =>
         {
             GetButton((int)Btns.Btn_StartHost).gameObject.SetActive(false);
@@ -131,8 +110,8 @@ public class UI_Lobby : UI_Popup
         GetObject((int)UIs.TryingConnection).SetActive(true);
     }
 
-   
-    private void OnConnectedToServer()
+
+    private void OnConnectedToLocalServer()
     {
         Debug.Log("OnConnectedToServer called on the client.");
         _onConnectTMPSeq?.Kill();
@@ -151,7 +130,7 @@ public class UI_Lobby : UI_Popup
         _isGamePlayable = true;
     }
 
-   
+
     private void OnConnectFailed()
     {
         Debug.Log("Connection failed.");
@@ -175,17 +154,16 @@ public class UI_Lobby : UI_Popup
             GetButton((int)Btns.Btn_StartHost).gameObject.SetActive(false);
             GetButton((int)Btns.Btn_StartClient).gameObject.SetActive(false);
         });
-     
+
         GetButton((int)Btns.Btn_QuitConnection).gameObject.SetActive(true);
         GetObject((int)UIs.TryingConnection).SetActive(true);
     }
 
-   
-    
+
     private void OnClientConnected()
     {
         Debug.Log("OnClientConnected called on the server.");
-        OnConnectedToServer(); // Call ClientRpc from server
+        OnConnectedToLocalServer(); // Call ClientRpc from server
         _onConnectTMPSeq?.Kill();
         StartCoroutine(OnClientConnectedCo());
     }
@@ -201,8 +179,8 @@ public class UI_Lobby : UI_Popup
         GetObject((int)UIs.Opponent).SetActive(true);
         _isGamePlayable = true;
     }
-    
-    
+
+
     private void OnQuitBtnClicked()
     {
         _onConnectTMPSeq?.Kill();
@@ -214,11 +192,13 @@ public class UI_Lobby : UI_Popup
         GetButton((int)Btns.Btn_StartHost).gameObject.SetActive(true);
         GetButton((int)Btns.Btn_StartClient).gameObject.SetActive(true);
         GetButton((int)Btns.Btn_QuitConnection).gameObject.SetActive(false);
-      
+
         GetButton((int)Btns.Btn_StartGame).gameObject.SetActive(false);
         GetObject((int)UIs.TryingConnection).SetActive(false);
         GetObject((int)UIs.Opponent).SetActive(false);
         _isGamePlayable = false;
         yield break;
     }
+
+
 }

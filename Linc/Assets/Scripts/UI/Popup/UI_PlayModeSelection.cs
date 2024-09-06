@@ -21,12 +21,14 @@ public class UI_PlayModeSelection : UI_Popup
 
     public void OnRythmGameModeBtnClicked()
     {
+        Managers.ContentInfo.PlayData.CurrentPlayMode = (int)Define.PlayMode.RhythmGame;
         Managers.UI.ClosePopupUI(this);
         Managers.UI.ShowPopupUI<UI_InstrumentSelection>();
     }
 
     public void Btn_FreePlayMode()
     {
+        Managers.ContentInfo.PlayData.CurrentPlayMode = (int)Define.PlayMode.Free;
         Managers.UI.ClosePopupUI(this);
         Managers.UI.ShowPopupUI<UI_InstrumentSelection>();
     }

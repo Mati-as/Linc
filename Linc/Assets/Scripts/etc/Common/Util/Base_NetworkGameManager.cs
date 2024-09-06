@@ -211,8 +211,8 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
         On_GmRay_Synced -= OnRaySynced;
         On_GmRay_Synced += OnRaySynced;
 
-        UI_PersistentController.OnStartBtnClickedAction -= OnStartButtonClicked;
-        UI_PersistentController.OnStartBtnClickedAction += OnStartButtonClicked;
+        UI_MainController_NetworkInvolved.OnStartBtnClickedAction -= OnStartButtonClicked;
+        UI_MainController_NetworkInvolved.OnStartBtnClickedAction += OnStartButtonClicked;
     }
 
     protected virtual void OnDestroy()
@@ -221,7 +221,7 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
         
         
         RaySynchronizer.OnGetInputFromUser -= OnOriginallyRaySynced;
-        UI_PersistentController.OnStartBtnClickedAction  -= OnStartButtonClicked;
+        UI_MainController_NetworkInvolved.OnStartBtnClickedAction  -= OnStartButtonClicked;
         On_GmRay_Synced -= OnRaySynced;
         DOTween.KillAll();
         Destroy(gameObject);

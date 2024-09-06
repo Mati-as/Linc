@@ -27,15 +27,15 @@ public class BeadsDrum_BeadsGenerator : MonoBehaviour
     {
         _beadsContainer = new Queue<GameObject>();
 
-          UI_PersistentController.OnStartBtnClickedAction -= OnStartButtonClicked;
-          UI_PersistentController.OnStartBtnClickedAction += OnStartButtonClicked;
+          UI_MainController_NetworkInvolved.OnStartBtnClickedAction -= OnStartButtonClicked;
+          UI_MainController_NetworkInvolved.OnStartBtnClickedAction += OnStartButtonClicked;
 
         Init();
     }
 
     private void OnDestroy()
     {
-          UI_PersistentController.OnStartBtnClickedAction -= OnStartButtonClicked;
+          UI_MainController_NetworkInvolved.OnStartBtnClickedAction -= OnStartButtonClicked;
     }
 
     private void SetPool(Queue<GameObject> pool, string path, int poolCount = 50)

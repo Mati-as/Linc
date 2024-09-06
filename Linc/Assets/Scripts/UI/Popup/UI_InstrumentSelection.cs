@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using Mirage;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UI_InstrumentSelection : UI_Popup
 {
@@ -12,34 +11,60 @@ public class UI_InstrumentSelection : UI_Popup
         Btn_HandBell,
     }
 
+    public NetworkManager networkManager;
     public static Action OnInstrumentSelected;
+    public static Action OnHostSettingFinished;
 
     public override bool Init()
-    {   
-        
-        if (base.Init() == false) return false;
-        BindButton(typeof(Btns));
-        GetButton((int)Btns.Btn_HandBell).gameObject.BindEvent(OnHandBellBtnClicked);
-        GetButton((int)Btns.Btn_Drum).gameObject.BindEvent(OnDrumPlayBtnClicked);
-        return base.Init();
-    }
-    
-    private void OnHandBellBtnClicked()
     {
-        Managers.ContentInfo.PlayData.CurrentInstrument = (int)Define.Instrument.HandBell;
-        Managers.UI.ClosePopupUI(this);
-        Managers.UI.SceneUI.GetComponent<UI_PersistentController>().ShowStartBtn();
-        OnInstrumentSelected?.Invoke();
+        if (!base.Init()) return false;
+        if (networkManager == null)
+        {
+            networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>();
+        }
+        
+        
+        BindButton(typeof(Btns));
+        GetButton((int)Btns.Btn_HandBell).gameObject
+            .BindEvent(()=>
+            {
+                OnInstrumentBtnClicked(Define.Instrument.HandBell, Define.Instrument.Drum);
+            });
+       
+        GetButton((int)Btns.Btn_Drum).gameObject
+            .BindEvent(()=>
+            {
+                OnInstrumentBtnClicked(Define.Instrument.HandBell, Define.Instrument.Drum);
+            });
+        
+      
+
+        return true;
     }
 
-    private void OnDrumPlayBtnClicked()
+    // Host clicks HandBell button
+    private void OnInstrumentBtnClicked(Define.Instrument instrumentA, Define.Instrument instrumentB)
     {
-        Managers.ContentInfo.PlayData.CurrentInstrument =  (int)Define.Instrument.Drum;
+        if (!GetComponent<NetworkIdentity>().isActiveAndEnabled) Logger.LogError("identity is not enabled or active");
+        // Call the RPC to send the instrument selection to all clients
+        if (networkManager.Server.IsHost)
+        {
+            Managers.ContentInfo.PlayData.HostInstrument = (int)instrumentA;
+            Managers.ContentInfo.PlayData.ClientInstrument = (int)instrumentB;
+
+            Logger.Log("Instrument RPC sent from the server.");
+        }
+
         Managers.UI.ClosePopupUI(this);
-        Managers.UI.SceneUI.GetComponent<UI_PersistentController>().ShowStartBtn();
+        Managers.UI.SceneUI.GetComponent<UI_MainController_NetworkInvolved>().ShowStartBtn();
         OnInstrumentSelected?.Invoke();
+        OnHostSettingFinished?.Invoke();
     }
+
+
 
 
   
+
+
 }

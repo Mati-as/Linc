@@ -10,7 +10,7 @@ public class InitialScene : BaseScene
             return false;
 
         SceneType = Define.Scene.Dev;
-        Managers.UI.ShowSceneUI<UI_PersistentController>();
+        Managers.UI.ShowSceneUI<UI_MainController_NetworkInvolved>();
         Managers.UI.ShowPopupUI<UI_Loading>();
         Debug.Log($"ui stack count: {Managers.UI.PopupStack.Count}");
         Managers.Sound.Play(SoundManager.Sound.Bgm, "Bgm");

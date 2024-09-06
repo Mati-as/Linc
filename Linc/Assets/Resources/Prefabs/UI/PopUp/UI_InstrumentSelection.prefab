@@ -518,6 +518,7 @@ GameObject:
   - component: {fileID: 3452184714034446544}
   - component: {fileID: 8142623919640661457}
   - component: {fileID: 8048553394634836103}
+  - component: {fileID: 5669280600343555403}
   m_Layer: 5
   m_Name: UI_InstrumentSelection
   m_TagString: Untagged
@@ -598,6 +599,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf54be417662a104886068e50824e10d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SyncSettings:
+    From: 2
+    To: 3
+    Timing: 0
+    Interval: 0.1
+--- !u!114 &5669280600343555403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4767172436102596021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnSettings:
+    SendPosition: 1
+    SendRotation: 1
+    SendScale: 0
+    SendName: 0
+    SendActive: 2
+  _sceneId: 0
+  ServerObjectManager: {fileID: 0}
+  ClientObjectManager: {fileID: 0}
+  _prefabHash: 1905907897
+  _hasSpawned: 0
 --- !u!1 &6366124344278675502
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,6 +639,7 @@ GameObject:
   - component: {fileID: 8373063166065321278}
   - component: {fileID: 5082822485602008649}
   - component: {fileID: 772294367220300575}
+  - component: {fileID: 5170781658497991699}
   m_Layer: 0
   m_Name: Btn_HandBell
   m_TagString: Untagged
@@ -721,6 +751,29 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5170781658497991699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6366124344278675502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnSettings:
+    SendPosition: 1
+    SendRotation: 1
+    SendScale: 0
+    SendName: 0
+    SendActive: 2
+  _sceneId: 0
+  ServerObjectManager: {fileID: 0}
+  ClientObjectManager: {fileID: 0}
+  _prefabHash: 1905907897
+  _hasSpawned: 0
 --- !u!1 &6529041518813945933
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,6 +939,7 @@ GameObject:
   - component: {fileID: 566561844646819243}
   - component: {fileID: 1621408570817201199}
   - component: {fileID: 5390560949555179904}
+  - component: {fileID: 3119345522911564182}
   m_Layer: 0
   m_Name: Btn_Drum
   m_TagString: Untagged
@@ -997,3 +1051,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3119345522911564182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859001285086839191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnSettings:
+    SendPosition: 1
+    SendRotation: 1
+    SendScale: 0
+    SendName: 0
+    SendActive: 2
+  _sceneId: 0
+  ServerObjectManager: {fileID: 0}
+  ClientObjectManager: {fileID: 0}
+  _prefabHash: 1905907897
+  _hasSpawned: 0

@@ -24,7 +24,7 @@ public class UI_Loading : UI_Popup
        
        _tmp = _loadingSlider.gameObject.GetComponentInChildren<TextMeshProUGUI>();
 
-      DOVirtual.Float(0, _loadingSlider.maxValue, 1.5f, val =>
+      DOVirtual.Float(0, _loadingSlider.maxValue, 0.8f, val =>
       {
          _loadingSlider.value = val;
          _tmp.text = $"Loading....{(int)( (val/_loadingSlider.maxValue) * 100 )}%";

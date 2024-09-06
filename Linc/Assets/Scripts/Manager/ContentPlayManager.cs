@@ -12,7 +12,8 @@ public class ContentPlayData
 {
     
     public int CurrentPlayMode; // free, RhythmGame
-    public int CurrentInstrument;
+    public int HostInstrument;
+    public int ClientInstrument; 
     public bool isMultiMode =false;
 }
 
