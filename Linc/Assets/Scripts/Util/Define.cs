@@ -24,6 +24,12 @@ public class Define
 		Free,
 		RhythmGame
 	}
+	public enum NetworkObjs
+	{
+		UI_WaitForHost,
+		UI_PlayModeSelection,
+		UI_InstrumentSelection,
+	}
 
 	public enum QaulityLevel
 	{

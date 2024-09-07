@@ -1,10 +1,12 @@
-﻿using Mirage;
+﻿using System.Collections.Generic;
+using Mirage;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Managers : MonoBehaviour
 {
     public static Managers s_instance;
+  
     public static Managers Instance => s_instance;
 
     private static SceneManagerEx s_sceneManager = new();
@@ -15,6 +17,8 @@ public class Managers : MonoBehaviour
     private static ResourceManager s_resourceManager = new ResourceManager();
     private static A_SettingManager s_settingManager = new A_SettingManager();
     private static NetworkManager s_networkManager;
+    public static Dictionary<int, NetworkIdentity> NetworkObjNetworkIds;
+    public static Dictionary<int, GameObject> NetworkObjs ;
     public static DataManager Data
     { get { Init(); return _sDataManager; }}
 
@@ -25,6 +29,8 @@ public class Managers : MonoBehaviour
     }
 
     public static ContentPlayManager ContentInfo  { get { Init(); return s_contentPlayManager;}}
+
+
     public static A_SettingManager Setting  { get { Init(); return s_settingManager;}}
     public static UIManager UI
     { get { Init(); return s_uiManager;}}
@@ -63,16 +69,14 @@ public class Managers : MonoBehaviour
             
             //DataMAnager는 반드시 제일 먼저 초기화 되어야합니다.
             _sDataManager.Init();
-            
-            
             s_resourceManager.Init();
             s_sceneManager.Init();
             s_soundManager.Init();
             s_contentPlayManager.Init();
 
             InitialSet();
-       
-
+            NetworkObjNetworkIds = new Dictionary<int,NetworkIdentity>();
+            NetworkObjs = new Dictionary<int, GameObject>();
         }
     }
 

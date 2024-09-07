@@ -604,7 +604,6 @@ MonoBehaviour:
     To: 3
     Timing: 0
     Interval: 0.1
-  networkManager: {fileID: 0}
 --- !u!114 &5097319701206698688
 MonoBehaviour:
   m_ObjectHideFlags: 0

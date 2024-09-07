@@ -1,17 +1,20 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Mirage;
 using UnityEngine;
 
-public class UI_MultiPlayUISpawner : CharacterSpawner
+public class UI_MultiPlayUISpawner :NetworkBehaviour
 {
 
     private GameObject ball;
 
-    protected override void Awake()
+
+  
+
+    protected  void Awake()
     {
-        base.Awake();
 
         if (Server != null)
         {
@@ -21,79 +24,151 @@ public class UI_MultiPlayUISpawner : CharacterSpawner
 
         UI_MainController_NetworkInvolved.OnClientConnected -= OnClientConnected;
         UI_MainController_NetworkInvolved.OnClientConnected += OnClientConnected;
-
-
+        
+        UI_MainController_NetworkInvolved.OnConnectedToLocalServer -= OnConnectToLocalServer;
+        UI_MainController_NetworkInvolved.OnConnectedToLocalServer += OnConnectToLocalServer;
     }
 
-    private void Start()
-    {
-        var prefabUIMultiSelection =
-            Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{nameof(UI_PlayModeSelection)}");
-        Managers.Network.ClientObjectManager.RegisterPrefab(prefabUIMultiSelection.GetNetworkIdentity());
-        var prefabUIwaitForHost =
-            Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{nameof(UI_WaitForHost)}");
-        Managers.Network.ClientObjectManager.RegisterPrefab(prefabUIwaitForHost.GetNetworkIdentity());
-    }
-    
+    // private void Start()
+    // {
+    //
+    //     // var prefabUIwaitForHost =
+    //     //     Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{nameof(UI_WaitForHost)}");
+    //     // Managers.Network.ClientObjectManager.RegisterPrefab(prefabUIwaitForHost.GetNetworkIdentity());
+    //     //
+    //     // var prefabUIMultiSelection =
+    //     //     Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{nameof(UI_PlayModeSelection)}");
+    //     // Managers.Network.ClientObjectManager.RegisterPrefab(prefabUIMultiSelection.GetNetworkIdentity());
+    //     //
+    //     // var prefabUinstrumentSelection =
+    //     //     Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{nameof(UI_InstrumentSelection)}");
+    //     // Managers.Network.ClientObjectManager.RegisterPrefab(prefabUinstrumentSelection.GetNetworkIdentity());
+    //     //
+    //     
+    //     
+    // }
 
-    protected override void OnDestroy()
+
+    protected  void OnDestroy()
     {
-        base.OnDestroy();
-        UI_MainController_NetworkInvolved.OnClientConnected -= OnClientConnected;
+        UI_MainController_NetworkInvolved.OnConnectedToLocalServer -= OnClientConnected;
+        UI_MainController_NetworkInvolved.OnClientConnected -= OnConnectToLocalServer;
     }
 
 
     private void OnClientConnected(INetworkPlayer player)
-    {    
-       
+    {
         
-        DOVirtual.Float(0, 0, 1f, _ => { })
+        DOVirtual.Float(0, 0, 0.3f, _ => { })
             .OnComplete(() =>
             {
+               
                 
                 if (Managers.Network.Server.IsHost)
                 {
-                    Debug.Log("UI_WaitForHost UI Generate-----------------------");
-                    
-                    var ui_waitForHost =
-                        Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{nameof(UI_PlayModeSelection)}");
-                    var inst_waitforHost = Instantiate(ui_waitForHost);
-                    
-                    Managers.Network.ServerObjectManager.Spawn(inst_waitforHost);
-                    
-                    
-                    var ui_MultimodeSelection =
+                    var ui_WaitForHost =
                         Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{nameof(UI_WaitForHost)}");
-                    var inst_playmode = Instantiate(ui_MultimodeSelection);
+                    var inst_WaitForHost = Instantiate(ui_WaitForHost);
+
+                    var ui_PlayModeSelection =
+                        Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{nameof(UI_PlayModeSelection)}");
+                    var inst_PlayModeSelection = Instantiate(ui_PlayModeSelection);
+
+                    var ui_UI_InstrumentSelection =
+                        Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{nameof(UI_InstrumentSelection)}");
+                    var inst_UI_InstrumentSelection = Instantiate(ui_UI_InstrumentSelection);
                     
-                  
-                    Managers.Network.ServerObjectManager.Spawn(inst_playmode);
+                    Managers.Network.ServerObjectManager.Spawn(inst_PlayModeSelection);
+                    Managers.Network.ServerObjectManager.Spawn(inst_WaitForHost);
+                    Managers.Network.ServerObjectManager.Spawn(inst_UI_InstrumentSelection);
+                    
+                          
+                    StoreNetworkIdentity(Define.NetworkObjs.UI_PlayModeSelection, inst_PlayModeSelection);
+                    StoreNetworkIdentity(Define.NetworkObjs.UI_InstrumentSelection, inst_UI_InstrumentSelection);
+                    StoreNetworkIdentity(Define.NetworkObjs.UI_WaitForHost, inst_WaitForHost);
+                        
+                    Managers.NetworkObjs.Add((int)Define.NetworkObjs.UI_InstrumentSelection,inst_UI_InstrumentSelection);
+                    Managers.NetworkObjs.Add((int)Define.NetworkObjs.UI_WaitForHost,inst_WaitForHost);
+                    Managers.NetworkObjs.Add((int)Define.NetworkObjs.UI_PlayModeSelection,inst_PlayModeSelection);
+
+                    Logger.Log($"등록 및 Spawn 완료 : From Server----------------");
                 }
+                
+       
+              
+                DOVirtual.Float(0, 0, 0.8f, _ => { })
+                    .OnComplete(() =>
+                    {
+                       
+                        
+                        foreach (var key in Managers.NetworkObjNetworkIds.Keys.ToArray())
+                        {
+                            Logger.Log($"{(Define.NetworkObjs)key} -> NetID :{Managers.NetworkObjNetworkIds[key]}");
+                        }
+                  
+                    });
+
+                DOVirtual.Float(0, 0, 2f, _ =>
+                {
+
+               
+                }).OnComplete(() =>
+                {
+                    if (!Managers.Network.Server.IsHost)
+                    {
+                        foreach (var networkIdentity in Managers.Network.ClientObjectManager.spawnPrefabs)
+                        {
+                            Logger.Log($"Client: {networkIdentity.gameObject.name} -> NetID {networkIdentity.NetId}");
+                        }
+                    }
+                    
+                    foreach (var key in Managers.Network.ClientObjectManager.spawnableObjects.Values.ToList())
+                    {
+                        Logger.Log($"Client Registered Spawned 객체: {key.gameObject.name}");
+                    }
+                });
             
-
+                Logger.Log("Spawnable Ready--------------------------------------------");
+                Managers.Network.ClientObjectManager.PrepareToSpawnSceneObjects();
             });
+        
     }
+    
 
-    // override OnServerAddPlayer so to do custom spawn location for character
-    // this method will be called by base class when player sends `AddCharacterMessage`
-    public override void OnServerAddPlayer(INetworkPlayer player)
+    private void StoreNetworkIdentity(Define.NetworkObjs obj ,GameObject spawnedObject)
     {
-        // if (Managers.Network.Server.IsHost)
-        // {
-        //     Debug.Log("UI_WaitForHost UI Generate-----------------------");
-        //     var ui_waitForHost = Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{nameof(UI_PlayModeSelection)}");
-        //     var inst_waitforHost = Instantiate(ui_waitForHost);
-        //     ServerObjectManager.Spawn(inst_waitforHost);
-        // }
-        //
-        // else
-        // {
-        //     Debug.Log("UI_PlayModeSelection UI Generate-----------------------");
-        //     var ui_MultimodeSelection =
-        //         Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{nameof(UI_WaitForHost)}");
-        //     var inst_playmode = Instantiate(ui_MultimodeSelection);
-        //     ServerObjectManager.Spawn(inst_playmode);
-        // }
+        var networkIdentity = spawnedObject.GetComponent<NetworkIdentity>();
+        if (networkIdentity != null)
+        {
+            Debug.Log($"NetworkIdentity netId: {networkIdentity.NetId}");
+            Managers.NetworkObjNetworkIds.Add((int)obj,networkIdentity);
+            
+        }
+        else
+        {
+            Debug.LogWarning("NetworkIdentity가 없습니다.");
+        }
+    }
+    
+    
+    
+    
+    /// <summary>
+    /// 동기화를 위해 살짝느리게 실행
+    /// </summary>
+    /// <param name="player"></param>
+       private void OnConnectToLocalServer(INetworkPlayer player)
+    {
+        DOVirtual.Float(0, 0, 3f, _ => { })
+            .OnComplete(() =>
+            {
+               Logger.Log("Spawnable Ready--------------------------------------------");
+                
+               // Managers.Network.ClientObjectManager.PrepareToSpawnSceneObjects();
+              
+           
+            });
+        
     }
 
     public void OnServerDisconnect(INetworkPlayer _)

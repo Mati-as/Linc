@@ -71,11 +71,10 @@ public class UI_Lobby : UI_Popup
    
             if (networkManager.Server.IsHost)
             {
-                Managers.UI.ShowPopupUI<UI_PlayModeSelection>();
                 OnHostStartSetting?.Invoke();
             }
-            else
-                Managers.UI.ShowPopupUI<UI_WaitForHost>();
+    
+              
         });
         GetButton((int)Btns.Btn_StartGame).gameObject.SetActive(false);
 
@@ -166,6 +165,7 @@ public class UI_Lobby : UI_Popup
         OnConnectedToLocalServer(player); // Call ClientRpc from server
         _onConnectTMPSeq?.Kill();
         StartCoroutine(OnClientConnectedCo());
+         gameObject.SetActive(false);
     }
 
     private IEnumerator OnClientConnectedCo()
@@ -178,6 +178,7 @@ public class UI_Lobby : UI_Popup
         GetObject((int)UIs.TryingConnection).SetActive(false);
         GetObject((int)UIs.Opponent).SetActive(true);
         _isGamePlayable = true;
+        gameObject.SetActive(false);
         
     }
 

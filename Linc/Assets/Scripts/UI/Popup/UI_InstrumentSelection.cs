@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Mirage;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,18 +12,13 @@ public class UI_InstrumentSelection : UI_Popup
         Btn_HandBell,
     }
 
-    public NetworkManager networkManager;
     public static Action OnInstrumentSelected;
     public static Action OnHostSettingFinished;
 
     public override bool Init()
     {
         if (!base.Init()) return false;
-        if (networkManager == null)
-        {
-            networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>();
-        }
-        
+
         
         BindButton(typeof(Btns));
         GetButton((int)Btns.Btn_HandBell).gameObject
@@ -37,7 +33,7 @@ public class UI_InstrumentSelection : UI_Popup
                 OnInstrumentBtnClicked(Define.Instrument.HandBell, Define.Instrument.Drum);
             });
         
-      
+        gameObject.SetActive(false);
 
         return true;
     }
@@ -45,21 +41,77 @@ public class UI_InstrumentSelection : UI_Popup
     // Host clicks HandBell button
     private void OnInstrumentBtnClicked(Define.Instrument instrumentA, Define.Instrument instrumentB)
     {
-        if (!GetComponent<NetworkIdentity>().isActiveAndEnabled) Logger.LogError("identity is not enabled or active");
-        // Call the RPC to send the instrument selection to all clients
-        if (networkManager.Server.IsHost)
+      
+        
+        if (Managers.Network.Server.IsHost)
         {
             Managers.ContentInfo.PlayData.HostInstrument = (int)instrumentA;
             Managers.ContentInfo.PlayData.ClientInstrument = (int)instrumentB;
 
-            Logger.Log("Instrument RPC sent from the server.");
+            
         }
 
-        Managers.UI.ClosePopupUI(this);
-        Managers.UI.SceneUI.GetComponent<UI_MainController_NetworkInvolved>().ShowStartBtn();
+        //Managers.UI.ClosePopupUI(this);
         OnInstrumentSelected?.Invoke();
         OnHostSettingFinished?.Invoke();
+
+        if (Managers.Network.Server.IsHost)
+        {
+            ClientRPC_OnInstrumentSelected();
+            Logger.Log("Instrument RPC sent from the server.");
+        }
+        else
+        {
+          //  Managers.UI.SceneUI.transform.Find("UI_WaitForHost(Clone)").gameObject.SetActive(false);
+          //   Managers.UI.SceneUI.transform.Find("UI_Lobby").gameObject.SetActive(false);
+        }
+     
+    
+        
+        gameObject.SetActive(false);
     }
+
+    [ClientRpc]
+    private void ClientRPC_OnInstrumentSelected()
+    {
+        Logger.Log("Client RPC Get from the server----------------------");
+        Logger.Log($"클라이언트 NetworkID Dict Element Count: {Managers.NetworkObjNetworkIds.Count}");
+        foreach (var key in Managers.Network.ClientObjectManager.spawnableObjects.Values.ToList())
+        {
+         Logger.Log($"Spawned 객체: {key.gameObject.name}");
+        }
+
+        if (!Managers.Network.Server.IsHost)
+        {
+            var targetIdentity = Managers.Network.Client.World.SpawnedIdentities.ToList().FindAll(x =>
+            {
+                Logger.Log($"Client: {x.gameObject.name} -> NetID {x.NetId}");
+                // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
+                return x.gameObject.name.Contains("Wait");
+            });
+        
+            if (targetIdentity != null)
+            {
+                foreach (var target in targetIdentity)
+                {
+                    target.gameObject.SetActive(false);
+                    Logger.Log($"객체 {target.name}를 비활성화했습니다.");
+                }
+               
+            }
+            else
+            {
+                Logger.LogError("해당하는 NetworkIdentity 객체를 찾을 수 없습니다.");
+            }
+            
+            Managers.UI.SceneUI.GetComponent<UI_MainController_NetworkInvolved>().UI_Lobby.SetActive(false);
+        }
+        
+        Managers.UI.SceneUI.GetComponent<UI_MainController_NetworkInvolved>().ShowStartBtn();
+        
+        
+    }
+    
 
 
 

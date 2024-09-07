@@ -5,9 +5,11 @@ using System.Net.Mime;
 using DG.Tweening;
 using Mirage;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using NetworkPlayer = Mirage.NetworkPlayer;
 
 public class UI_MainController_NetworkInvolved : UI_Scene
 {
@@ -50,6 +52,7 @@ public class UI_MainController_NetworkInvolved : UI_Scene
     public static event Action OnStartBtnClickedAction;
     public static event Action OnConnectFailed;
 
+    private bool _isSynced;
     public override bool Init()
     {
         
@@ -61,11 +64,11 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         {
             
             // Check if the connected client is NOT the local player (host)
-            if (!player.IsHost)
+            if (!player.IsHost && !_isSynced)
             {
-                
+                _isSynced = true;
                 Debug.Log("A non-host client connected to the server.");
-                OnClientConnected?.Invoke(player); // Trigger server-side logic for non-host clients
+                StartCoroutine(DelayedClientConnectedCo(player));
             }
             else
             {
@@ -81,8 +84,9 @@ public class UI_MainController_NetworkInvolved : UI_Scene
             Debug.Log("Connected to server.");
             if (!player.IsHost)
             {
+               
                 Debug.Log("A non-host client connected to the server.");
-                OnConnectedToLocalServer?.Invoke(player);; // Trigger server-side logic for non-host clients
+                StartCoroutine(DelayedToSeverConnectedCo(player)); // Trigger server-side logic for non-host clients
             }
             else
             {
@@ -125,7 +129,18 @@ public class UI_MainController_NetworkInvolved : UI_Scene
    
         return base.Init();
     }
-
+    private IEnumerator DelayedClientConnectedCo(INetworkPlayer player)
+    {
+        yield return new WaitForSeconds(2f); // 1 second delay, adjust as needed
+        OnClientConnected?.Invoke(player);
+        // Trigger server-side logic for non-host clients
+    }
+    
+    private IEnumerator DelayedToSeverConnectedCo(INetworkPlayer player)
+    {
+        yield return new WaitForSeconds(2f); // 1 second delay, adjust as needed
+        OnClientConnected?.Invoke(player); // Trigger server-side logic for non-host clients
+    }
     private void OnDestroy()
     {
         

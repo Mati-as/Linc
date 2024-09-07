@@ -354,8 +354,8 @@ MonoBehaviour:
     SendPosition: 1
     SendRotation: 1
     SendScale: 0
-    SendName: 0
-    SendActive: 1
+    SendName: 1
+    SendActive: 0
   _sceneId: 0
   ServerObjectManager: {fileID: 0}
   ClientObjectManager: {fileID: 0}

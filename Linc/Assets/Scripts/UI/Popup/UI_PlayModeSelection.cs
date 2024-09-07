@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class UI_PlayModeSelection : UI_Popup
 {
     public enum Btns
@@ -12,6 +8,8 @@ public class UI_PlayModeSelection : UI_Popup
 
     public override bool Init()
     {
+        if (!Managers.Network.Server.IsHost) gameObject.SetActive(false);
+
         BindButton(typeof(Btns));
         GetButton((int)Btns.Btn_RhythmGameMode).gameObject.BindEvent(OnRythmGameModeBtnClicked);
         GetButton((int)Btns.Btn_FreePlayMode).gameObject.BindEvent(Btn_FreePlayMode);
@@ -21,15 +19,42 @@ public class UI_PlayModeSelection : UI_Popup
 
     public void OnRythmGameModeBtnClicked()
     {
+        Managers.Network.ClientObjectManager.PrepareToSpawnSceneObjects();
         Managers.ContentInfo.PlayData.CurrentPlayMode = (int)Define.PlayMode.RhythmGame;
-        Managers.UI.ClosePopupUI(this);
-        Managers.UI.ShowPopupUI<UI_InstrumentSelection>();
+        Logger.Log($"Spawned Prefab Count: {Managers.Network.ClientObjectManager.spawnPrefabs.Count}");
+        foreach (var spawnPrefab in Managers.Network.ClientObjectManager.spawnPrefabs)
+            Logger.Log($"spawnPrefab : {spawnPrefab.gameObject.name} NetID: {spawnPrefab.NetId}");
+
+
+        if (Managers.Network.Server.IsHost)
+        {
+         
+            if (Managers.NetworkObjNetworkIds == null) Logger.LogError("Netork Obj Dictionary Pool is NUll");
+           
+        }
+
+        Managers.NetworkObjs[(int)Define.NetworkObjs.UI_InstrumentSelection].SetActive(true);
+        gameObject.SetActive(false);
     }
 
     public void Btn_FreePlayMode()
     {
+     
+        Managers.Network.ClientObjectManager.PrepareToSpawnSceneObjects();
+        
         Managers.ContentInfo.PlayData.CurrentPlayMode = (int)Define.PlayMode.Free;
-        Managers.UI.ClosePopupUI(this);
-        Managers.UI.ShowPopupUI<UI_InstrumentSelection>();
+        Logger.Log($"Spawned Prefab Count: {Managers.Network.ClientObjectManager.spawnPrefabs.Count}");
+      
+        foreach (var spawnPrefab in Managers.Network.ClientObjectManager.spawnPrefabs)
+            Logger.Log($"spawnPrefab : {spawnPrefab.gameObject.name} NetID: {spawnPrefab.NetId}");
+
+        if (Managers.Network.Server.IsHost)
+        {
+            if (Managers.NetworkObjNetworkIds == null) Logger.LogError("Netork Obj Dictionary Pool is NUll");
+        }
+        Managers.NetworkObjs[(int)Define.NetworkObjs.UI_InstrumentSelection].SetActive(true);
+        gameObject.SetActive(false);
+        // Managers.UI.ShowPopupUI<UI_InstrumentSelection>();
+        // GameObject.Find("UI_InstrumentSelection").SetActive(true);
     }
 }
