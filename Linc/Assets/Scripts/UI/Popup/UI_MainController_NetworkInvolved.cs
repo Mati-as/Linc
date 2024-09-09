@@ -185,6 +185,8 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         _menuAnimator.SetBool(UI_ON,_isUiOn);
     }
 
+
+    public static bool IsStartBtnClicked { get; private set; } 
     
     private void OnStartBtnClicked()
     {
@@ -199,7 +201,7 @@ public class UI_MainController_NetworkInvolved : UI_Scene
                 GetButton((int)Btns.Btn_StartGame).gameObject.SetActive(false);
             });
         SetInGameUIs(true);
-        
+        IsStartBtnClicked = true;
         OnStartBtnClickedAction?.Invoke();
     }
 
