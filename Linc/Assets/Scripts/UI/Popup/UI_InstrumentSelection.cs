@@ -30,7 +30,7 @@ public class UI_InstrumentSelection : UI_Popup
         GetButton((int)Btns.Btn_Drum).gameObject
             .BindEvent(()=>
             {
-                OnInstrumentBtnClicked(Define.Instrument.HandBell, Define.Instrument.Drum);
+                OnInstrumentBtnClicked(Define.Instrument.Drum, Define.Instrument.HandBell);
             });
         
         gameObject.SetActive(false);

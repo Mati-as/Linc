@@ -46,30 +46,40 @@ public class Network_HandBellController : NetworkBehaviour
       
     }
 
-    
+
+  
+
+
     [ClientRpc]
     private void ClientRPC_SyncHandbellTransform(Quaternion left, Quaternion right)
     {
+      NetworkIdentity NetId_NetObj_Mockup_Handbell_Left =null;
+      NetworkIdentity NetId_NetObj_Mockup_Handbell_Right =null ;
         if (!Managers.Network.Server.IsHost)
         {
-            var NetObj_Mockup_Handbell_Left = Managers.Network.Client.World.SpawnedIdentities.ToList().Find(x =>
+            if (NetId_NetObj_Mockup_Handbell_Left == null)
+                NetId_NetObj_Mockup_Handbell_Left = Managers.Network.Client.World.SpawnedIdentities.ToList().Find(x =>
+                {
+                    Logger.Log($"Client: {x.gameObject.name} -> NetID {x.NetId}");
+                    // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
+                    return x.gameObject.name == "NetObj_Mockup_Handbell_Left";
+                });
+
+
+            NetId_NetObj_Mockup_Handbell_Left.gameObject.transform.rotation = left;
+            
+            if (NetId_NetObj_Mockup_Handbell_Right == null)
             {
-                Logger.Log($"Client: {x.gameObject.name} -> NetID {x.NetId}");
-                // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
-                return x.gameObject.name == "NetObj_Mockup_Handbell_Left";
-            });
-
-            NetObj_Mockup_Handbell_Left.gameObject.transform.rotation = left;
-
-            var NetObj_Mockup_Handbell_Right = Managers.Network.Client.World.SpawnedIdentities.ToList().Find(x =>
-            {
-                Logger.Log($"Client: {x.gameObject.name} -> NetID {x.NetId}");
-                // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
-                return x.gameObject.name == "NetObj_Mockup_Handbell_Right";
-            });
-        
-            NetObj_Mockup_Handbell_Right.gameObject.transform.rotation = right;
-
+                 NetId_NetObj_Mockup_Handbell_Right = Managers.Network.Client.World.SpawnedIdentities.ToList().Find(
+                    x =>
+                    {
+                        Logger.Log($"Client: {x.gameObject.name} -> NetID {x.NetId}");
+                        // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
+                        return x.gameObject.name == "NetObj_Mockup_Handbell_Right";
+                    });
+            }
+            
+            NetId_NetObj_Mockup_Handbell_Right.gameObject.transform.rotation = right;
         }
      
 

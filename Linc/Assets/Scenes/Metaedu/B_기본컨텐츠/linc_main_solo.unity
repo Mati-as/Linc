@@ -2811,8 +2811,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4056944817027632382}
   - component: {fileID: 4595801014811727853}
+  - component: {fileID: 4595801014811727854}
   m_Layer: 0
-  m_Name: DrumsticSeperateLeft
+  m_Name: DrumStick_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2845,8 +2846,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4056944818332193696}
   - component: {fileID: 4595801014192545138}
+  - component: {fileID: 4595801014192545139}
   m_Layer: 0
-  m_Name: DrumsticSeperateRight
+  m_Name: DrumStick_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17294,7 +17296,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4595801013967748372}
-  - component: {fileID: 7579417540724485125}
+  - component: {fileID: 4595801013967748374}
   m_Layer: 0
   m_Name: Drum
   m_TagString: Untagged
@@ -17302,6 +17304,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4595801013967748374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4595801013967748373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnSettings:
+    SendPosition: 1
+    SendRotation: 1
+    SendScale: 0
+    SendName: 0
+    SendActive: 0
+  _sceneId: 2596747726
+  ServerObjectManager: {fileID: 0}
+  ClientObjectManager: {fileID: 0}
+  _prefabHash: 0
+  _hasSpawned: 0
 --- !u!4 &4595801013974160696
 Transform:
   m_ObjectHideFlags: 0
@@ -18603,7 +18628,7 @@ MonoBehaviour:
     To: 3
     Timing: 0
     Interval: 0.1
-  ClientAuthority: 0
+  ClientAuthority: 1
   LocalPositionSensitivity: 0.01
   LocalRotationSensitivity: 0.01
   LocalScaleSensitivity: 0.01
@@ -18669,8 +18694,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4595801014065533086}
   - component: {fileID: 4595801014065533063}
+  - component: {fileID: 4595801014065533087}
   m_Layer: 0
-  m_Name: DrumsticSeperateRight
+  m_Name: NetObj_Mockup_DrumStick_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18693,6 +18719,29 @@ Transform:
   m_Father: {fileID: 4595801013893142535}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 7.633, y: -144.769, z: -86.708}
+--- !u!114 &4595801014065533087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4595801014065533083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnSettings:
+    SendPosition: 1
+    SendRotation: 1
+    SendScale: 0
+    SendName: 0
+    SendActive: 2
+  _sceneId: 2607398016
+  ServerObjectManager: {fileID: 0}
+  ClientObjectManager: {fileID: 0}
+  _prefabHash: 0
+  _hasSpawned: 0
 --- !u!114 &4595801014067571984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19995,7 +20044,7 @@ MonoBehaviour:
     To: 3
     Timing: 0
     Interval: 0.1
-  ClientAuthority: 0
+  ClientAuthority: 1
   LocalPositionSensitivity: 0.01
   LocalRotationSensitivity: 0.01
   LocalScaleSensitivity: 0.01
@@ -20038,8 +20087,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4595801014162843659}
   - component: {fileID: 4595801014162843696}
+  - component: {fileID: 4595801014162843704}
   m_Layer: 0
-  m_Name: DrumsticSeperateLeft
+  m_Name: NetObj_Mockup_DrumStick_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20091,6 +20141,29 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 8502246324891477198, guid: f8c092d6c049f0940956398c55ac9126, type: 3}
+--- !u!114 &4595801014162843704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4595801014162843700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnSettings:
+    SendPosition: 1
+    SendRotation: 1
+    SendScale: 0
+    SendName: 0
+    SendActive: 2
+  _sceneId: 2168901871
+  ServerObjectManager: {fileID: 0}
+  ClientObjectManager: {fileID: 0}
+  _prefabHash: 0
+  _hasSpawned: 0
 --- !u!33 &4595801014162843708
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -20411,6 +20484,29 @@ MonoBehaviour:
   LocalPositionSensitivity: 0.01
   LocalRotationSensitivity: 0.01
   LocalScaleSensitivity: 0.01
+--- !u!114 &4595801014192545139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676900464428648730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnSettings:
+    SendPosition: 1
+    SendRotation: 1
+    SendScale: 0
+    SendName: 0
+    SendActive: 2
+  _sceneId: 423208531
+  ServerObjectManager: {fileID: 0}
+  ClientObjectManager: {fileID: 0}
+  _prefabHash: 0
+  _hasSpawned: 0
 --- !u!23 &4595801014214120496
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -24484,6 +24580,8 @@ MonoBehaviour:
     To: 3
     Timing: 0
     Interval: 0.1
+  handbell_Left: {fileID: 0}
+  handbell_Right: {fileID: 0}
 --- !u!114 &4595801014517782777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24537,7 +24635,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4595801014518771126}
   m_Layer: 0
-  m_Name: BeadsDrumRIght
+  m_Name: MockupDrumB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28296,6 +28394,29 @@ MonoBehaviour:
   LocalPositionSensitivity: 0.01
   LocalRotationSensitivity: 0.01
   LocalScaleSensitivity: 0.01
+--- !u!114 &4595801014811727854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676900463728072260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnSettings:
+    SendPosition: 1
+    SendRotation: 1
+    SendScale: 0
+    SendName: 0
+    SendActive: 2
+  _sceneId: 3009226424
+  ServerObjectManager: {fileID: 0}
+  ClientObjectManager: {fileID: 0}
+  _prefabHash: 0
+  _hasSpawned: 0
 --- !u!1 &4595801014815330866
 GameObject:
   m_ObjectHideFlags: 0
@@ -29010,7 +29131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4595801014854511545}
   m_Layer: 0
-  m_Name: BeadsDrumLeft
+  m_Name: MockupDrumA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33149,6 +33270,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4595801015218869460}
   - component: {fileID: 4595801015218869456}
+  - component: {fileID: 4595801015218869462}
   m_Layer: 0
   m_Name: BeadsDrum
   m_TagString: Untagged
@@ -33156,6 +33278,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4595801015218869462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4595801015218869461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpawnSettings:
+    SendPosition: 1
+    SendRotation: 1
+    SendScale: 0
+    SendName: 0
+    SendActive: 2
+  _sceneId: 1295310265
+  ServerObjectManager: {fileID: 0}
+  ClientObjectManager: {fileID: 0}
+  _prefabHash: 0
+  _hasSpawned: 0
 --- !u!4 &4595801015234341913
 Transform:
   m_ObjectHideFlags: 0
@@ -36280,29 +36425,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7579417540724485125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4595801013967748373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpawnSettings:
-    SendPosition: 1
-    SendRotation: 1
-    SendScale: 0
-    SendName: 0
-    SendActive: 0
-  _sceneId: 1532373317
-  ServerObjectManager: {fileID: 0}
-  ClientObjectManager: {fileID: 0}
-  _prefabHash: 0
-  _hasSpawned: 0
 --- !u!23 &7703857849202189328
 MeshRenderer:
   m_ObjectHideFlags: 0

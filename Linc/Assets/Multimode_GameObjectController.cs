@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-public class Multi_LincGameController : NetworkBehaviour
+public class Multimode_GameObjectController : NetworkBehaviour
 {
     public enum Objs
     {
@@ -112,6 +112,19 @@ public class Multi_LincGameController : NetworkBehaviour
             // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
             return x.gameObject.name == "Handbell";
         });
+        var Handbell_Left = Managers.Network.Client.World.SpawnedIdentities.ToList().Find(x =>
+        {
+            Logger.Log($"Client: {x.gameObject.name} -> NetID {x.NetId}");
+            // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
+            return x.gameObject.name == "Handbell_Left";
+        });
+        
+        var Handbell_Right = Managers.Network.Client.World.SpawnedIdentities.ToList().Find(x =>
+        {
+            Logger.Log($"Client: {x.gameObject.name} -> NetID {x.NetId}");
+            // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
+            return x.gameObject.name == "Handbell_Right";
+        });
 
 
         var NetObj_Mockup_Drum = Managers.Network.Client.World.SpawnedIdentities.ToList().Find(x =>
@@ -145,7 +158,17 @@ public class Multi_LincGameController : NetworkBehaviour
         if (hostInstrument == (int)Define.Instrument.Drum)
         {
             Handbell.gameObject.SetActive(true);
+            Handbell_Left.gameObject.SetActive(true);
+            Handbell_Right.gameObject.SetActive(true);
             NetObj_Mockup_Drum.gameObject.SetActive(true);
+            
+            
+            Drum.gameObject.SetActive(false);
+            NetObj_Mockup_Handbell.gameObject.SetActive(false);
+            NetObj_Mockup_Handbell_Left.gameObject.SetActive(false);
+            NetObj_Mockup_Handbell_Right.gameObject.SetActive(false);
+            
+            
             Logger.Log("HandBell On(상대방 드럼) -----------RPC");
         }
         else if (hostInstrument == (int)Define.Instrument.HandBell)
@@ -155,6 +178,11 @@ public class Multi_LincGameController : NetworkBehaviour
             NetObj_Mockup_Handbell.gameObject.SetActive(true);
             NetObj_Mockup_Handbell_Left.gameObject.SetActive(true);
             NetObj_Mockup_Handbell_Right.gameObject.SetActive(true);
+            
+            Handbell.gameObject.SetActive(false);
+            Handbell_Left.gameObject.SetActive(false);
+            Handbell_Right.gameObject.SetActive(false);
+            NetObj_Mockup_Drum.gameObject.SetActive(false);
         }
         else
         {
