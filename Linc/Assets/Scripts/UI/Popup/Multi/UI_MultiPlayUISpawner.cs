@@ -58,6 +58,7 @@ public class UI_MultiPlayUISpawner :NetworkBehaviour
 
     private void OnClientConnected(INetworkPlayer player)
     {
+        Managers.Network.ClientObjectManager.PrepareToSpawnSceneObjects();
         
         DOVirtual.Float(0, 0, 0.3f, _ => { })
             .OnComplete(() =>
@@ -81,7 +82,7 @@ public class UI_MultiPlayUISpawner :NetworkBehaviour
                     Managers.Network.ServerObjectManager.Spawn(inst_PlayModeSelection);
                     Managers.Network.ServerObjectManager.Spawn(inst_WaitForHost);
                     Managers.Network.ServerObjectManager.Spawn(inst_UI_InstrumentSelection);
-                    
+                    Managers.Network.ServerObjectManager.SpawnSceneObjects();
                           
                     StoreNetworkIdentity(Define.NetworkObjs.UI_PlayModeSelection, inst_PlayModeSelection);
                     StoreNetworkIdentity(Define.NetworkObjs.UI_InstrumentSelection, inst_UI_InstrumentSelection);
@@ -90,6 +91,9 @@ public class UI_MultiPlayUISpawner :NetworkBehaviour
                     Managers.NetworkObjs.Add((int)Define.NetworkObjs.UI_InstrumentSelection,inst_UI_InstrumentSelection);
                     Managers.NetworkObjs.Add((int)Define.NetworkObjs.UI_WaitForHost,inst_WaitForHost);
                     Managers.NetworkObjs.Add((int)Define.NetworkObjs.UI_PlayModeSelection,inst_PlayModeSelection);
+                    
+                    
+                    
 
                     Logger.Log($"등록 및 Spawn 완료 : From Server----------------");
                 }

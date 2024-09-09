@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mime;
 using DG.Tweening;
 using Mirage;
@@ -17,7 +18,7 @@ public class UI_MainController_NetworkInvolved : UI_Scene
  
     public enum Btns
     {
-        Btn_Start,
+        Btn_StartGame,
         Btn_HideMenu,
         Btn_Play,
         Btn_Replay,
@@ -53,6 +54,13 @@ public class UI_MainController_NetworkInvolved : UI_Scene
     public static event Action OnConnectFailed;
 
     private bool _isSynced;
+
+    private void Awake()
+    {
+        UI_Lobby = Utils.FindChild<UI_Lobby>(gameObject, recursive: true).gameObject;
+        UI_Lobby.SetActive(false);
+    }
+
     public override bool Init()
     {
         
@@ -84,7 +92,7 @@ public class UI_MainController_NetworkInvolved : UI_Scene
             Debug.Log("Connected to server.");
             if (!player.IsHost)
             {
-               
+              //  GetButton((int)Btns.Btn_StartGame).gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "시작 대기 중";
                 Debug.Log("A non-host client connected to the server.");
                 StartCoroutine(DelayedToSeverConnectedCo(player)); // Trigger server-side logic for non-host clients
             }
@@ -111,18 +119,16 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         
         _bg = GetObject((int)UIObjs.Image_Background).gameObject.GetComponent<Image>();
         _defaultColor = _bg.color;
-        GetButton((int)Btns.Btn_Start).gameObject.BindEvent(OnStartBtnClicked);
-        GetButton((int)Btns.Btn_Start).gameObject.SetActive(false);
-        GetButton((int)Btns.Btn_Start).gameObject.GetComponent<Image>().DOFade(0, 0.01f);
-        GetButton((int)Btns.Btn_Start).gameObject.GetComponentInChildren<TextMeshProUGUI>().DOFade(0, 0.01f);
+        GetButton((int)Btns.Btn_StartGame).gameObject.BindEvent(OnStartBtnClicked);
+        GetButton((int)Btns.Btn_StartGame).gameObject.SetActive(false);
+        GetButton((int)Btns.Btn_StartGame).gameObject.GetComponent<Image>().DOFade(0, 0.01f);
+        GetButton((int)Btns.Btn_StartGame).gameObject.GetComponentInChildren<TextMeshProUGUI>().DOFade(0, 0.01f);
         _canvas = GetComponent<Canvas>();
         _canvas.sortingOrder = -321; // 항상플레이 화면에만 있을수 있도록
 
         SetInGameUIs(false);
-            
-        
-        UI_Lobby = Utils.FindChild<UI_Lobby>(gameObject, recursive: true).gameObject;
-        UI_Lobby.SetActive(false);
+
+ 
         
         GetButton((int)Btns.Btn_Quit).gameObject.BindEvent(OnQuitBtnClicked);
         
@@ -131,15 +137,15 @@ public class UI_MainController_NetworkInvolved : UI_Scene
     }
     private IEnumerator DelayedClientConnectedCo(INetworkPlayer player)
     {
-        yield return new WaitForSeconds(2f); // 1 second delay, adjust as needed
+        yield return new WaitForSeconds(2.5f); // 1 second delay, adjust as needed
         OnClientConnected?.Invoke(player);
         // Trigger server-side logic for non-host clients
     }
     
     private IEnumerator DelayedToSeverConnectedCo(INetworkPlayer player)
     {
-        yield return new WaitForSeconds(2f); // 1 second delay, adjust as needed
-        OnClientConnected?.Invoke(player); // Trigger server-side logic for non-host clients
+        yield return new WaitForSeconds(2.5f); // 1 second delay, adjust as needed
+        OnConnectedToLocalServer?.Invoke(player); // Trigger server-side logic for non-host clients
     }
     private void OnDestroy()
     {
@@ -155,11 +161,11 @@ public class UI_MainController_NetworkInvolved : UI_Scene
 
     public void ShowStartBtn()
     {
-        GetButton((int)Btns.Btn_Start).gameObject.SetActive(true);
+        GetButton((int)Btns.Btn_StartGame).gameObject.SetActive(true);
         Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/Common/UI_Message_Button", 0.3f);
         
-        GetButton((int)Btns.Btn_Start).gameObject.GetComponent<Image>().DOFade(1, 0.5f).SetDelay(1.5f);
-        GetButton((int)Btns.Btn_Start).gameObject.GetComponentInChildren<TextMeshProUGUI>().DOFade(1, 0.5f).SetDelay(1.5f);
+        GetButton((int)Btns.Btn_StartGame).gameObject.GetComponent<Image>().DOFade(1, 0.5f).SetDelay(1.5f);
+        GetButton((int)Btns.Btn_StartGame).gameObject.GetComponentInChildren<TextMeshProUGUI>().DOFade(1, 0.5f).SetDelay(1.5f);
 
     }
 
@@ -168,22 +174,6 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         Managers.UI.CloseAllPopupUI();
         Managers.Scene.ChangeScene(Define.Scene.linc_main_solo);
     }
-    private void OnStartBtnClicked()
-    {
-        Debug.Log("Clicked");
-        _bg.DOFade(0, 1f);
-       
-        GetButton((int)Btns.Btn_Start).gameObject.GetComponent<Image>().DOFade(0, 0.5f);
-        GetButton((int)Btns.Btn_Start).gameObject.GetComponentInChildren<TextMeshProUGUI>().DOFade(0, 0.5f).OnComplete(
-            () =>
-            {
-                GetButton((int)Btns.Btn_Start).gameObject.SetActive(false);
-            });
-        SetInGameUIs(true);
-        
-        OnStartBtnClickedAction?.Invoke();
-    }
-
     private void OnApplicationQuitClicked()
     {
         
@@ -194,8 +184,25 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         _isUiOn = !_isUiOn;   
         _menuAnimator.SetBool(UI_ON,_isUiOn);
     }
-    
 
-   
+    
+    private void OnStartBtnClicked()
+    {
+     
+        Debug.Log("Clicked");
+        _bg.DOFade(0, 1f);
+       
+        GetButton((int)Btns.Btn_StartGame).gameObject.GetComponent<Image>().DOFade(0, 0.5f);
+        GetButton((int)Btns.Btn_StartGame).gameObject.GetComponentInChildren<TextMeshProUGUI>().DOFade(0, 0.5f).OnComplete(
+            () =>
+            {
+                GetButton((int)Btns.Btn_StartGame).gameObject.SetActive(false);
+            });
+        SetInGameUIs(true);
+        
+        OnStartBtnClickedAction?.Invoke();
+    }
+
+
 
 }

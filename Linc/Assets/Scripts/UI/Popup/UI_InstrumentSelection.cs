@@ -76,9 +76,9 @@ public class UI_InstrumentSelection : UI_Popup
     {
         Logger.Log("Client RPC Get from the server----------------------");
         Logger.Log($"클라이언트 NetworkID Dict Element Count: {Managers.NetworkObjNetworkIds.Count}");
-        foreach (var key in Managers.Network.ClientObjectManager.spawnableObjects.Values.ToList())
+        foreach (var key in Managers.Network.Client.World.SpawnedIdentities.ToList())
         {
-         Logger.Log($"Spawned 객체: {key.gameObject.name}");
+         Logger.Log($"Spawned 객체: {key.gameObject.name}, ID: {key.NetId}");
         }
 
         if (!Managers.Network.Server.IsHost)
@@ -104,10 +104,10 @@ public class UI_InstrumentSelection : UI_Popup
                 Logger.LogError("해당하는 NetworkIdentity 객체를 찾을 수 없습니다.");
             }
             
-            Managers.UI.SceneUI.GetComponent<UI_MainController_NetworkInvolved>().UI_Lobby.SetActive(false);
+            Scene_MultiMode.InGame_MultiMode.GetComponentInChildren<UI_MainController_NetworkInvolved>().UI_Lobby.SetActive(false);
         }
         
-        Managers.UI.SceneUI.GetComponent<UI_MainController_NetworkInvolved>().ShowStartBtn();
+       Scene_MultiMode.InGame_MultiMode.GetComponentInChildren<UI_MainController_NetworkInvolved>().ShowStartBtn();
         
         
     }

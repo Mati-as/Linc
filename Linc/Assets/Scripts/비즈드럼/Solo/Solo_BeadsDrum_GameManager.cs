@@ -31,10 +31,11 @@ public class Solo_BeadsDrum_GameManager : Base_NetworkGameManager
         _set[(int)Define.Instrument.HandBell]
             = transform.GetChild((int)Define.Instrument.HandBell).gameObject;
 
-        foreach (var obj in _set)
-        {
-            obj.SetActive(false);
-        }
+        //Active(false) NetworkGameManager로 이전 09/08/24
+        // foreach (var obj in _set)
+        // {
+        //     obj.SetActive(false);
+        // }
     }
 
     protected override void BindEvent()

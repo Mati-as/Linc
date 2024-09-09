@@ -62,6 +62,7 @@ public class BeadsDrum_BeadsGenerator : MonoBehaviour
 
     private void OnStartButtonClicked()
     {
+        if (gameObject.activeSelf) return;
         GenerateBeads();
     }
 
@@ -103,7 +104,6 @@ public class BeadsDrum_BeadsGenerator : MonoBehaviour
 
     private void GenerateBeads()
     {
-        // Start the coroutine
-        StartCoroutine(GenerateBeadsCoroutine());
+       StartCoroutine(GenerateBeadsCoroutine());
     }
 }

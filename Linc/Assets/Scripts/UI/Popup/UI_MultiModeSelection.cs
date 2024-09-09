@@ -30,8 +30,10 @@ public class UI_MultiModeSelection : UI_Popup
     private void OnMultipPlayBtnClicked()
     {
         Managers.UI.ClosePopupUI(this);
-        Managers.UI.SceneUI.GetComponent<UI_MainController_NetworkInvolved>().UI_Lobby.SetActive(true);
-
+        Scene_MultiMode.InGame_MultiMode.SetActive(true);
+        Scene_MultiMode.InGame_MultiMode.GetComponentInChildren<UI_MainController_NetworkInvolved>().UI_Lobby.SetActive(true);
+    
+        // Managers.UI.SceneUI.GetComponent<UI_MainController_NetworkInvolved>().UI_Lobby.SetActive(true);
         // Managers.Scene.ChangeScene(Define.Scene.linc_multimode);
     }
 }

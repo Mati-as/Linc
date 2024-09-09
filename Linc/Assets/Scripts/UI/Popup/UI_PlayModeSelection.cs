@@ -21,9 +21,9 @@ public class UI_PlayModeSelection : UI_Popup
     {
         Managers.Network.ClientObjectManager.PrepareToSpawnSceneObjects();
         Managers.ContentInfo.PlayData.CurrentPlayMode = (int)Define.PlayMode.RhythmGame;
-        Logger.Log($"Spawned Prefab Count: {Managers.Network.ClientObjectManager.spawnPrefabs.Count}");
-        foreach (var spawnPrefab in Managers.Network.ClientObjectManager.spawnPrefabs)
-            Logger.Log($"spawnPrefab : {spawnPrefab.gameObject.name} NetID: {spawnPrefab.NetId}");
+        // Logger.Log($"Spawned Prefab Count: {Managers.Network.ClientObjectManager.spawnPrefabs.Count}");
+        // foreach (var spawnPrefab in Managers.Network.ClientObjectManager.spawnPrefabs)
+        //     Logger.Log($"spawnPrefab : {spawnPrefab.gameObject.name} NetID: {spawnPrefab.NetId}");
 
 
         if (Managers.Network.Server.IsHost)
@@ -43,10 +43,10 @@ public class UI_PlayModeSelection : UI_Popup
         Managers.Network.ClientObjectManager.PrepareToSpawnSceneObjects();
         
         Managers.ContentInfo.PlayData.CurrentPlayMode = (int)Define.PlayMode.Free;
-        Logger.Log($"Spawned Prefab Count: {Managers.Network.ClientObjectManager.spawnPrefabs.Count}");
-      
-        foreach (var spawnPrefab in Managers.Network.ClientObjectManager.spawnPrefabs)
-            Logger.Log($"spawnPrefab : {spawnPrefab.gameObject.name} NetID: {spawnPrefab.NetId}");
+        
+        // Logger.Log($"Spawned Prefab Count: {Managers.Network.ClientObjectManager.spawnPrefabs.Count}");
+        // foreach (var spawnPrefab in Managers.Network.ClientObjectManager.spawnPrefabs)
+        //     Logger.Log($"spawnPrefab : {spawnPrefab.gameObject.name} NetID: {spawnPrefab.NetId}");
 
         if (Managers.Network.Server.IsHost)
         {
