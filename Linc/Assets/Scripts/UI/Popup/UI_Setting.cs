@@ -58,7 +58,7 @@ public class UI_Setting : UI_Popup
 
     private Text _text_hapticstick;
     // scene-related part -----------------------------------
-    private Sequence _connectBlinkAnimSeq =DOTween.Sequence();
+    private Sequence _connectBlinkAnimSeq;
     private bool _isSequencePlaying; // 중복 연결시도 방지.
 
     private void OnDestroy()

@@ -6,6 +6,7 @@ using UnityEngine.Android;
 using ArduinoBluetoothAPI;
 using System;
 using System.Net.WebSockets;
+using Unity.VisualScripting;
 using UnityEngine.Serialization;
 
 public class Stick_DataController : MonoBehaviour
@@ -106,24 +107,38 @@ public class Stick_DataController : MonoBehaviour
     }
 
    
-    public Quaternion ParseAndConvertToQuaternion()
+    public void ParseAndConvertToQuaternion()
     {
-        string r_data = received_message;
+        string[] values;
+        string[] parts = received_message.Split('*');
+        if (parts.Length > 1)
+        {
+             values = parts[1].Split(',');
+        }
+        else
+        {
+            Logger.Log("recivedMeesage is non-Validate");
+            return;
+        }
+        Logger.Log($"recieved Data: {parts[1]}");
+
+        if (values.Length < 7)
+        {
+            Logger.Log("recivedMeesage is non-Validate (missed some data)");
+            return;
+        }
         
-        //// �����͸� '*'�� ','�� �������� ����
-        string[] parts = received_message.Split('*')[0].Split(',');
-
-        //Stick1 ���ʹϾ� ���� ����
-        float z1 = float.Parse(parts[0]);
-        float y1 = float.Parse(parts[1]);
-        float x1 = float.Parse(parts[2]);
-        float w1 = float.Parse(parts[3]);
-
-        //Stick2 ���ӵ� �� ����
-        float gx1 = float.Parse(parts[4]);
-        float gy1 = float.Parse(parts[5]);
-        float gz1 = float.Parse(parts[6]);
-
+        if (!float.TryParse(values[0], out float z1) ||
+            !float.TryParse(values[1], out float x1) ||
+            !float.TryParse(values[2], out float y1) ||
+            !float.TryParse(values[3], out float w1) ||
+            !float.TryParse(values[4], out float gx1) ||
+            !float.TryParse(values[5], out float gy1) ||
+            !float.TryParse(values[6], out float gz1))
+        {
+            Debug.Log("Failed to parse one or more float values");
+            return;
+        }
 
 
         if (((z1 < 1f) && (z1 > -1f) && (z1 != 0f)) &&
@@ -134,14 +149,15 @@ public class Stick_DataController : MonoBehaviour
 
             cz1 = z1;
             cy1 = y1;
-            cx1 = x1;
+            cx1 = -x1;
             cw1 = w1;
         }
 
         
         acc_Stick1 = new Vector3(gx1, gy1, gz1);
-
-        return StickA_Quaternion = new Quaternion(-cx1, cz1, cy1, cw1);
+//        Logger.Log($"sending data from deviceManager: {new Quaternion(-cx1, cz1, cy1, cw1)}");
+        
+         StickA_Quaternion = new Quaternion(-cx1, cz1, cy1, cw1);
     }
 
 
@@ -194,7 +210,9 @@ public class Stick_DataController : MonoBehaviour
     void OnMessageReceived(BluetoothHelper helper)
     {
         received_message = helper.Read();
-        Debug.Log(received_message);
+        Managers.DeviceManager.IsQuatInfoReady = true;
+        ParseAndConvertToQuaternion();
+//        Debug.Log(received_message);
     }
     void OnDestroy()
     {

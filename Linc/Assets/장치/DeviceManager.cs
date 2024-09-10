@@ -20,6 +20,7 @@ public class DeviceManager : MonoBehaviour
     public bool IsConnected { get;  private set; }
     private bool _isVibrateMode;
 
+    public bool IsQuatInfoReady { get; set;}// 비동기작업으로 인한null 데이터 입력방지
     public bool IsVibrateMode
     {
         get
@@ -54,6 +55,7 @@ public class DeviceManager : MonoBehaviour
     void OnConnected()
     {
         IsConnected = true;
+        Managers.DeviceManager.SetHapticStick(true,false);
         return ;
         // Color color;
         // ColorUtility.TryParseHtmlString("#2AD994", out color);
@@ -65,6 +67,7 @@ public class DeviceManager : MonoBehaviour
     }
     void OnConnFailed()
     {
+        
         IsConnected = false;
         return ;
         // Color color;
@@ -164,7 +167,7 @@ public class DeviceManager : MonoBehaviour
             }
             else
             {
-                byte[] bytestosend  = { 0x55, 0x52, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x54 };
+                byte[] bytestosend  = { 0x55, 0x51, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x54 };
                 StickData.SendData(bytestosend);return;
             }
         }

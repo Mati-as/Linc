@@ -10,7 +10,7 @@ public class Solo_BeadsDrum_Controller : NetworkBehaviour
     private Transform _beadsDrumRight;
     
     private Transform _drumStickLeft;
-    private Transform _drurmStickRight;
+    private Transform _drumStickRight;
     
     private float _shrinkAmount = 0.92f;
     private float _defaultSize;
@@ -55,10 +55,10 @@ public class Solo_BeadsDrum_Controller : NetworkBehaviour
 
         var drumSticks = transform.GetChild(2);
         _drumStickLeft = drumSticks.GetChild((int)DrumStick.DrumstickLeft);
-        _drurmStickRight = drumSticks.GetChild((int)DrumStick.DrumstickRight);
+        _drumStickRight = drumSticks.GetChild((int)DrumStick.DrumstickRight);
 
         _defaultQuatLeft = _drumStickLeft.rotation;
-        _defaultQuatRight = _drurmStickRight.rotation;
+        _defaultQuatRight = _drumStickRight.rotation;
 
 #if UNITY_EDITOR
         Debug.Log("Solo Version Start -----------------");        
@@ -104,7 +104,7 @@ public class Solo_BeadsDrum_Controller : NetworkBehaviour
                 PlayDrumAndStickAnimation(_beadsDrumLeft, _drumStickLeft, -10, _defaultQuatLeft, OnStickHitLeft);
                 break;
             case BeadsDrum.Right:
-                PlayDrumAndStickAnimation(_beadsDrumRight, _drurmStickRight, 10, _defaultQuatRight, OnStickHitRight);
+                PlayDrumAndStickAnimation(_beadsDrumRight, _drumStickRight, 10, _defaultQuatRight, OnStickHitRight);
                 break;
         }
     }
@@ -139,88 +139,83 @@ public class Solo_BeadsDrum_Controller : NetworkBehaviour
         if (Managers.Network.Server.isActiveAndEnabled && Managers.Network.Client.isActiveAndEnabled
                                                        && UI_MainController_NetworkInvolved.IsStartBtnClicked)
         {
-            if (Managers.Network.Server.IsHost  && Managers.ContentInfo.PlayData.HostInstrument == (int)Define.Instrument.Drum)
+            if (Managers.Network.Server.IsHost)
             {
-                ClientRPC_SendTransformToOpponent(_drumStickLeft.transform.rotation,_drurmStickRight.transform.rotation);
+                ClientRPC_SendTransformToOpponent(_drumStickLeft.transform.rotation,_drumStickRight.transform.rotation);
             }
-            else if(Managers.Network.Server.IsHost && Managers.ContentInfo.PlayData.HostInstrument == (int)Define.Instrument.HandBell)
+            if (!Managers.Network.Server.IsHost)
             {
-                ClientRPC_SyncDrumStickPosFromOpponent();
+                ServerRPC_SendTransformToHostServer(_drumStickLeft.transform.rotation,_drumStickRight.transform.rotation);
             }
+         
         }
     }
+
+
+
+
     
-        
+    
     [ClientRpc]
     private void ClientRPC_SendTransformToOpponent(Quaternion left, Quaternion right)
     {
+        NetworkIdentity NetId_DrumStick_Left = null;
+        NetworkIdentity NetId_DrumStick_Right = null;
+
         if (!Managers.Network.Server.IsHost)
         {
             var DrumStick_Left = Managers.Network.Client.World.SpawnedIdentities.ToList().Find(x =>
             {
-                Logger.Log($"Client: {x.gameObject.name} -> NetID {x.NetId}");
-                // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
                 return x.gameObject.name == "NetObj_Mockup_DrumStick_Left";
             });
 
-            DrumStick_Left.gameObject.transform.rotation = left;
+           
 
             var DrumStick_Right = Managers.Network.Client.World.SpawnedIdentities.ToList().Find(x =>
             {
-                Logger.Log($"Client: {x.gameObject.name} -> NetID {x.NetId}");
-                // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
                 return x.gameObject.name == "NetObj_Mockup_DrumStick_Right";
             });
-        
+
+            DrumStick_Left.gameObject.transform.rotation = left;
             DrumStick_Right.gameObject.transform.rotation = right;
 
+            
         }
-     
-
-    }
-    
-    
-  
-
-    [ClientRpc]
-    private void ClientRPC_SyncDrumStickPosFromOpponent()
-    {
-        NetworkIdentity NetId_DrumStick_Left =null;
-        NetworkIdentity NetId_DrumStick_Right =null;
-        if (!Managers.Network.Server.IsHost)
-        {
-  
-            if (NetId_DrumStick_Left == null)
-            {
-                NetId_DrumStick_Left = Managers.Network.Client.World.SpawnedIdentities.ToList().Find(x =>
-                {
-                    Logger.Log($"Client: {x.gameObject.name} -> NetID {x.NetId}");
-                    // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
-                    return x.gameObject.name == "DrumStick_Left";
-                });
-
-            }
-            NetObj_Mockup_DrumStick_Left.rotation = NetId_DrumStick_Left.gameObject.transform.rotation;
-
-
-
-            if (NetId_DrumStick_Right == null)
-            {
-                NetId_DrumStick_Right = Managers.Network.Client.World.SpawnedIdentities.ToList().Find(x =>
-                {
-                    Logger.Log($"Client: {x.gameObject.name} -> NetID {x.NetId}");
-                    // x가 UI_WaitForHost에 해당하는 NetworkIdentity와 같은지 비교
-                    return x.gameObject.name == "DrumStick_Right";
-                });
-
-            }
+        
       
-            NetObj_Mockup_DrumStick_Right.rotation = NetId_DrumStick_Right.gameObject.transform.rotation;
+    }
 
+    [ServerRpc(requireAuthority = false)]
+
+    private void ServerRPC_SendTransformToHostServer(Quaternion left, Quaternion right)
+    {
+        if (Managers.Network.Server.IsHost)
+        {
+            NetworkIdentity clientNetId_Drumstick_Left;
+            NetworkIdentity clientNetId_Drumstick_Right;
+            
+            clientNetId_Drumstick_Left =
+                Managers.Network.Server.World.SpawnedIdentities.FirstOrDefault(x =>
+                    x.gameObject.name == "NetObj_Mockup_DrumStick_Left");
+            clientNetId_Drumstick_Right =
+                Managers.Network.Server.World.SpawnedIdentities.FirstOrDefault(x =>
+                    x.gameObject.name == "NetObj_Mockup_DrumStick_Right");
+            
+
+            clientNetId_Drumstick_Left.gameObject.transform.rotation = left;
+            clientNetId_Drumstick_Right.gameObject.transform.rotation = right;
+            
+            Logger.Log("Rotation SentToHostServer ----- drum");
         }
-     
 
     }
+    
+    
+  
+
+
+
+
 
 
 
