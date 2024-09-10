@@ -56,7 +56,7 @@ public class Stick_DataController : MonoBehaviour
     private float cy2 = 0f;
     private float cz2 = 0f;
     private float cw2 = 0f;
-    /*CDS240109 �� �κб��� �߰�*/
+  
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void InitializeOnStart()
@@ -106,7 +106,7 @@ public class Stick_DataController : MonoBehaviour
     }
 
    
-    public void ParsingData()
+    public Quaternion ParseAndConvertToQuaternion()
     {
         string r_data = received_message;
         
@@ -138,9 +138,10 @@ public class Stick_DataController : MonoBehaviour
             cw1 = w1;
         }
 
-        StickA_Quaternion = new Quaternion(-cx1, cz1, cy1, cw1);
+        
         acc_Stick1 = new Vector3(gx1, gy1, gz1);
 
+        return StickA_Quaternion = new Quaternion(-cx1, cz1, cy1, cw1);
     }
 
 

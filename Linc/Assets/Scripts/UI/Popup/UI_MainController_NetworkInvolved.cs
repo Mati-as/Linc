@@ -126,8 +126,14 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         _canvas = GetComponent<Canvas>();
         _canvas.sortingOrder = -321; // 항상플레이 화면에만 있을수 있도록
 
+        
+        GetButton((int)Btns.Btn_Setting).gameObject.BindEvent(() =>
+        {
+            Managers.UI.ShowPopupUI<UI_Setting>();
+        });
+        
         SetInGameUIs(false);
-
+        GetButton((int)Btns.Btn_Setting).gameObject.SetActive(true);
  
         
         GetButton((int)Btns.Btn_Quit).gameObject.BindEvent(OnQuitBtnClicked);

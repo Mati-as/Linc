@@ -18,6 +18,11 @@ public class Network_HandBellController : NetworkBehaviour
   public Transform handbell_Right;
   private GameObject[] _networkMockups;
   
+#if UNITY_EDITOR
+    private float _elapsed;
+    private float _interval=0.5f;
+#endif
+  
   /// <summary>
   /// Manager로 인해 active false됨, Start로 옮기지 말 것. 09/09
   /// </summary>
@@ -31,10 +36,16 @@ public class Network_HandBellController : NetworkBehaviour
         handbell_Left = GameObject.Find("Handbell_Left").transform;
         handbell_Right = GameObject.Find("Handbell_Right").transform;
     }
+    
 
     // Update is called once per frame
     void Update()
     {
+        
+#if UNITY_EDITOR
+    _elapsed += Time.deltaTime;
+    
+#endif
         if (Managers.Network.Server.isActiveAndEnabled && Managers.Network.Client.isActiveAndEnabled
             && UI_MainController_NetworkInvolved.IsStartBtnClicked)
         {
@@ -43,10 +54,26 @@ public class Network_HandBellController : NetworkBehaviour
                 ClientRPC_SyncHandbellTransform(handbell_Left.transform.rotation,handbell_Right.transform.rotation);
             }
         }
+
+        if (Managers.DeviceManager.IsConnected)
+        {
+            var quatFromDevice =Managers.DeviceManager.StickData.ParseAndConvertToQuaternion();
+            handbell_Left.rotation = quatFromDevice;
+            handbell_Right.rotation = quatFromDevice;
+            if (_elapsed > _interval)
+            {
+                Logger.Log($"currentQuat : {handbell_Left.rotation}");
+                _elapsed = 0;
+            }
+        }
       
     }
 
 
+    private void Local_ControlHandBellWithHapticStick()
+    {
+        
+    }
   
 
 

@@ -9,6 +9,8 @@ public class Managers : MonoBehaviour
   
     public static Managers Instance => s_instance;
 
+
+    private static DeviceManager s_deviceManager = new();
     private static SceneManagerEx s_sceneManager = new();
     private static SoundManager s_soundManager = new();
     private static DataManager _sDataManager = new();
@@ -30,6 +32,12 @@ public class Managers : MonoBehaviour
 
     public static ContentPlayManager ContentInfo  { get { Init(); return s_contentPlayManager;}}
 
+    public static DeviceManager DeviceManager
+    {
+        get { Init();
+            return s_deviceManager;
+        }
+    }
 
     public static A_SettingManager Setting  { get { Init(); return s_settingManager;}}
     public static UIManager UI
@@ -73,7 +81,7 @@ public class Managers : MonoBehaviour
             s_sceneManager.Init();
             s_soundManager.Init();
             s_contentPlayManager.Init();
-
+            s_deviceManager.Init();
             InitialSet();
             NetworkObjNetworkIds = new Dictionary<int,NetworkIdentity>();
             NetworkObjs = new Dictionary<int, GameObject>();

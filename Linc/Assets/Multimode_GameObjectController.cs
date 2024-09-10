@@ -37,21 +37,31 @@ public class Multimode_GameObjectController : NetworkBehaviour
         GetObject((int)Objs.NetObj_Mockup_Handbell_Left).SetActive(false);
         GetObject((int)Objs.NetObj_Mockup_Handbell_Right).SetActive(false);
 
-        UI_MainController_NetworkInvolved.OnStartBtnClickedAction -= RPC_OnStartHandler;
-        UI_MainController_NetworkInvolved.OnStartBtnClickedAction += RPC_OnStartHandler;
+        UI_MainController_NetworkInvolved.OnStartBtnClickedAction -= IncludeRPC_OnStartHandler;
+        UI_MainController_NetworkInvolved.OnStartBtnClickedAction += IncludeRPC_OnStartHandler;
 
         return _init = true;
     }
 
     private void OnDestroy()
     {
-        UI_MainController_NetworkInvolved.OnStartBtnClickedAction -= RPC_OnStartHandler;
+        UI_MainController_NetworkInvolved.OnStartBtnClickedAction -= IncludeRPC_OnStartHandler;
     }
 
-    private void RPC_OnStartHandler()
+    private void IncludeRPC_OnStartHandler()
     {
-        
 
+        if (Managers.DeviceManager.IsConnected)
+        {
+            Logger.Log($"HapticStick_On : isConnectd{Managers.DeviceManager.IsConnected}");
+            Managers.DeviceManager.SetHapticStick(true,false);
+        }
+        else
+        {
+            Logger.Log($"hapticStick In Not connected..... isConnected{Managers.DeviceManager.IsConnected})");
+        }
+        
+        
         var hostInstrument = 0;
         if (Managers.ContentInfo.PlayData.HostInstrument == (int)Define.Instrument.Drum)
         {

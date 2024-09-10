@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Android;
 using ArduinoBluetoothAPI;
 using System;
+using Unity.VisualScripting;
 using UnityEngine.UI;
 
 
@@ -12,12 +13,9 @@ public class Trigger_carrot : MonoBehaviour
     //BT ��ſ�
     private Stick_DataController bluetoothHelper;
     public Text RD;
-    public Text x1;
-    public Text y1;
-    public Text z1;
-    public Text x2;
-    public Text y2;
-    public Text z2;
+
+    private readonly int ON = 0x51;
+    private readonly int OFF = 0x52;
     void Start()
     {
         bluetoothHelper = Stick_DataController.Instance;
@@ -44,7 +42,7 @@ public class Trigger_carrot : MonoBehaviour
 
     }
 
-    public void T_ON()
+    public void SendDataAndVibrate()
     {
         byte[] bytestosend = { 0x55, 0x51, 0x00, 0xC8, 0x64, 0x01, 0xF5, 0x64, 0x54 };
 
@@ -57,8 +55,32 @@ public class Trigger_carrot : MonoBehaviour
 
         bluetoothHelper.SendData(bytestosend);
     }
-    
- 
+
+
+    public void SetHapticStick(bool isOn =true, bool isVibrate=false)
+    {
+        if (isOn)
+        {
+            if (isVibrate)
+            {
+                byte[] bytestosend = { 0x55, 0x51, 0x00, 0xC8, 0x64, 0x01, 0xF5, 0x64, 0x54 };
+               
+                bluetoothHelper.SendData(bytestosend);return;
+            }
+            else
+            {
+                byte[] bytestosend  = { 0x55, 0x52, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x54 };
+                bluetoothHelper.SendData(bytestosend);return;
+            }
+        }
+        
+         if(!isOn)
+        {
+            byte[] bytestosend  = { 0x55, 0x52, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x54 };
+            bluetoothHelper.SendData(bytestosend);return;
+        }
+        
+    }
 
 
 }
