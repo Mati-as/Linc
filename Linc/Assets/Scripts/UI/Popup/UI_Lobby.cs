@@ -92,6 +92,8 @@ public class UI_Lobby : UI_Popup
 
     private void OnClientBtnClicked()
     {
+        
+        Managers.Listener.ListenBroadCast();
         _onConnectTMPSeq = DOTween.Sequence();
         _onConnectTMPSeq.AppendCallback(() => { _tmp.text = "방 참여 시도 중..."; });
         _onConnectTMPSeq.AppendInterval(0.7f);
@@ -139,6 +141,7 @@ public class UI_Lobby : UI_Popup
 
     private void OnHostBtnClicked()
     {
+        Managers.BroadCaster.SendBroadcast();
         _onConnectTMPSeq = DOTween.Sequence();
         _onConnectTMPSeq.AppendCallback(() => { _tmp.text = "방 만들기 완료\n다른 플레이어 입장 대기 중.."; });
         _onConnectTMPSeq.AppendInterval(0.7f);

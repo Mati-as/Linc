@@ -5,18 +5,19 @@ using System.Net.Sockets;
 using Mirage;
 using Mirage.SocketLayer;
 using Mirage.Sockets.Udp;
+using Network;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Managers : MonoBehaviour
 {
     public static Managers s_instance;
-  
+
+    public static ushort Port { get; private set; }
     public static Managers Instance => s_instance;
 
     private static UdpSocketFactory s_udpSocketFactory =new UdpSocketFactory();
     private static SocketFactory s_socketFactory;
-    
     private static DeviceManager s_deviceManager = new();
     private static SceneManagerEx s_sceneManager = new();
     private static SoundManager s_soundManager = new();
@@ -28,6 +29,9 @@ public class Managers : MonoBehaviour
     private static NetworkManager s_networkManager;
     public static Dictionary<int, NetworkIdentity> NetworkObjNetworkIds;
     public static Dictionary<int, GameObject> NetworkObjs ;
+    public static ServerBroadcaster BroadCaster = new();
+    public static ClientListener Listener = new();
+    
     public static DataManager Data
     { get { Init(); return _sDataManager; }}
     public static UdpSocketFactory UdpSocketFactory{get{Init();
@@ -96,7 +100,11 @@ public class Managers : MonoBehaviour
             s_soundManager.Init();
             s_contentPlayManager.Init();
             s_deviceManager.Init();
-            
+
+            BroadCaster =  Utils.GetOrAddComponent<ServerBroadcaster>(go);
+            Listener =  Utils.GetOrAddComponent<ClientListener>(go);
+
+            Port = 7777;
            
             InitialSet();
             NetworkObjNetworkIds = new Dictionary<int,NetworkIdentity>();

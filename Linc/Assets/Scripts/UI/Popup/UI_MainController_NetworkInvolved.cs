@@ -65,11 +65,12 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         Managers.NetworkServer.ObjectManager = networkManagerInstance.GetComponent<ServerObjectManager>();
         Managers.UdpSocketFactory.Address = Managers.GetLocalIPAddress();
         Managers.UdpSocketFactory.Port = 7777;
-        
-        
         var NetworkManagerHUD = GameObject.Find("NetworkManagerHUD").GetComponent<NetworkManagerHud>();
         NetworkManagerHUD.NetworkManager = Managers.Network;
         NetworkManagerHUD.NetworkAddress = Managers.UdpSocketFactory.Address;
+        
+
+
         Debug.Log($"this pc address: { NetworkManagerHUD.NetworkAddress}");
         Debug.Log($"this pc Port: {Managers.UdpSocketFactory.Port}");
 

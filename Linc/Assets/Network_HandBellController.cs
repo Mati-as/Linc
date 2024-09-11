@@ -18,46 +18,37 @@ public class Network_HandBellController : NetworkBehaviour
   public Transform handbell_Left;
   public Transform handbell_Right;
   private GameObject[] _networkMockups;
-  
-#if UNITY_EDITOR
-    private float _elapsed;
-    private float _interval=0.5f;
-#endif
+    
   
   /// <summary>
   /// Manager로 인해 active false됨, Start로 옮기지 말 것. 09/09
   /// </summary>
     void Awake()
     {
+       
+
+        handbell_Left = GameObject.Find("Handbell_Left").transform;
+        handbell_Right = GameObject.Find("Handbell_Right").transform;
+
+
+        if (Managers.Network == null) return;
+
         _networkMockups = new GameObject[3];
         _networkMockups[(int)NetObj.Xylophone] = transform.GetChild((int)NetObj.NetObj_Mockup_Handbell_Left).gameObject;
         _networkMockups[(int)NetObj.NetObj_Mockup_Handbell_Left] = transform.GetChild((int)NetObj.NetObj_Mockup_Handbell_Left).gameObject;
         _networkMockups[(int)NetObj.NetObj_Mockup_Handbell_Right] = transform.GetChild((int)NetObj.NetObj_Mockup_Handbell_Right).gameObject;
-
-        handbell_Left = GameObject.Find("Handbell_Left").transform;
-        handbell_Right = GameObject.Find("Handbell_Right").transform;
     }
     
-
-    // Update is called once per frame
+    
     void Update()
     {
+        SyncHandBellTransform();
+        SetHandbellTransformFromHapticStick();
         
-#if UNITY_EDITOR
-        _elapsed += Time.deltaTime;
-#endif
-        if (Managers.Network.Server.isActiveAndEnabled && Managers.Network.Client.isActiveAndEnabled
-                                                       && UI_MainController_NetworkInvolved.IsStartBtnClicked)
-        {
-            if (Managers.Network.Server.IsHost)
-                ClientRPC_SyncHandbellTransform(handbell_Left.transform.rotation, handbell_Right.transform.rotation);
+    }
 
-            if (!Managers.Network.Server.IsHost)
-            {
-                ServerRPC_SendTransformToHostServer(handbell_Left.transform.rotation,handbell_Right.transform.rotation);
-            }
-        }
-         
+    private void SetHandbellTransformFromHapticStick()
+    {
         if (Managers.DeviceManager.IsConnected)
         {
             var quatFromDevice = Managers.DeviceManager.StickData.StickA_Quaternion;
@@ -68,19 +59,28 @@ public class Network_HandBellController : NetworkBehaviour
                 handbell_Right.localRotation = Quaternion.Euler(eulerRotation);
             }
             
-            
-#if UNITY_EDITOR
-if (_elapsed > _interval)
-{
-    Logger.Log($"currentQuat : {quatFromDevice}");
-    _elapsed = 0;
-}
-#endif
-        
         }
-      
     }
 
+    private void SyncHandBellTransform()
+    {
+     
+        
+        if (Managers.Network !=null && Managers.Network.Server.isActiveAndEnabled && Managers.Network.Client.isActiveAndEnabled
+            && UI_MainController_NetworkInvolved.IsStartBtnClicked )
+        {
+            Debug.Assert(Managers.Network != null);
+            if (Managers.Network.Server.IsHost)
+                ClientRPC_SyncHandbellTransform(handbell_Left.transform.rotation, handbell_Right.transform.rotation);
+
+            if (!Managers.Network.Server.IsHost)
+            {
+                ServerRPC_SendTransformToHostServer(handbell_Left.transform.rotation,handbell_Right.transform.rotation);
+            }
+        }
+    }
+    
+    
 
     [ClientRpc]
     private void ClientRPC_SyncHandbellTransform(Quaternion left, Quaternion right)

@@ -10589,7 +10589,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -733, y: -534.00024}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 2316, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4515223519758752689
@@ -16728,6 +16728,8 @@ MonoBehaviour:
   btnText2: {fileID: 0}
   btnImage: {fileID: 4059992656028981075}
   btnImage2: {fileID: 0}
+  StickData: {fileID: 0}
+  RD: {fileID: 0}
 --- !u!1 &4059992656032496804
 GameObject:
   m_ObjectHideFlags: 0

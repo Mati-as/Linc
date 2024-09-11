@@ -23,13 +23,24 @@ public class UI_MultiModeSelection : UI_Popup
 
     private void OnSinglePlayBtnClicked()
     {
+        
+        Debug.Assert(Managers.Network == null);
+        
+        
+        Managers.ContentInfo.PlayData.isMultiMode = false;
         Managers.UI.ClosePopupUI(this);
+        Managers.UI.ShowSceneUI<UI_Maincontroller_SinglePlay>();
         Managers.UI.ShowPopupUI<UI_PlayModeSelection>();
+        
     }
 
     private void OnMultipPlayBtnClicked()
     {
         Managers.UI.ClosePopupUI(this);
+        
+        //혼자하기 모드에서 검사값으로 사용
+        Managers.ContentInfo.PlayData.isMultiMode = true;
+        
         Scene_MultiMode.InGame_MultiMode.SetActive(true);
         Scene_MultiMode.InGame_MultiMode.GetComponentInChildren<UI_MainController_NetworkInvolved>().UI_Lobby.SetActive(true);
     

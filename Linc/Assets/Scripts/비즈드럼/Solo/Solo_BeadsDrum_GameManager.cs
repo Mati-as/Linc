@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 public class Solo_BeadsDrum_GameManager : Base_NetworkGameManager
 {
     
-    public NetworkManager networkManager;
+  
     private GameObject[] _set;
     
     [SerializeField]
@@ -54,7 +54,7 @@ public class Solo_BeadsDrum_GameManager : Base_NetworkGameManager
 
     public override void OnRaySynced()
     {
-        
+        Logger.Log("click");
         if (!PreCheckOnRaySync()) return;
    
         
@@ -109,52 +109,50 @@ public class Solo_BeadsDrum_GameManager : Base_NetworkGameManager
     
     private void OnGameStart()
     {
-        if (networkManager == null)
+        if (Managers.Network == null) return;
+
+
+        if (Managers.Network.Server.IsHost && Managers.Network .Server.isActiveAndEnabled)
         {
-            networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>();
-            if (networkManager.Server.IsHost && networkManager.Server.isActiveAndEnabled)
+            if (Managers.ContentInfo.PlayData.HostInstrument == (int)Define.Instrument.Drum)
             {
-                if (Managers.ContentInfo.PlayData.HostInstrument == (int)Define.Instrument.Drum)
-                {
-                    _set[(int)Define.Instrument.Drum].SetActive(true);
-                    _set[(int)Define.Instrument.HandBell].SetActive(false);
-                }
-                else
-                {
-                    _set[(int)Define.Instrument.HandBell].SetActive(true);
-                    _set[(int)Define.Instrument.Drum].SetActive(false);
-                }
+                _set[(int)Define.Instrument.Drum].SetActive(true);
+                _set[(int)Define.Instrument.HandBell].SetActive(false);
             }
             else
             {
-                if (Managers.ContentInfo.PlayData.ClientInstrument == (int)Define.Instrument.Drum)
-                {
-                    _set[(int)Define.Instrument.Drum].SetActive(true);
-                    _set[(int)Define.Instrument.HandBell].SetActive(false);
-                }
-                else
-                {
-                    _set[(int)Define.Instrument.HandBell].SetActive(true);
-                    _set[(int)Define.Instrument.Drum].SetActive(false);
-                }
+                _set[(int)Define.Instrument.HandBell].SetActive(true);
+                _set[(int)Define.Instrument.Drum].SetActive(false);
             }
         }
         else
         {
-         
-                if (Managers.ContentInfo.PlayData.HostInstrument == (int)Define.Instrument.Drum)
-                {
-                    _set[(int)Define.Instrument.Drum].SetActive(true);
-                    _set[(int)Define.Instrument.HandBell].SetActive(false);
-                }
-                else
-                {
-                    _set[(int)Define.Instrument.HandBell].SetActive(true);
-                    _set[(int)Define.Instrument.Drum].SetActive(false);
-                }
+            if (Managers.ContentInfo.PlayData.ClientInstrument == (int)Define.Instrument.Drum)
+            {
+                _set[(int)Define.Instrument.Drum].SetActive(true);
+                _set[(int)Define.Instrument.HandBell].SetActive(false);
+            }
+            else
+            {
+                _set[(int)Define.Instrument.HandBell].SetActive(true);
+                _set[(int)Define.Instrument.Drum].SetActive(false);
+            }
+        }
+
+
+        if (Managers.ContentInfo.PlayData.HostInstrument == (int)Define.Instrument.Drum)
+        {
+            _set[(int)Define.Instrument.Drum].SetActive(true);
+            _set[(int)Define.Instrument.HandBell].SetActive(false);
+        }
+        else
+        {
+            _set[(int)Define.Instrument.HandBell].SetActive(true);
+            _set[(int)Define.Instrument.Drum].SetActive(false);
+        }
       
           
-        }
+        
 
     
     }

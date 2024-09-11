@@ -37,7 +37,7 @@ public class Solo_BeadsDrum_Controller : NetworkBehaviour
 
     private void Awake()
     {
-        Identity.OnStartServer.AddListener(OnStartServer);
+       
         
         Solo_BeadsDrum_GameManager.OnLeftDrumClicked -= OnLeftDrumClicked;
         Solo_BeadsDrum_GameManager.OnLeftDrumClicked += OnLeftDrumClicked;
@@ -45,10 +45,7 @@ public class Solo_BeadsDrum_Controller : NetworkBehaviour
         Solo_BeadsDrum_GameManager.OnRightDrumClicked -= OnRightDrumClicked;
         Solo_BeadsDrum_GameManager.OnRightDrumClicked += OnRightDrumClicked;
         
-        NetObj_Mockup_DrumStick_Left = GameObject.Find("NetObj_Mockup_DrumStick_Left").transform;
-        NetObj_Mockup_DrumStick_Right = GameObject.Find("NetObj_Mockup_DrumStick_Right").transform;
-        
-        
+   
         _beadsDrumLeft = transform.GetChild((int)BeadsDrum.Left);
         _beadsDrumRight = transform.GetChild((int)BeadsDrum.Right);
         _defaultSize = _beadsDrumLeft.localScale.x;
@@ -60,15 +57,19 @@ public class Solo_BeadsDrum_Controller : NetworkBehaviour
         _defaultQuatLeft = _drumStickLeft.rotation;
         _defaultQuatRight = _drumStickRight.rotation;
 
+
+        if (Managers.Network != null)
+        {
+            NetObj_Mockup_DrumStick_Left = GameObject.Find("NetObj_Mockup_DrumStick_Left").transform;
+            NetObj_Mockup_DrumStick_Right = GameObject.Find("NetObj_Mockup_DrumStick_Right").transform;
+        }
+
+        
 #if UNITY_EDITOR
         Debug.Log("Solo Version Start -----------------");        
 #endif
     }
 
-    private void OnStartServer()
-    {
-  
-    }
 
     private void OnDestroy()
     {
@@ -136,7 +137,7 @@ public class Solo_BeadsDrum_Controller : NetworkBehaviour
     /// </summary>
     private void Update()
     {
-        if (Managers.Network.Server.isActiveAndEnabled && Managers.Network.Client.isActiveAndEnabled
+        if (Managers.Network !=null &&Managers.Network.Server.isActiveAndEnabled && Managers.Network.Client.isActiveAndEnabled
                                                        && UI_MainController_NetworkInvolved.IsStartBtnClicked)
         {
             if (Managers.Network.Server.IsHost)

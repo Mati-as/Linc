@@ -32,7 +32,11 @@ public class UI_InstrumentSelection : UI_Popup
             {
                 OnInstrumentBtnClicked(Define.Instrument.Drum, Define.Instrument.HandBell);
             });
+
         
+        if (Managers.Network == null && Managers.ContentInfo.PlayData.isMultiMode == false) return true;
+        
+        //mutliplay인 경우만
         gameObject.SetActive(false);
 
         return true;
@@ -42,18 +46,30 @@ public class UI_InstrumentSelection : UI_Popup
     private void OnInstrumentBtnClicked(Define.Instrument instrumentA, Define.Instrument instrumentB)
     {
       
+        //Managers.UI.ClosePopupUI(this);
+        OnInstrumentSelected?.Invoke();
+        OnHostSettingFinished?.Invoke();
+        
+      
+        if (Managers.Network == null)
+        {
+            Managers.ContentInfo.PlayData.HostInstrument = (int)instrumentA;
+            Managers.ContentInfo.PlayData.ClientInstrument = (int)instrumentB;
+            Managers.UI.ClosePopupUI(this);
+            Managers.UI.SceneUI.GetComponent<UI_Maincontroller_SinglePlay>().ShowStartBtn();
+            
+            return;
+        }
+        
         
         if (Managers.Network.Server.IsHost)
         {
             Managers.ContentInfo.PlayData.HostInstrument = (int)instrumentA;
             Managers.ContentInfo.PlayData.ClientInstrument = (int)instrumentB;
-
             
         }
 
-        //Managers.UI.ClosePopupUI(this);
-        OnInstrumentSelected?.Invoke();
-        OnHostSettingFinished?.Invoke();
+
 
         if (Managers.Network.Server.IsHost)
         {

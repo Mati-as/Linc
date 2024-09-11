@@ -30,8 +30,7 @@ public class BeadsDrum_BeadsController : MonoBehaviour,IBeadOnClicked
 
     private void Awake()
     {
-        _drumLeftLocation = GameObject.Find("DrumLeft").transform.position;
-        _drumRightLocation = GameObject.Find("DrumRight").transform.position;
+      
         
         BeadsDrum_Controller.OnStickHitRight -= OnStickHitRight;
         BeadsDrum_Controller.OnStickHitRight += OnStickHitRight;
@@ -47,6 +46,8 @@ public class BeadsDrum_BeadsController : MonoBehaviour,IBeadOnClicked
 
     private void Start()
     {
+        _drumLeftLocation = GameObject.Find("DrumLeft").transform.position;
+        _drumRightLocation = GameObject.Find("DrumRight").transform.position;
         _rb = GetComponent<Rigidbody>();
     }
 
