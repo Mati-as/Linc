@@ -347,28 +347,28 @@ public class UI_Setting : UI_Popup
     }
 
 
-    private void OnResolutionChanged(int width, int height)
-    {
-        Debug.Assert(width == 1920 || width == 1280 || width == 2560);
-#if UNITY_EDITOR
-        Debug.Log($"Resolution Change => {width} x {height} ");
-# endif
-
-        Managers.UI.SetResolution(width, height, Managers.UI.isFullScreen);
-        Managers.Data.Preference[(int)Define.Preferences.Resolution] = width;
-
-    }
-
-    private void OnGraphicQualityChanged(Define.QaulityLevel qaulityLevel)
-    {
-        Debug.Assert((int)qaulityLevel < 6 || (int)qaulityLevel > 0);
-#if UNITY_EDITOR
-        Debug.Log($"Graphic Quality {qaulityLevel}");
-# endif
-        Managers.UI.SetGraphicQuality(qaulityLevel);
-
-        Managers.Data.Preference[(int)Define.Preferences.GraphicQuality] = (int)qaulityLevel;
-    }
+//     private void OnResolutionChanged(int width, int height)
+//     {
+//         Debug.Assert(width == 1920 || width == 1280 || width == 2560);
+// #if UNITY_EDITOR
+//         Debug.Log($"Resolution Change => {width} x {height} ");
+// # endif
+//
+//         Managers.UI.SetResolution(width, height, Managers.UI.isFullScreen);
+//         Managers.Data.Preference[(int)Define.Preferences.Resolution] = width;
+//
+//     }
+//
+//     private void OnGraphicQualityChanged(Define.QaulityLevel qaulityLevel)
+//     {
+//         Debug.Assert((int)qaulityLevel < 6 || (int)qaulityLevel > 0);
+// #if UNITY_EDITOR
+//         Debug.Log($"Graphic Quality {qaulityLevel}");
+// # endif
+//         Managers.UI.SetGraphicQuality(qaulityLevel);
+//
+//         Managers.Data.Preference[(int)Define.Preferences.GraphicQuality] = (int)qaulityLevel;
+//     }
 
 
     #region Archive

@@ -8,8 +8,8 @@ public class UI_PlayModeSelection : UI_Popup
 
     public override bool Init()
     {
+      
         if (!Managers.Network.Server.IsHost) gameObject.SetActive(false);
-
         BindButton(typeof(Btns));
         GetButton((int)Btns.Btn_RhythmGameMode).gameObject.BindEvent(OnRythmGameModeBtnClicked);
         GetButton((int)Btns.Btn_FreePlayMode).gameObject.BindEvent(Btn_FreePlayMode);

@@ -11398,22 +11398,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4595801013516669024}
   m_CullTransparentMesh: 0
---- !u!114 &4595801013519457968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4595801013519457975}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9f46b2d67d7a054d8c13075473bd4a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Address: localhost
-  Port: 7777
-  SocketLib: 0
-  BufferSize: 262144
 --- !u!114 &4595801013519457969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11491,8 +11475,8 @@ GameObject:
   - component: {fileID: 4595801013519457981}
   - component: {fileID: 4595801013519457970}
   - component: {fileID: 4595801013519457971}
-  - component: {fileID: 4595801013519457968}
   - component: {fileID: 4595801013519457969}
+  - component: {fileID: 4595801013519457984}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: NetworkManager
@@ -11514,7 +11498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnablePeerMetrics: 0
   MetricsSize: 10
-  SocketFactory: {fileID: 4595801013519457968}
+  SocketFactory: {fileID: 0}
   ObjectManager: {fileID: 4595801013519457970}
   DisconnectOnException: 1
   RethrowException: 0
@@ -11607,7 +11591,7 @@ MonoBehaviour:
   RethrowException: 0
   RunInBackground: 1
   Listening: 1
-  SocketFactory: {fileID: 4595801013519457968}
+  SocketFactory: {fileID: 0}
   ObjectManager: {fileID: 4595801013519457971}
   Authenticator: {fileID: 0}
   _started:
@@ -11636,6 +11620,22 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   ManualUpdate: 0
+--- !u!114 &4595801013519457984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4595801013519457975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9f46b2d67d7a054d8c13075473bd4a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Address: localhost
+  Port: 7777
+  SocketLib: 0
+  BufferSize: 262144
 --- !u!1 &4595801013523242218
 GameObject:
   m_ObjectHideFlags: 0

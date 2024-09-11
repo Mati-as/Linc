@@ -104,26 +104,26 @@ public class DataManager
     var narrationVol = node.Attributes[nameof(Define.Preferences.NarrationVol)].Value;
     Managers.Data.Preference[(int)Define.Preferences.NarrationVol] = float.Parse(narrationVol);
     
-    // load fullscreen setting
-    var fullscreen = node.Attributes[nameof(Define.Preferences.Fullscreen)].Value;
-    Managers.Data.Preference[(int)Define.Preferences.Fullscreen] = int.Parse(fullscreen);
-//    Debug.Log($"fullscreen Value On Load-----------------------{fullscreen}");
-    
-    // load resolution setting
-    var resolution = node.Attributes[nameof(Define.Preferences.Resolution)].Value;
-    Managers.Data.Preference[(int)Define.Preferences.Resolution] = int.Parse(resolution);
-    
-    // load graphic quality setting
-    var graphicQuality = node.Attributes[nameof(Define.Preferences.GraphicQuality)].Value;
-    Managers.Data.Preference[(int)Define.Preferences.GraphicQuality] = int.Parse(graphicQuality);
-    
-    // load english mode setting
-    var engMode = node.Attributes[nameof(Define.Preferences.EngMode)].Value;
-    Managers.Data.Preference[(int)Define.Preferences.EngMode] = int.Parse(engMode);
-    
-    // load control guide setting
-    var controlGuide = node.Attributes[nameof(Define.Preferences.ControlGuide)].Value;
-    Managers.Data.Preference[(int)Define.Preferences.ControlGuide] = int.Parse(controlGuide);
+//     // load fullscreen setting
+//     var fullscreen = node.Attributes[nameof(Define.Preferences.Fullscreen)].Value;
+//     Managers.Data.Preference[(int)Define.Preferences.Fullscreen] = int.Parse(fullscreen);
+// //    Debug.Log($"fullscreen Value On Load-----------------------{fullscreen}");
+//     
+//     // load resolution setting
+//     var resolution = node.Attributes[nameof(Define.Preferences.Resolution)].Value;
+//     Managers.Data.Preference[(int)Define.Preferences.Resolution] = int.Parse(resolution);
+//     
+//     // load graphic quality setting
+//     var graphicQuality = node.Attributes[nameof(Define.Preferences.GraphicQuality)].Value;
+//     Managers.Data.Preference[(int)Define.Preferences.GraphicQuality] = int.Parse(graphicQuality);
+//     
+//     // load english mode setting
+//     var engMode = node.Attributes[nameof(Define.Preferences.EngMode)].Value;
+//     Managers.Data.Preference[(int)Define.Preferences.EngMode] = int.Parse(engMode);
+//     
+//     // load control guide setting
+//     var controlGuide = node.Attributes[nameof(Define.Preferences.ControlGuide)].Value;
+//     Managers.Data.Preference[(int)Define.Preferences.ControlGuide] = int.Parse(controlGuide);
     
     // load mute main setting
     var muteMain = node.Attributes[nameof(Define.Preferences.Mute_Main)].Value;
@@ -161,21 +161,21 @@ public class DataManager
 
         setting.SetAttribute(nameof(Define.Preferences.NarrationVol),
             Managers.Data.Preference[(int)Define.Preferences.NarrationVol].ToString("F2",CultureInfo.InvariantCulture));
-
-        setting.SetAttribute(nameof(Define.Preferences.Fullscreen),
-            Managers.Data.Preference[(int)Define.Preferences.Fullscreen].ToString());
-
-        setting.SetAttribute(nameof(Define.Preferences.Resolution),
-            Managers.Data.Preference[(int)Define.Preferences.Resolution].ToString());
-
-        setting.SetAttribute(nameof(Define.Preferences.GraphicQuality),
-            Managers.Data.Preference[(int)Define.Preferences.GraphicQuality].ToString());
-
-        setting.SetAttribute(nameof(Define.Preferences.EngMode),
-            Managers.Data.Preference[(int)Define.Preferences.EngMode].ToString());
-
-        setting.SetAttribute(nameof(Define.Preferences.ControlGuide),
-            Managers.Data.Preference[(int)Define.Preferences.ControlGuide].ToString());
+        //
+        // setting.SetAttribute(nameof(Define.Preferences.Fullscreen),
+        //     Managers.Data.Preference[(int)Define.Preferences.Fullscreen].ToString());
+        //
+        // setting.SetAttribute(nameof(Define.Preferences.Resolution),
+        //     Managers.Data.Preference[(int)Define.Preferences.Resolution].ToString());
+        //
+        // setting.SetAttribute(nameof(Define.Preferences.GraphicQuality),
+        //     Managers.Data.Preference[(int)Define.Preferences.GraphicQuality].ToString());
+        //
+        // setting.SetAttribute(nameof(Define.Preferences.EngMode),
+        //     Managers.Data.Preference[(int)Define.Preferences.EngMode].ToString());
+        //
+        // setting.SetAttribute(nameof(Define.Preferences.ControlGuide),
+        //     Managers.Data.Preference[(int)Define.Preferences.ControlGuide].ToString());
 
         setting.SetAttribute(nameof(Define.Preferences.Mute_Main),
             Managers.Data.Preference[(int)Define.Preferences.Mute_Main].ToString());
@@ -206,7 +206,7 @@ public class DataManager
     {
         if (File.Exists(path))
         {
-            Debug.Log(fileName + "XML FILE EXIST");
+            Logger.Log(fileName + "XML FILE EXIST");
             Utils.ReadXML(ref xmlDoc_Setting, settingXmlPath);
         }
         else
@@ -226,11 +226,11 @@ public class DataManager
             initSetting.SetAttribute(nameof(Define.Preferences.NarrationVol), "0.5");
             initSetting.SetAttribute(nameof(Define.Preferences.EffectVol), "0.5");
             initSetting.SetAttribute(nameof(Define.Preferences.BgmVol), "0.15");
-            initSetting.SetAttribute(nameof(Define.Preferences.Fullscreen), "1");
-            initSetting.SetAttribute(nameof(Define.Preferences.Resolution), "1920");
-            initSetting.SetAttribute(nameof(Define.Preferences.GraphicQuality), ((int)(Define.QaulityLevel.Mid)).ToString());
+            // initSetting.SetAttribute(nameof(Define.Preferences.Fullscreen), "1");
+            // initSetting.SetAttribute(nameof(Define.Preferences.Resolution), "1920");
+            // initSetting.SetAttribute(nameof(Define.Preferences.GraphicQuality), ((int)(Define.QaulityLevel.Mid)).ToString());
            // initSetting.SetAttribute(nameof(Define.Preferences.EngMode), ((int)(Define.LanguageMode.Kor)).ToString());
-            initSetting.SetAttribute(nameof(Define.Preferences.ControlGuide), "1"); //Yes
+            // initSetting.SetAttribute(nameof(Define.Preferences.ControlGuide), "1"); //Yes
             initSetting.SetAttribute(nameof(Define.Preferences.Mute_Main), "0"); //No
             initSetting.SetAttribute(nameof(Define.Preferences.Mute_Narration), "0"); //No
             initSetting.SetAttribute(nameof(Define.Preferences.Mute_Effect), "0"); //No

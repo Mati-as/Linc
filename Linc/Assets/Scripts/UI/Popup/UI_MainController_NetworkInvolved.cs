@@ -1,16 +1,11 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
 using DG.Tweening;
 using Mirage;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
-using NetworkPlayer = Mirage.NetworkPlayer;
+
 
 public class UI_MainController_NetworkInvolved : UI_Scene
 {
@@ -63,11 +58,22 @@ public class UI_MainController_NetworkInvolved : UI_Scene
 
     public override bool Init()
     {
+        var networkManagerInstance = GameObject.FindWithTag("NetworkManager");
+        Debug.Assert(networkManagerInstance !=null, "networkManagerInstance !=null");
+        Managers.Network = networkManagerInstance.GetComponent<NetworkManager>();
+        Managers.NetworkServer = networkManagerInstance.GetComponent<NetworkServer>();
+        Managers.NetworkServer.ObjectManager = networkManagerInstance.GetComponent<ServerObjectManager>();
+        Managers.UdpSocketFactory.Address = Managers.GetLocalIPAddress();
+        Managers.UdpSocketFactory.Port = 7777;
         
-        Managers.Network = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>();
         
-  
-       
+        var NetworkManagerHUD = GameObject.Find("NetworkManagerHUD").GetComponent<NetworkManagerHud>();
+        NetworkManagerHUD.NetworkManager = Managers.Network;
+        NetworkManagerHUD.NetworkAddress = Managers.UdpSocketFactory.Address;
+        Debug.Log($"this pc address: { NetworkManagerHUD.NetworkAddress}");
+        Debug.Log($"this pc Port: {Managers.UdpSocketFactory.Port}");
+
+        
         Managers.Network.Server.Connected.AddListener(player =>
         {
             

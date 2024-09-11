@@ -199,37 +199,37 @@ public class UIManager
 		// UI 레이아웃이나 스케일 조정을 위한 추가 로직을 여기에 추가
 	}
 
-	public void SetScreenMode(bool isFullScreenMode)
-	{
-
-		Screen.fullScreen = isFullScreenMode;
-		isFullScreen = isFullScreenMode;
-		Managers.Data.Preference[(int)Define.Preferences.Fullscreen] = isFullScreenMode? Define.YES : Define.NO ;
-#if UNITY_EDITOR
-		Debug.Log($"Full Screen mode is {isFullScreenMode} :Preference{	Managers.Data.Preference[(int)Define.Preferences.Fullscreen]}");
-#endif
-	}
-	
-	
-
-	public void SetEngMode(bool isEngMode)
-	{
-
-#if UNITY_EDITOR
-		string modename = isEngMode ? "ENG" : "KOR";
-		Debug.Log($"EngMode is  {isEngMode}");
-#endif
-		
-		Managers.Data.Preference[(int)Define.Preferences.EngMode] = isEngMode? Define.YES  : Define.NO;
-	
-	}
-
-	public void SetControlGuideOnMode(bool isGuideOn)
-	{
-#if UNITY_EDITOR
-		Debug.Log($"Control Guide Mode is {isGuideOn}");
-#endif
-		this.GuideOn = isGuideOn;
-		Managers.Data.Preference[(int)Define.Preferences.ControlGuide] = GuideOn? Define.YES : Define.NO ;
-	}
+// 	public void SetScreenMode(bool isFullScreenMode)
+// 	{
+//
+// 		Screen.fullScreen = isFullScreenMode;
+// 		isFullScreen = isFullScreenMode;
+// 		Managers.Data.Preference[(int)Define.Preferences.Fullscreen] = isFullScreenMode? Define.YES : Define.NO ;
+// #if UNITY_EDITOR
+// 		Debug.Log($"Full Screen mode is {isFullScreenMode} :Preference{	Managers.Data.Preference[(int)Define.Preferences.Fullscreen]}");
+// #endif
+// 	}
+// 	
+// 	
+//
+// 	public void SetEngMode(bool isEngMode)
+// 	{
+//
+// #if UNITY_EDITOR
+// 		string modename = isEngMode ? "ENG" : "KOR";
+// 		Debug.Log($"EngMode is  {isEngMode}");
+// #endif
+// 		
+// 		Managers.Data.Preference[(int)Define.Preferences.EngMode] = isEngMode? Define.YES  : Define.NO;
+// 	
+// 	}
+//
+// 	public void SetControlGuideOnMode(bool isGuideOn)
+// 	{
+// #if UNITY_EDITOR
+// 		Debug.Log($"Control Guide Mode is {isGuideOn}");
+// #endif
+// 		this.GuideOn = isGuideOn;
+// 		Managers.Data.Preference[(int)Define.Preferences.ControlGuide] = GuideOn? Define.YES : Define.NO ;
+// 	}
 }
