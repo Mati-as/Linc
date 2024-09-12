@@ -113,6 +113,8 @@ public class UI_Maincontroller_SinglePlay : UI_Scene
     
     private void OnReplayBtnClicked()
     {
+        
+        Managers.Sound.Stop(SoundManager.Sound.Narration);
         Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Narration/Carrot",0.15f);
     }
 

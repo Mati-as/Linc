@@ -73,6 +73,9 @@ public class UI_MainController_NetworkInvolved : UI_Scene
 
         Debug.Log($"this pc address: { NetworkManagerHUD.NetworkAddress}");
         Debug.Log($"this pc Port: {Managers.UdpSocketFactory.Port}");
+        
+        GetButton((int)Btns.Btn_Play).gameObject.BindEvent(OnPlayBtnClicked);
+        GetButton((int)Btns.Btn_Replay).gameObject.BindEvent(OnReplayBtnClicked);
 
         
         Managers.Network.Server.Connected.AddListener(player =>
@@ -190,6 +193,19 @@ public class UI_MainController_NetworkInvolved : UI_Scene
     private void OnApplicationQuitClicked()
     {
         
+    }
+    
+    private void OnPlayBtnClicked()
+    {
+        if(!Managers.Sound.audioSources[(int)SoundManager.Sound.Narration].isPlaying)
+            Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Narration/Carrot",0.15f);
+    }
+    
+    private void OnReplayBtnClicked()
+    {
+        
+        Managers.Sound.Stop(SoundManager.Sound.Narration);
+        Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Narration/Carrot",0.15f);
     }
 
     private void ToggleAnimation()

@@ -93,7 +93,7 @@ public class UI_Lobby : UI_Popup
     private void OnClientBtnClicked()
     {
         
-        Managers.Listener.ListenBroadCast();
+        Managers.Listener.ListenBroadcastMessage();
         _onConnectTMPSeq = DOTween.Sequence();
         _onConnectTMPSeq.AppendCallback(() => { _tmp.text = "방 참여 시도 중..."; });
         _onConnectTMPSeq.AppendInterval(0.7f);
