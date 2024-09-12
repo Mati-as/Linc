@@ -1,7 +1,8 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;using DG.Tweening;
 using Mirage;
 using UnityEngine;
 using UnityEngine.Serialization;
+using DG.Tweening;
 
 namespace Network
 {
@@ -11,25 +12,32 @@ namespace Network
 
     public class ServerBroadcaster : MonoBehaviour
     {
-
-
         public void SendBroadcast()
         {
             
-            Logger.Log("Send BroadCast.....");
-            var address = new ServerSendIPAdress();
+           
+            var address = new ServerBroadcastMessage();
             address.ServerIP = Managers.UdpSocketFactory.Address;
             address.ServerPort = Managers.UdpSocketFactory.Port;
-            Managers.Network.Client.Send(address);
-
+         
+            var seq = DOTween.Sequence();
+            seq.AppendCallback(() =>
+            {
+                Managers.Network.BroadcastMessage($"{address.ServerIP}",SendMessageOptions.DontRequireReceiver);
+                Logger.Log($"Send BroadCast.....{address.ServerIP}");
+            });
+            seq.AppendInterval(1f);
+            seq.SetLoops(10);
         }
  
         
     }
     
-    public struct ServerSendIPAdress  
-    {
-        public string ServerIP;
-        public int ServerPort;
-    }
+
+}   
+[NetworkMessage]
+public struct ServerBroadcastMessage 
+{
+    public string ServerIP;
+    public ushort ServerPort;
 }

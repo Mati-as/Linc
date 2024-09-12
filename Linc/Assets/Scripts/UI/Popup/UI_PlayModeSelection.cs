@@ -1,9 +1,12 @@
+using UnityEngine.SceneManagement;
+
 public class UI_PlayModeSelection : UI_Popup
 {
     public enum Btns
     {
         Btn_FreePlayMode,
-        Btn_RhythmGameMode
+        Btn_RhythmGameMode,
+        Btn_Back
     }
 
     public override bool Init()
@@ -13,6 +16,10 @@ public class UI_PlayModeSelection : UI_Popup
         BindButton(typeof(Btns));
         GetButton((int)Btns.Btn_RhythmGameMode).gameObject.BindEvent(OnRythmGameModeBtnClicked);
         GetButton((int)Btns.Btn_FreePlayMode).gameObject.BindEvent(Btn_FreePlayMode);
+        GetButton(((int)Btns.Btn_Back)).gameObject.BindEvent(() =>
+        {
+            Managers.RestartSceneWithRemoveDontDestroy();
+        });
         return base.Init();
     }
 
@@ -53,6 +60,7 @@ public class UI_PlayModeSelection : UI_Popup
             Managers.UI.ShowPopupUI<UI_InstrumentSelection>();
             return;
         }
+        
         
         
         Managers.Network.ClientObjectManager.PrepareToSpawnSceneObjects();

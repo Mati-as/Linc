@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,11 @@ public class Network_HandBellController : NetworkBehaviour
   {
       Xylophone,
       NetObj_Mockup_Handbell_Left,
-      NetObj_Mockup_Handbell_Right
+      NetObj_Mockup_Handbell_Right,
   }
 
+  private Collider _colliderRight;
+  private Collider _colliderLeft;
 
   public Transform handbell_Left;
   public Transform handbell_Right;
@@ -25,11 +28,9 @@ public class Network_HandBellController : NetworkBehaviour
   /// </summary>
     void Awake()
     {
-       
-
+        
         handbell_Left = GameObject.Find("Handbell_Left").transform;
         handbell_Right = GameObject.Find("Handbell_Right").transform;
-
 
         if (Managers.Network == null) return;
 
@@ -38,9 +39,9 @@ public class Network_HandBellController : NetworkBehaviour
         _networkMockups[(int)NetObj.NetObj_Mockup_Handbell_Left] = transform.GetChild((int)NetObj.NetObj_Mockup_Handbell_Left).gameObject;
         _networkMockups[(int)NetObj.NetObj_Mockup_Handbell_Right] = transform.GetChild((int)NetObj.NetObj_Mockup_Handbell_Right).gameObject;
     }
-    
-    
-    void Update()
+
+
+  void Update()
     {
         SyncHandBellTransform();
         SetHandbellTransformFromHapticStick();

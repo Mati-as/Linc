@@ -4,6 +4,7 @@ using DG.Tweening;
 using Mirage;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -19,7 +20,8 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         Btn_Replay,
         Btn_Quit,
         Btn_ApplicationQuit,
-        Btn_Setting
+        Btn_Setting,
+        Btn_Back
         
     }
 
@@ -54,6 +56,7 @@ public class UI_MainController_NetworkInvolved : UI_Scene
     {
         UI_Lobby = Utils.FindChild<UI_Lobby>(gameObject, recursive: true).gameObject;
         UI_Lobby.SetActive(false);
+        
     }
 
     public override bool Init()
@@ -74,9 +77,7 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         Debug.Log($"this pc address: { NetworkManagerHUD.NetworkAddress}");
         Debug.Log($"this pc Port: {Managers.UdpSocketFactory.Port}");
         
-        GetButton((int)Btns.Btn_Play).gameObject.BindEvent(OnPlayBtnClicked);
-        GetButton((int)Btns.Btn_Replay).gameObject.BindEvent(OnReplayBtnClicked);
-
+      
         
         Managers.Network.Server.Connected.AddListener(player =>
         {
@@ -124,6 +125,10 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         BindObject(typeof(UIObjs));
         BindButton(typeof(Btns));
         
+        GetButton((int)Btns.Btn_Play).gameObject.BindEvent(OnPlayBtnClicked);
+        GetButton((int)Btns.Btn_Replay).gameObject.BindEvent(OnReplayBtnClicked);
+        
+        
         _menuAnimator = GetObject((int)UIObjs.Btn_Menus).gameObject.GetComponent<Animator>();
         GetButton((int)Btns.Btn_HideMenu).gameObject.BindEvent(ToggleAnimation);
         
@@ -137,12 +142,23 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         _canvas.sortingOrder = -321; // 항상플레이 화면에만 있을수 있도록
 
         
+        GetButton((int)Btns.Btn_ApplicationQuit).gameObject.BindEvent(()=>
+        {
+            OnApplicationQuitClicked();
+        });
+        GetButton(((int)Btns.Btn_Back)).gameObject.BindEvent(() =>
+        {
+            Managers.RestartSceneWithRemoveDontDestroy();
+           
+        });
+        
         GetButton((int)Btns.Btn_Setting).gameObject.BindEvent(() =>
         {
             Managers.UI.ShowPopupUI<UI_Setting>();
         });
         
         SetInGameUIs(false);
+        GetButton((int)Btns.Btn_ApplicationQuit).gameObject.SetActive(true);
         GetButton((int)Btns.Btn_Setting).gameObject.SetActive(true);
  
         
@@ -187,12 +203,12 @@ public class UI_MainController_NetworkInvolved : UI_Scene
 
     private void OnQuitBtnClicked()
     {
-        Managers.UI.CloseAllPopupUI();
-        Managers.Scene.ChangeScene(Define.Scene.linc_main_solo);
+        Managers.RestartSceneWithRemoveDontDestroy();
     }
     private void OnApplicationQuitClicked()
     {
-        
+        Managers.RestartSceneWithRemoveDontDestroy();
+        Application.Quit();
     }
     
     private void OnPlayBtnClicked()

@@ -97,7 +97,6 @@ public class RaySynchronizer : MonoBehaviour
     public void InvokeRayEvent()
     {
         ShootRay();
-
     }
 
 

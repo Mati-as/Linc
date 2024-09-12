@@ -8,6 +8,7 @@ using Mirage.Sockets.Udp;
 using Network;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class Managers : MonoBehaviour
 {
@@ -146,5 +147,24 @@ public class Managers : MonoBehaviour
             }
         }
         throw new Exception("No network adapters with an IPv4 address in the system!");
+    }
+    
+    public static void RestartSceneWithRemoveDontDestroy()
+    {
+        
+        // 1. 모든 루트 객체 가져오기
+        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+        
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.scene.name == null)  // 
+            {
+                Logger.Log($"destroy{obj.name}");
+                Destroy(obj);
+            }
+            Destroy(obj);
+        }
+        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

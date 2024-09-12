@@ -109,8 +109,8 @@ public class SoundManager : MonoBehaviour
     public void Clear()
     {
         foreach (var audioSource in audioSources)
-            audioSource.Stop();
-        _audioClips.Clear();
+            audioSource?.Stop();
+        _audioClips?.Clear();
     }
 
     public void SetPitch(Sound type, float pitch = 1.0f)

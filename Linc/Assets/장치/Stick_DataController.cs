@@ -120,7 +120,7 @@ public class Stick_DataController : MonoBehaviour
             Logger.Log("recivedMeesage is non-Validate");
             return;
         }
-        Logger.Log($"recieved Data: {parts[1]}");
+//        Logger.Log($"recieved Data: {parts[1]}");
 
         if (values.Length < 7)
         {

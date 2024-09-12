@@ -62,8 +62,7 @@ public class UI_Lobby : UI_Popup
         GetButton((int)Btns.Btn_StartClient).gameObject.BindEvent(OnClientBtnClicked);
         GetButton((int)Btns.Btn_Back).gameObject.BindEvent(() =>
         {
-            Managers.UI.CloseAllPopupUI();
-            Managers.Scene.ChangeScene(Define.Scene.linc_main_solo);
+          Managers.RestartSceneWithRemoveDontDestroy();
         });
         GetButton((int)Btns.Btn_StartGame).gameObject.BindEvent(() =>
         {
@@ -92,8 +91,8 @@ public class UI_Lobby : UI_Popup
 
     private void OnClientBtnClicked()
     {
-        
-        Managers.Listener.ListenBroadcastMessage();
+
+        StartCoroutine(StartClientCo());
         _onConnectTMPSeq = DOTween.Sequence();
         _onConnectTMPSeq.AppendCallback(() => { _tmp.text = "방 참여 시도 중..."; });
         _onConnectTMPSeq.AppendInterval(0.7f);
@@ -111,6 +110,30 @@ public class UI_Lobby : UI_Popup
         GetObject((int)UIs.TryingConnection).SetActive(true);
     }
 
+    IEnumerator StartClientCo()
+    {
+        while (Managers.Network == null)
+        {
+            Logger.Log("waiting for server to open.....");
+            yield return null;
+        }
+        
+        while (!Managers.Network.isActiveAndEnabled)
+        {
+          
+            Logger.Log("waiting for server to be Active.....(host)");
+            yield return null;
+        }
+        
+        while (!Managers.Network.Client.IsConnected)
+        {
+            if (!Managers.Network.Client.IsHost) break;
+            Logger.Log("waiting for client to connect.....");
+            yield return null;
+        }
+        
+        Managers.Listener.ListenBroadcastMessage();
+    }
 
     private void OnConnectedToLocalServer(INetworkPlayer player)
     {
@@ -141,7 +164,7 @@ public class UI_Lobby : UI_Popup
 
     private void OnHostBtnClicked()
     {
-        Managers.BroadCaster.SendBroadcast();
+        StartCoroutine(OnHostBtnClickedCo());
         _onConnectTMPSeq = DOTween.Sequence();
         _onConnectTMPSeq.AppendCallback(() => { _tmp.text = "방 만들기 완료\n다른 플레이어 입장 대기 중.."; });
         _onConnectTMPSeq.AppendInterval(0.7f);
@@ -159,6 +182,33 @@ public class UI_Lobby : UI_Popup
 
         GetButton((int)Btns.Btn_QuitConnection).gameObject.SetActive(true);
         GetObject((int)UIs.TryingConnection).SetActive(true);
+    }
+    private IEnumerator OnHostBtnClickedCo()
+    {
+        while (Managers.Network == null)
+        {
+          
+                Logger.Log("waiting for server to open.....(host)");
+                yield return null;
+            
+        }
+        
+        while (!Managers.Network.isActiveAndEnabled)
+        {
+          
+            Logger.Log("waiting for server to be Active.....(host)");
+            yield return null;
+            
+        }
+
+        while (!Managers.Network.Client.IsConnected)
+        {
+            Logger.Log("waiting for client to connect.....");
+            yield return null;
+        }
+        
+        Managers.BroadCaster.SendBroadcast();
+        
     }
 
 

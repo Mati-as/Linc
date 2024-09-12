@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneManagerEx
+public class SceneManagerEx 
 {
     
     private Define.Scene _curSceneType = Define.Scene.Unknown;
@@ -26,9 +26,16 @@ public class SceneManagerEx
 
     }
 
+
+
+    private T[] FindObjectsOfType<T>()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void ChangeScene(Define.Scene type)
     {
-        CurrentScene.Clear();
+//        CurrentScene.Clear();
 
         _curSceneType = type;
         SceneManager.LoadScene(GetSceneName(type));

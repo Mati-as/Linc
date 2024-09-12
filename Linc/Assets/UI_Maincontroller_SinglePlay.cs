@@ -67,13 +67,17 @@ public class UI_Maincontroller_SinglePlay : UI_Scene
         });
         
         SetInGameUIs(false);
+        GetButton((int)Btns.Btn_ApplicationQuit).gameObject.SetActive(true);
         GetButton((int)Btns.Btn_Setting).gameObject.SetActive(true);
         GetButton((int)Btns.Btn_Quit).gameObject.BindEvent(OnQuitBtnClicked);
         
         GetButton((int)Btns.Btn_Play).gameObject.BindEvent(OnPlayBtnClicked);
         GetButton((int)Btns.Btn_Replay).gameObject.BindEvent(OnReplayBtnClicked);
         
-   
+        GetButton((int)Btns.Btn_ApplicationQuit).gameObject.BindEvent(()=>
+        {
+            OnApplicationQuitClicked();
+        });
         return base.Init();
     }
      
@@ -97,12 +101,12 @@ public class UI_Maincontroller_SinglePlay : UI_Scene
 
     private void OnQuitBtnClicked()
     {
-        Managers.UI.CloseAllPopupUI();
-        Managers.Scene.ChangeScene(Define.Scene.linc_main_solo);
+        Managers.RestartSceneWithRemoveDontDestroy();
     }
     private void OnApplicationQuitClicked()
     {
-        
+        Managers.RestartSceneWithRemoveDontDestroy();
+        Application.Quit();
     }
 
     private void OnPlayBtnClicked()

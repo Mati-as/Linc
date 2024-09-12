@@ -10,6 +10,7 @@ public class UI_InstrumentSelection : UI_Popup
     {
         Btn_Drum,
         Btn_HandBell,
+        Btn_BackToPlayModeSelection
     }
 
     public static Action OnInstrumentSelected;
@@ -33,6 +34,24 @@ public class UI_InstrumentSelection : UI_Popup
                 OnInstrumentBtnClicked(Define.Instrument.Drum, Define.Instrument.HandBell);
             });
 
+        GetButton((int)Btns.Btn_BackToPlayModeSelection).gameObject
+            .BindEvent(() =>
+            {
+               
+                if (Managers.Network == null)
+                {
+                    Managers.UI.ClosePopupUI(this);
+                    Managers.UI.ShowPopupUI<UI_PlayModeSelection>();
+                    return;
+                }
+        
+                if (Managers.Network.Server.IsHost)
+                {
+                    Managers.NetworkObjs[(int)Define.NetworkObjs.UI_PlayModeSelection].SetActive(true);
+                    gameObject.SetActive(false);
+                }
+                
+            });
         
         if (Managers.Network == null && Managers.ContentInfo.PlayData.isMultiMode == false) return true;
         
@@ -45,7 +64,8 @@ public class UI_InstrumentSelection : UI_Popup
     // Host clicks HandBell button
     private void OnInstrumentBtnClicked(Define.Instrument instrumentA, Define.Instrument instrumentB)
     {
-      
+        
+        
         //Managers.UI.ClosePopupUI(this);
         OnInstrumentSelected?.Invoke();
         OnHostSettingFinished?.Invoke();

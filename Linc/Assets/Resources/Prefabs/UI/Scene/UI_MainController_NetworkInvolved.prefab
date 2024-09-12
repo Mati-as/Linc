@@ -22011,7 +22011,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uB3CC\uC544\uAC00\uAE30"
+  m_text: "\uD648\uD654\uBA74"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66ba5c8148994644790220c37447ec16, type: 2}
   m_sharedMaterial: {fileID: 2816312208614350962, guid: 66ba5c8148994644790220c37447ec16,
