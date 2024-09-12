@@ -109,10 +109,15 @@ public class UI_Maincontroller_SinglePlay : UI_Scene
         Application.Quit();
     }
 
+    public static event Action PlayMusicEvent; 
     private void OnPlayBtnClicked()
     {
-        if(!Managers.Sound.audioSources[(int)SoundManager.Sound.Narration].isPlaying)
-         Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Narration/Carrot",0.15f);
+        if (!Managers.Sound.audioSources[(int)SoundManager.Sound.Narration].isPlaying)
+        {
+            Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Narration/Carrot",0.15f);
+            PlayMusicEvent?.Invoke();
+            
+        }
     }
     
     private void OnReplayBtnClicked()
@@ -120,6 +125,7 @@ public class UI_Maincontroller_SinglePlay : UI_Scene
         
         Managers.Sound.Stop(SoundManager.Sound.Narration);
         Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Narration/Carrot",0.15f);
+        PlayMusicEvent?.Invoke();
     }
 
     private void ToggleAnimation()
