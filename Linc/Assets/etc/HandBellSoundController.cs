@@ -8,22 +8,11 @@ public class HandBellSoundController : MonoBehaviour
 
     private bool _isSoundable =true;
     private WaitForSeconds _wait;
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "Collider_SoundableCheckDetector_Left" || other.gameObject.name =="Collider_SoundableCheckDetector_Right")
         {
-   
-
-            if (_isSoundable)
-            {
-                _isSoundable = false;
-                var randomChar = (char)Random.Range('A', 'D' + 1);
-                Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/Effect/Bell" +randomChar);
-                StartCoroutine(VibrateHapticStickCo());
-
-            }
-    
             // perform specific actions related to colliderRight
         }
         else
@@ -36,15 +25,13 @@ public class HandBellSoundController : MonoBehaviour
     {
         if (other.gameObject.name == "Collider_SoundableCheckDetector_Left" || other.gameObject.name =="Collider_SoundableCheckDetector_Right")
         {
-            
-            DOVirtual.Float(0, 0, 0.35f, _ => { }).OnComplete(() =>
+            if (_isSoundable && Managers.DeviceManager.StickData.AccelerationValue > 0.8f)
             {
-             
-                
-            });
-            
-          
-            // perform specific actions related to colliderRight
+                _isSoundable = false;
+                var randomChar = (char)Random.Range('A', 'D' + 1);
+                Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/Effect/Bell" +randomChar);
+                StartCoroutine(VibrateHapticStickCo());
+            }
         }
         else
         {
@@ -56,7 +43,7 @@ public class HandBellSoundController : MonoBehaviour
     {
         if (_wait == null)
         {
-            _wait = new WaitForSeconds(0.14f);
+            _wait = new WaitForSeconds(0.135f);
         }
         if (Managers.DeviceManager.IsConnected)
         {

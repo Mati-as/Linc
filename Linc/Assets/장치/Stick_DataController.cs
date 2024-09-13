@@ -6,6 +6,7 @@ using UnityEngine.Android;
 using ArduinoBluetoothAPI;
 using System;
 using System.Net.WebSockets;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine.Serialization;
 
@@ -57,6 +58,8 @@ public class Stick_DataController : MonoBehaviour
     private float cy2 = 0f;
     private float cz2 = 0f;
     private float cw2 = 0f;
+
+    public float AccelerationValue { get; private set; } 
   
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -153,11 +156,12 @@ public class Stick_DataController : MonoBehaviour
             cw1 = w1;
         }
 
-        
+
         acc_Stick1 = new Vector3(gx1, gy1, gz1);
-//        Logger.Log($"sending data from deviceManager: {new Quaternion(-cx1, cz1, cy1, cw1)}");
-        
-         StickA_Quaternion = new Quaternion(-cx1, cz1, cy1, cw1);
+        Logger.Log($"가속도: {new Quaternion(-gx1, gy1, gz1, 0)}");
+
+        AccelerationValue = (math.abs(gy1) + math.abs(gz1)) / 2;
+        StickA_Quaternion = new Quaternion(-cx1, cz1, cy1, cw1);
     }
 
 
