@@ -317,11 +317,11 @@ public class UI_Setting : UI_Popup
                 if (audioIndex == (int)SoundManager.Sound.Effect)
                     if (Managers.Sound.audioSources[(int)SoundManager.Sound.Effect] &&
                         !Managers.Sound.audioSources[audioIndex].isPlaying)
-                        Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/Test_Effect");
+                        //Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/Test_Effect");
 
 
                 if (audioIndex == (int)Sliders.Slider_Narration && !Managers.Sound.audioSources[audioIndex].isPlaying)
-                    Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Test_Narration");
+                    //Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Test_Narration");
 
                 Managers.Sound.audioSources[audioIndex].volume =
                     Mathf.Lerp(0, Managers.Sound.VOLUME_MAX[audioIndex],
@@ -362,29 +362,7 @@ public class UI_Setting : UI_Popup
                   $"Volume Name:{(SoundManager.Sound)index} {Managers.Sound.audioSources[index].volume} -----------");
     }
 
-
-//     private void OnResolutionChanged(int width, int height)
-//     {
-//         Debug.Assert(width == 1920 || width == 1280 || width == 2560);
-// #if UNITY_EDITOR
-//         Debug.Log($"Resolution Change => {width} x {height} ");
-// # endif
-//
-//         Managers.UI.SetResolution(width, height, Managers.UI.isFullScreen);
-//         Managers.Data.Preference[(int)Define.Preferences.Resolution] = width;
-//
-//     }
-//
-//     private void OnGraphicQualityChanged(Define.QaulityLevel qaulityLevel)
-//     {
-//         Debug.Assert((int)qaulityLevel < 6 || (int)qaulityLevel > 0);
-// #if UNITY_EDITOR
-//         Debug.Log($"Graphic Quality {qaulityLevel}");
-// # endif
-//         Managers.UI.SetGraphicQuality(qaulityLevel);
-//
-//         Managers.Data.Preference[(int)Define.Preferences.GraphicQuality] = (int)qaulityLevel;
-//     }
+    
 
 
     #region Archive
@@ -412,30 +390,7 @@ public class UI_Setting : UI_Popup
     private void TerminateProcess()
     {
     }
-
-//     public void SetLanguageWithConfirmation()
-//     {
-//         Managers.UI.languageSetting = (int)GetSlider((int)Sliders.Slider_Language).value;
-//
-//         if (GetSlider((int)Sliders.Slider_Language).value >= 1)
-//         {
-//             Managers.Data.Preference[(int)Define.Preferences.EngMode] = 1;
-//             Managers.UI.SetEngMode(UIManager.ENG);
-// #if UNITY_EDITOR
-//             Debug.Log("Preference Changed --------------------------EngMode On");
-// #endif
-//         }
-//
-//         else
-//         {
-// #if UNITY_EDITOR
-//             Debug.Log("Preference Changed --------------------------EngMode off");
-// #endif
-//             Managers.Data.Preference[(int)Define.Preferences.EngMode] = 0;
-//             Managers.UI.SetEngMode(UIManager.KOR);
-//         }
-//     }
-
+    
     private const int REFRESH_INTERIM_MIN = 10;
     private readonly WaitForSeconds _wait = new(REFRESH_INTERIM_MIN);
     private IEnumerator ResetSensorRefreshableCo()

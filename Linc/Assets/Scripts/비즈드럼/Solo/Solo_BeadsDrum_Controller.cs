@@ -137,8 +137,9 @@ public class Solo_BeadsDrum_Controller : NetworkBehaviour
     /// </summary>
     private void Update()
     {
-        if (Managers.Network !=null &&Managers.Network.Server.isActiveAndEnabled && Managers.Network.Client.isActiveAndEnabled
-                                                       && UI_MainController_NetworkInvolved.IsStartBtnClicked)
+        if (Managers.Network !=null &&Managers.Network.Server.isActiveAndEnabled 
+                                    && Managers.Network.Client.isActiveAndEnabled
+                                    && UI_MainController_NetworkInvolved.IsStartBtnClicked)
         {
             if (Managers.Network.Server.IsHost)
             {

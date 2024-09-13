@@ -177,12 +177,15 @@ public class Solo_BeadsDrum_GameManager : Base_NetworkGameManager
  
     private void Update()
     {
-        if (_isPlayBtnClicked)
+        if (_isPlayBtnClicked
+            && Managers.ContentInfo.PlayData.HostInstrument == (int)Define.Instrument.Drum
+            && Managers.ContentInfo.PlayData.CurrentPlayMode == (int)Define.PlayMode.RhythmGame)
         {
+            _currentTime += Time.deltaTime;
             Debug.Assert(_drumPlayEventMap_indexToTiming.ContainsKey(_currentIndex));
 
-            _currentTime += Time.deltaTime;
-            if (_currentTime >= _drumPlayEventMap_indexToTiming[_currentIndex] && Managers.ContentInfo.PlayData.HostInstrument == (int)Define.Instrument.Drum)
+         
+            if (_currentTime >= _drumPlayEventMap_indexToTiming[_currentIndex])
             {
                 if (_isDrumPlaying || _isMusicOver) return;
                 _isDrumPlaying = true;

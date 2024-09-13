@@ -28,7 +28,8 @@ public class UI_MainController_NetworkInvolved : UI_Scene
     public enum UIObjs
     {
         Btn_Menus,
-        Image_Background
+        Image_Background,
+        UI_Setting
     }
     
     
@@ -152,16 +153,13 @@ public class UI_MainController_NetworkInvolved : UI_Scene
            
         });
         
+        //생성후 프리팹을 파괴하지않고 값을 보존
+
+        
+        GetObject((int)UIObjs.UI_Setting).gameObject.SetActive(false);
         GetButton((int)Btns.Btn_Setting).gameObject.BindEvent(() =>
         {
-            if (Managers.UI.FindPopup<UI_Setting>())
-            {
-                Managers.UI.FindPopup<UI_Setting>().gameObject.SetActive(true);
-            }
-            else
-            {
-                Managers.UI.ShowPopupUI<UI_Setting>();
-            }
+            GetObject((int)UIObjs.UI_Setting).gameObject.SetActive(true);
         });
         
         SetInGameUIs(false);
@@ -171,7 +169,8 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         
         GetButton((int)Btns.Btn_Quit).gameObject.BindEvent(OnQuitBtnClicked);
         
-   
+        //startBtn에서 활성화
+        GetObject((int)UIObjs.Btn_Menus).gameObject.SetActive(false);
         return base.Init();
     }
     private IEnumerator DelayedClientConnectedCo(INetworkPlayer player)
@@ -263,6 +262,10 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         SetInGameUIs(true);
         IsStartBtnClicked = true;
         OnStartBtnClickedAction?.Invoke();
+        
+        
+        GetObject((int)UIObjs.Btn_Menus).gameObject.SetActive(true);
+        _menuAnimator.SetBool(UI_ON,true);
     }
 
 

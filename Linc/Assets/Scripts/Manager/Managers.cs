@@ -32,7 +32,7 @@ public class Managers : MonoBehaviour
     public static Dictionary<int, GameObject> NetworkObjs ;
     public static ServerBroadcaster BroadCaster = new();
     public static ClientListener Listener = new();
-
+    private static CursorImageManager s_cursorImageManager= new CursorImageManager();
 
     public static bool IsSoundSetLoaded;// 중복로드 방지
     public static DataManager Data
@@ -40,6 +40,16 @@ public class Managers : MonoBehaviour
     public static UdpSocketFactory UdpSocketFactory{get{Init();
         return s_udpSocketFactory;
     }}
+    
+    public static CursorImageManager cursorImageManager
+    {  
+        get 
+        { 
+            Init(); 
+            return s_cursorImageManager; 
+        } 
+    }
+    
     public static SocketFactory SocketFactory {
         get { Init();
             return s_socketFactory;
@@ -105,6 +115,8 @@ public class Managers : MonoBehaviour
             s_contentPlayManager.Init();
             s_deviceManager.Init();
 
+            s_cursorImageManager.Init();
+            s_soundManager.Init();
             BroadCaster =  Utils.GetOrAddComponent<ServerBroadcaster>(go);
             Listener =  Utils.GetOrAddComponent<ClientListener>(go);
 

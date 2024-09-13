@@ -88,7 +88,7 @@ public class SoundManager : MonoBehaviour
                 
                 for (int i = 0; i < (int)Sound.Max; i++)
                 {
-                    Logger.Log($"Load: {(Define.Preferences)i} is {Managers.Data.Preference[i]}");
+                    //Logger.Log($"Load: {(Define.Preferences)i} is {Managers.Data.Preference[i]}");
                     volumes[(int)Sound.Main] =     Managers.Data.Preference[(int)Define.Preferences.MainVol];
                     volumes[(int)Sound.Narration] =Managers.Data.Preference[(int)Define.Preferences.NarrationVol];
                     volumes[(int)Sound.Effect] =   Managers.Data.Preference[(int)Define.Preferences.EffectVol];
@@ -317,11 +317,19 @@ public class SoundManager : MonoBehaviour
 
         else
         {
-            if (sound == Sound.Main) audioSources[(int)sound].Play();
+            if (sound == Sound.Main) //audioSources[(int)sound].Play();
 
-            if (sound == Sound.Bgm) audioSources[(int)sound].Play();
-            if (sound == Sound.Effect) Play(Sound.Effect, "Audio/Test_Effect");
-            if (sound == Sound.Narration) Play(Sound.Narration, "Audio/Test_Narration");
+                if (sound == Sound.Bgm)
+                {
+                } //audioSources[(int)sound].Play();
+
+            if (sound == Sound.Effect)
+                {
+                } //Play(Sound.Effect, "Audio/Test_Effect");
+
+            if (sound == Sound.Narration)
+            {
+            } //Play(Sound.Narration, "Audio/Test_Narration");
         }
 
         if (sound == Sound.Main) kindOfSoundMute = Define.Preferences.Mute_Main;

@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BeadsDrum_BeadsGenerator : MonoBehaviour
 {
@@ -11,10 +13,26 @@ public class BeadsDrum_BeadsGenerator : MonoBehaviour
     private Vector3[] _spawnPositions;
     public int beadsCount;
 
+    private void Awake()
+    {
+        
+        _beadsContainer = new Queue<GameObject>();
+        
+        
+        Init();
+        Logger.Log("Pool 생성완료");
+    
+    }
+
     private void Init()
     {
         SetPool(_beadsContainer, "게임별분류/기본컨텐츠/BeadsDrum/Prefabs/Bead", beadsCount);
 
+        UI_Maincontroller_SinglePlay.OnStartBtnClickedAction -= OnStartButtonClicked;
+        UI_Maincontroller_SinglePlay.OnStartBtnClickedAction += OnStartButtonClicked;
+        
+    
+        
         _spawnPosA = transform.GetChild(0).transform.Find("GeneratePositionRight").position;
         _spawnPosB = transform.GetChild(0).transform.Find("GeneratePositionLeft").position;
         var posCount = 2;
@@ -23,19 +41,10 @@ public class BeadsDrum_BeadsGenerator : MonoBehaviour
         _spawnPositions[1] = _spawnPosB;
     }
 
-    private void Start()
-    {
-        _beadsContainer = new Queue<GameObject>();
-
-          UI_MainController_NetworkInvolved.OnStartBtnClickedAction -= OnStartButtonClicked;
-          UI_MainController_NetworkInvolved.OnStartBtnClickedAction += OnStartButtonClicked;
-
-        Init();
-    }
 
     private void OnDestroy()
     {
-          UI_MainController_NetworkInvolved.OnStartBtnClickedAction -= OnStartButtonClicked;
+         UI_Maincontroller_SinglePlay.OnStartBtnClickedAction -= OnStartButtonClicked;
     }
 
     private void SetPool(Queue<GameObject> pool, string path, int poolCount = 50)
@@ -62,7 +71,8 @@ public class BeadsDrum_BeadsGenerator : MonoBehaviour
 
     private void OnStartButtonClicked()
     {
-        if (gameObject.activeSelf) return;
+        if (!gameObject.activeSelf) return;
+       
         GenerateBeads();
     }
 
@@ -104,6 +114,7 @@ public class BeadsDrum_BeadsGenerator : MonoBehaviour
 
     private void GenerateBeads()
     {
+        Logger.Log("Generate Beads..");
        StartCoroutine(GenerateBeadsCoroutine());
     }
 }

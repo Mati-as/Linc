@@ -129,6 +129,7 @@ public class DeviceManager : MonoBehaviour
         Logger.Log("Haptic Stick On: On_Data Only ");
 
         byte[] bytestosend = { 0x55, 0x51, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x54 };
+        StickData.SendData(bytestosend);
     }
     public void BT_Session()
     {
@@ -142,6 +143,7 @@ public class DeviceManager : MonoBehaviour
 
     public void SendDataAndVibrate()
     {
+        //Managers.DeviceManager._isVibrateMode
         byte[] bytestosend = { 0x55, 0x51, 0x00, 0xC8, 0x64, 0x01, 0xF5, 0x64, 0x54 };
 
         StickData.SendData(bytestosend);
