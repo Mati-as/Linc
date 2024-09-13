@@ -88,6 +88,7 @@ public class SoundManager : MonoBehaviour
                 
                 for (int i = 0; i < (int)Sound.Max; i++)
                 {
+                    Logger.Log($"Load: {(Define.Preferences)i} is {Managers.Data.Preference[i]}");
                     volumes[(int)Sound.Main] =     Managers.Data.Preference[(int)Define.Preferences.MainVol];
                     volumes[(int)Sound.Narration] =Managers.Data.Preference[(int)Define.Preferences.NarrationVol];
                     volumes[(int)Sound.Effect] =   Managers.Data.Preference[(int)Define.Preferences.EffectVol];

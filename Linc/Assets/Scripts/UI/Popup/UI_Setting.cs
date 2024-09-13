@@ -68,26 +68,11 @@ public class UI_Setting : UI_Popup
         Stick_DataController.OnConnectionFailedEvent -= OnBlueToothDisConnected;
     }
 
-    // Start is called before the first frame update
-    public override bool Init()
+    private void Awake()
     {
-        if (base.Init() == false)return false;
-
         
         
-        Stick_DataController.OnConnectedEvent -= OnBlueToothConnected;
-        Stick_DataController.OnConnectionFailedEvent -= OnBlueToothDisConnected;
-        
-        Stick_DataController.OnConnectedEvent += OnBlueToothConnected;
-        Stick_DataController.OnConnectionFailedEvent += OnBlueToothDisConnected;
-        
-        
-#if UNITY_EDITOR
-        Debug.Log("UI_SETTING INIT------------------------------------------------------");
-#endif
-        Managers.Data.LoadSettingParams();
-
-        // BindObject(typeof(GameObj));
+                // BindObject(typeof(GameObj));
         BindButton(typeof(Btns));
         BindToggle(typeof(Toggles));
         BindSlider(typeof(Sliders));
@@ -199,7 +184,7 @@ public class UI_Setting : UI_Popup
               
               _connectBlinkAnimSeq.SetLoops(3, LoopType.Restart);
               _connectBlinkAnimSeq.Play();
-
+             
         });
         
         
@@ -208,13 +193,41 @@ public class UI_Setting : UI_Popup
         {
 
             Managers.Data.SaveCurrentSetting();
-            Managers.UI.ClosePopupUI(this);
+           gameObject.SetActive(false);
         });
 
-        SetVolumeSlider();
 
+        
+        SetVolumeSlider();
         InitialSetting();
         
+        if (!Managers.IsSoundSetLoaded) return;
+        Managers.IsSoundSetLoaded = true;
+        
+        
+      
+
+    }
+
+    // Start is called before the first frame update
+    public override bool Init()
+    {
+        if (base.Init() == false)return false;
+
+        
+        
+        Stick_DataController.OnConnectedEvent -= OnBlueToothConnected;
+        Stick_DataController.OnConnectionFailedEvent -= OnBlueToothDisConnected;
+        
+        Stick_DataController.OnConnectedEvent += OnBlueToothConnected;
+        Stick_DataController.OnConnectionFailedEvent += OnBlueToothDisConnected;
+        
+        
+#if UNITY_EDITOR
+        Debug.Log("UI_SETTING INIT------------------------------------------------------");
+#endif
+       
+
 
         return true;
     }
@@ -273,6 +286,9 @@ public class UI_Setting : UI_Popup
             Debug.Log($"Load: {(Define.Preferences)count} is {Managers.Data.Preference[count]}");
             count++;
         }
+        
+          
+       
         
     }
 

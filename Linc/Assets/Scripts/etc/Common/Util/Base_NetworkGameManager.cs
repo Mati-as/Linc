@@ -88,7 +88,7 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
      
         
         ManageProjectSettings(SHADOW_MAX_DISTANCE, DEFAULT_SENSITIVITY);
-        BindEvent();
+   
         SetResolution(1920, 1080, TARGET_FRAME);
 
         if (!SceneManager.GetActiveScene().name.Contains("LAUNCHER"))
@@ -108,6 +108,11 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
         isInitialized = true;
     }
 
+
+    protected void Start()
+    {
+        BindEvent();
+    }
 
     protected void OnOriginallyRaySynced()
     {
@@ -198,8 +203,12 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
         return true;
     }
 
+    private bool _isEventBinded; //중복구독방지용
     protected virtual void BindEvent()
     {
+
+        if (_isEventBinded) return;
+        _isEventBinded = true;
 #if UNITY_EDITOR
         Debug.Log("Ray Sync Subscribed, RayHits being Shared");
 #endif
@@ -257,7 +266,7 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
                 });
 
             Managers.Sound.Play(SoundManager.Sound.Bgm, $"Audio/Bgm/{SceneManager.GetActiveScene().name}",
-                BGM_VOLUME);
+                Managers.Data.Preference[(int)Define.Preferences.MainVol]);
         }
     }
 

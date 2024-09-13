@@ -32,7 +32,9 @@ public class Managers : MonoBehaviour
     public static Dictionary<int, GameObject> NetworkObjs ;
     public static ServerBroadcaster BroadCaster = new();
     public static ClientListener Listener = new();
-    
+
+
+    public static bool IsSoundSetLoaded;// 중복로드 방지
     public static DataManager Data
     { get { Init(); return _sDataManager; }}
     public static UdpSocketFactory UdpSocketFactory{get{Init();
@@ -59,6 +61,7 @@ public class Managers : MonoBehaviour
     }
 
     public static A_SettingManager Setting  { get { Init(); return s_settingManager;}}
+  
     public static UIManager UI
     { get { Init(); return s_uiManager;}}
      public static ResourceManager Resource { get { Init(); return s_resourceManager; } }
@@ -92,7 +95,7 @@ public class Managers : MonoBehaviour
                 go = new GameObject { name = "@Managers" };
 
             s_instance = Utils.GetOrAddComponent<Managers>(go);
-            DontDestroyOnLoad(go);
+            //DontDestroyOnLoad(go);
             
             //DataMAnager는 반드시 제일 먼저 초기화 되어야합니다.
             _sDataManager.Init();

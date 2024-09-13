@@ -77,5 +77,6 @@ PrefabInstance:
       propertyPath: _prefabHash
       value: -1740773729
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1733801299981083267, guid: 54e887a807943384d8edb85118daa726, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 54e887a807943384d8edb85118daa726, type: 3}

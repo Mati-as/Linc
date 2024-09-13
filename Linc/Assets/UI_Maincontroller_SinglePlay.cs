@@ -63,7 +63,15 @@ public class UI_Maincontroller_SinglePlay : UI_Scene
         
         GetButton((int)Btns.Btn_Setting).gameObject.BindEvent(() =>
         {
-            Managers.UI.ShowPopupUI<UI_Setting>();
+            if (Managers.UI.FindPopup<UI_Setting>())
+            {
+                Managers.UI.FindPopup<UI_Setting>().gameObject.SetActive(true); //저장값 중복초기화 방지
+            }
+            else
+            {
+                Managers.UI.ShowPopupUI<UI_Setting>();
+            }
+                
         });
         
         SetInGameUIs(false);
@@ -109,13 +117,15 @@ public class UI_Maincontroller_SinglePlay : UI_Scene
         Application.Quit();
     }
 
-    public static event Action PlayMusicEvent; 
+    public static event Action<bool> PlayMusicEvent; 
     private void OnPlayBtnClicked()
     {
         if (!Managers.Sound.audioSources[(int)SoundManager.Sound.Narration].isPlaying)
         {
-            Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Narration/Carrot",0.15f);
-            PlayMusicEvent?.Invoke();
+            Managers.Sound.Stop(SoundManager.Sound.Bgm);
+            Managers.Sound.Play(SoundManager.Sound.Bgm, "Audio/Narration/Carrot",Managers.Data.Preference[(int)Define.Preferences.BgmVol]);
+            var isReplayBtn = false; // 드럼초기화로직 구분
+            PlayMusicEvent?.Invoke(isReplayBtn);
             
         }
     }
@@ -124,8 +134,9 @@ public class UI_Maincontroller_SinglePlay : UI_Scene
     {
         
         Managers.Sound.Stop(SoundManager.Sound.Narration);
-        Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Narration/Carrot",0.15f);
-        PlayMusicEvent?.Invoke();
+        Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Narration/Carrot",Managers.Data.Preference[(int)Define.Preferences.BgmVol]);
+        var isReplayBtn = true; // 드럼초기화로직 구분
+        PlayMusicEvent?.Invoke(true);
     }
 
     private void ToggleAnimation()
@@ -140,7 +151,7 @@ public class UI_Maincontroller_SinglePlay : UI_Scene
     private void OnStartBtnClicked()
     {
      
-        Debug.Log("Clicked");
+        Debug.Log("StartBtn Clicked");
         _bg.DOFade(0, 1f);
        
         GetButton((int)Btns.Btn_StartGame).gameObject.GetComponent<Image>().DOFade(0, 0.5f);

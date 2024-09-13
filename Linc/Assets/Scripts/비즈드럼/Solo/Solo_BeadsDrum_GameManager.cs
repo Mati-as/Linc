@@ -21,57 +21,79 @@ public class Solo_BeadsDrum_GameManager : Base_NetworkGameManager
     public static event Action OnRightDrumClicked;
 
     
+// 타이밍 딕셔너리
     private Dictionary<int, float> _drumPlayEventMap_indexToTiming = new Dictionary<int, float>()
     {
-        {1, 12.5f},
-        {2, 20.3f},
-        {3, 24.0f},
-        {4, 28.5f},
-        {5, 34.0f},
-        {6, 36.0f},
-        {7, 37.0f},
-        {8, 43.0f},
-        {9, 46.0f},
-        {10, 51.0f}
+        {1,  8.7f},  //'길'쭉길쭉 당근을 뽑아봐요
+        {2,  12.4f}, //'쏙' 
+        {3,  13.1f}, //'세'모세모 당근을 뽑아봐요
+        {4,  16.8f},  //'쏙'
+        {5,  19.52f},//익힌 당근을 자르면 '쓰윽쓰윽'
+        {6,  24.02f}, // 한입 베어물면 '물'컹 '물'컹 '무'울컹
+        {7,  28.3f},  //딱딱한 당근을 자르면 '통통통통'
+        {8,  32.7f},  // 한입 베이물면 '아'삭'아'삭' '아'사삭
+        {9,  36.0f},  //아삭아삭 '당'근도 
+        {10, 37.75f},  // 물컹물컹 '당'근도 
+        {11, 40.0f},  // 모두 '정'말 '정'말
+        {12, 43.0f},  //(맛이 있어요) '예'
+        {13, 46.3f},  // 나는 당근이 정말 '좋''아''요'
+        {14, 51.2f},  //나는 당근이 정말 '좋아요'
+        {15, 0.0f}
     };
+
+// 두드림 횟수 딕셔너리
     private Dictionary<int, int> _drumPlayEventDictionary_IndexToCount = new Dictionary<int, int>()
     {
-        {1, 1},
-        {2, 4},
-        {3, 3},
-        {4, 3},
-        {5, 4},
-        {6, 3},
-        {7, 2},
-        {8, 3},
-        {9, 3},
-        {10, 3}
+        {1,  1},//'길'쭉길쭉 당근을 뽑아봐요
+        {2,  1},//'쏙' 
+        {3,  1},//'세'모세모 당근을 뽑아봐요
+        {4,  1}, //'쏙'
+        {5,  4},//익힌 당근을 자르면 '쓰윽쓰윽'
+        {6,  3},// 한입 베어물면 '물'컹 '물'컹 '무'울컹
+        {7,  4}, //딱딱한 당근을 자르면 '통통통통'
+        {8,  3}, // 한입 베이물면 '아'삭'아'삭' '아'사삭
+        {9,  1}, //아삭아삭 '당'근도 
+        {10, 1}, // 물컹물컹 '당'근도 
+        {11, 2}, // 모두 '정'말 '정'말
+        {12, 1}, //(맛이 있어요) '예'
+        {13, 3}, // 나는 당근이 정말 '좋''아''요'
+        {14, 3}, //나는 당근이 정말 '좋아요'
+        {15, 0}
     };
+
+// 간격 딕셔너리
     private Dictionary<int, float> _drumPlayEventDictionary_IndexToInterval = new Dictionary<int, float>()
     {
-        {1, 0},
-        {2, 0.5f},
-        {3, 0.5f},
-        {4, 4},
-        {5, 3},
-        {6, 1},
-        {7, 2},
-        {8, 1},
-        {9, 3},
-        {10, 3}
+        {1,  0.0f},//'길'쭉길쭉 당근을 뽑아봐요
+        {2,  0f},//'쏙' 
+        {3,  0f},//'세'모세모 당근을 뽑아봐요
+        {4,  0f}, //'쏙'
+        {5,  0.55f},//익힌 당근을 자르면 '쓰윽쓰윽'
+        {6,  0.55f},// 한입 베어물면 '물'컹 '물'컹 '무'울컹
+        {7,  0.55f}, //딱딱한 당근을 자르면 '통통통통'
+        {8,  0.55f}, // 한입 베이물면 '아'삭'아'삭' '아'사삭
+        {9,  0.0f}, //아삭아삭 '당'근도 
+        {10, 0.0f}, // 물컹물컹 '당'근도 
+        {11, 0.55f}, // 모두 '정'말 '정'말
+        {12, 0.0f}, //(맛이 있어요) '예'
+        {13, 0.245f}, // 나는 당근이 정말 '좋''아''요'
+        {14, 0.245f}, //나는 당근이 정말 '좋아요'
+        {15, 0.0f}
     };
-    
+
     private int _currentIndex;
     private float _currentTime;
     private bool _isPlayBtnClicked;
-    private float _playInterval = 0.25f;
+    private float _playInterval = 0.5f;
     private int _indexMax;
     private bool _isMusicOver;
     private WaitForSeconds _waitForInterval;
     private bool _isDrumPlaying; // 중복실행 방지
 
-    private void OnPlayMusic()
+    private void OnPlayMusic(bool isReplay)
     {
+        if (_isPlayBtnClicked && !isReplay) return;
+        
         _isPlayBtnClicked = true;
         _isMusicOver = false;
         _currentIndex = 1;
@@ -90,10 +112,7 @@ public class Solo_BeadsDrum_GameManager : Base_NetworkGameManager
         _set[(int)Define.Instrument.HandBell]
             = transform.GetChild((int)Define.Instrument.HandBell).gameObject;
 
-        // foreach (var obj in _set)
-        // {
-        //     obj.SetActive(false);
-        // }
+      
     }
 
     
@@ -121,26 +140,29 @@ public class Solo_BeadsDrum_GameManager : Base_NetworkGameManager
 
     IEnumerator PlayDrumWithMusic(int currentIndex)
     {
-        if (_waitForInterval == null)
-        {
-            _waitForInterval = new WaitForSeconds(_playInterval);
-        }
+       
+        _waitForInterval = new WaitForSeconds(_drumPlayEventDictionary_IndexToInterval[currentIndex]);
+        
 
         for (var i = 0; i < _drumPlayEventDictionary_IndexToCount[currentIndex]; i++)
         {
             var randomChar = (char)Random.Range('A', 'B' + 1);
             Managers.Sound.Play(SoundManager.Sound.Effect, "Audio/Effect/Drum" + randomChar);
-            if (i % 2 == 0)
-                OnLeftDrumClicked?.Invoke();
-            else
-                OnRightDrumClicked?.Invoke();
-            yield return _waitForInterval;
+            {
+                if (i % 2 == 0)
+                    OnLeftDrumClicked?.Invoke();
+                else
+                    OnRightDrumClicked?.Invoke();
+                yield return _waitForInterval;
+            }
+           
         }
 
         if (_currentIndex >= _indexMax)
         {
             Debug.Log("drun Auto Event With music is over--------");
             _isMusicOver = true;
+            _isPlayBtnClicked = false;
         }
         else
         {
@@ -172,7 +194,10 @@ public class Solo_BeadsDrum_GameManager : Base_NetworkGameManager
     public override void OnRaySynced()
     {
         Logger.Log("click");
-        if (!PreCheckOnRaySync()) return;
+        if (!PreCheckOnRaySync())
+        {
+            return;
+        }
    
         
         foreach (var hit in GameManager_Hits)

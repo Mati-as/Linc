@@ -103,6 +103,7 @@ public class DataManager
     // load narration volume setting
     var narrationVol = node.Attributes[nameof(Define.Preferences.NarrationVol)].Value;
     Managers.Data.Preference[(int)Define.Preferences.NarrationVol] = float.Parse(narrationVol);
+
     
 //     // load fullscreen setting
 //     var fullscreen = node.Attributes[nameof(Define.Preferences.Fullscreen)].Value;
@@ -161,6 +162,9 @@ public class DataManager
 
         setting.SetAttribute(nameof(Define.Preferences.NarrationVol),
             Managers.Data.Preference[(int)Define.Preferences.NarrationVol].ToString("F2",CultureInfo.InvariantCulture));
+        
+        
+        
         //
         // setting.SetAttribute(nameof(Define.Preferences.Fullscreen),
         //     Managers.Data.Preference[(int)Define.Preferences.Fullscreen].ToString());

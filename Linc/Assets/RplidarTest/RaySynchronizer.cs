@@ -112,6 +112,7 @@ public class RaySynchronizer : MonoBehaviour
     /// </summary>
     public virtual void ShootRay()
     {
+        Logger.Log($"click from {nameof(RaySynchronizer)}");
         //마우스 및 포인터 위치를 기반으로 하고싶은경우.
         screenPosition = Mouse.current.position.ReadValue();
 
