@@ -67,11 +67,12 @@ public class UI_MainController_NetworkInvolved : UI_Scene
         Managers.Network = networkManagerInstance.GetComponent<NetworkManager>();
         Managers.NetworkServer = networkManagerInstance.GetComponent<NetworkServer>();
         Managers.NetworkServer.ObjectManager = networkManagerInstance.GetComponent<ServerObjectManager>();
-        Managers.UdpSocketFactory.Address = Managers.GetLocalIPAddress();
+        // Managers.UdpSocketFactory.Address = Managers.GetLocalIPAddress();
         Managers.UdpSocketFactory.Port = 7777;
+        
         var NetworkManagerHUD = GameObject.Find("NetworkManagerHUD").GetComponent<NetworkManagerHud>();
         NetworkManagerHUD.NetworkManager = Managers.Network;
-        NetworkManagerHUD.NetworkAddress = Managers.UdpSocketFactory.Address;
+        NetworkManagerHUD.NetworkAddress = Managers.HostIPAdress;
         
 
 
@@ -220,6 +221,21 @@ public class UI_MainController_NetworkInvolved : UI_Scene
     public static event Action<bool> PlayMusicEvent; 
     private void OnPlayBtnClicked()
     {
+        
+        if (Managers.Network.Server.IsHost)
+        {
+            ClientRPC_OnPlayBtnClicked();
+        }
+        else if(!Managers.Network.Server.IsHost)
+        {
+            ServerRPC_OnPlayBtnClicked();
+        }
+
+        Play();
+    }
+
+    private void Play()
+    {
         if (!Managers.Sound.audioSources[(int)SoundManager.Sound.Narration].isPlaying)
         {
             Managers.Sound.Stop(SoundManager.Sound.Bgm);
@@ -228,14 +244,30 @@ public class UI_MainController_NetworkInvolved : UI_Scene
             PlayMusicEvent?.Invoke(isReplayBtn);
         }
     }
-    
-    private void OnReplayBtnClicked()
+
+    private void Replay()
     {
-        
         Managers.Sound.Stop(SoundManager.Sound.Bgm);
         Managers.Sound.Play(SoundManager.Sound.Narration, "Audio/Narration/Carrot",Managers.Data.Preference[(int)Define.Preferences.BgmVol]);
         var isReplayBtn = true; // 드럼초기화로직 구분
         PlayMusicEvent?.Invoke(isReplayBtn);
+    }
+
+    
+    private void OnReplayBtnClicked()
+    {
+
+        if (Managers.Network.Server.IsHost)
+        {
+            ClientRPC_OnReplayBtnClicked();
+        }
+        else if(!Managers.Network.Server.IsHost)
+        {
+            ServerRPC_OnReplayBtnClicked();
+        }
+
+        Replay();
+
     }
 
     private void ToggleAnimation()
@@ -269,5 +301,27 @@ public class UI_MainController_NetworkInvolved : UI_Scene
     }
 
 
+    [ClientRpc]
+    private void ClientRPC_OnPlayBtnClicked()
+    {
+        if (!Managers.Network.Server.IsHost) Play();
+    }
 
+    [ClientRpc]
+    private void ClientRPC_OnReplayBtnClicked()
+    {
+        if (!Managers.Network.Server.IsHost) Replay();
+    }
+    
+   [ServerRpc (requireAuthority = false)]
+    private void ServerRPC_OnPlayBtnClicked()
+    {
+        if (Managers.Network.Server.IsHost)  Play();
+    }
+
+   [ServerRpc (requireAuthority = false)]
+    private void ServerRPC_OnReplayBtnClicked()
+    {
+        if (Managers.Network.Server.IsHost)  Replay();
+    }
 }

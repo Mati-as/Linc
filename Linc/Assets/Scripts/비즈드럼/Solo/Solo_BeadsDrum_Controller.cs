@@ -64,10 +64,7 @@ public class Solo_BeadsDrum_Controller : NetworkBehaviour
             NetObj_Mockup_DrumStick_Right = GameObject.Find("NetObj_Mockup_DrumStick_Right").transform;
         }
 
-        
-#if UNITY_EDITOR
-        Debug.Log("Solo Version Start -----------------");        
-#endif
+
     }
 
 

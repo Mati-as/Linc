@@ -15,19 +15,19 @@ namespace Network
         public void SendBroadcast()
         {
             
-           
-            var address = new ServerBroadcastMessage();
-            address.ServerIP = Managers.UdpSocketFactory.Address;
-            address.ServerPort = Managers.UdpSocketFactory.Port;
-         
-            var seq = DOTween.Sequence();
-            seq.AppendCallback(() =>
-            {
-                Managers.Network.BroadcastMessage($"{address.ServerIP}",SendMessageOptions.DontRequireReceiver);
-                Logger.Log($"Send BroadCast.....{address.ServerIP}");
-            });
-            seq.AppendInterval(1f);
-            seq.SetLoops(10);
+            //
+            // var address = new ServerBroadcastMessage();
+            // address.ServerIP = Managers.UdpSocketFactory.Address;
+            // address.ServerPort = Managers.UdpSocketFactory.Port;
+            //
+            // var seq = DOTween.Sequence();
+            // seq.AppendCallback(() =>
+            // {
+            //     Managers.Network.BroadcastMessage($"{address.ServerIP}",SendMessageOptions.DontRequireReceiver);
+            //     Logger.Log($"Send BroadCast.....{address.ServerIP}");
+            // });
+            // seq.AppendInterval(1f);
+            // seq.SetLoops(10);
         }
  
         

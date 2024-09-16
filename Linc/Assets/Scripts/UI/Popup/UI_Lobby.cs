@@ -204,6 +204,7 @@ public class UI_Lobby : UI_Popup
         while (!Managers.Network.Client.IsConnected)
         {
             Logger.Log("waiting for client to connect.....");
+            Logger.Log($"Server host IP{Managers.HostIPAdress}");
             yield return null;
         }
         

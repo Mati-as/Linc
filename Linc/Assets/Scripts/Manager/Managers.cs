@@ -12,6 +12,9 @@ using UnityEngine.SceneManagement;
 
 public class Managers : MonoBehaviour
 {
+
+    //public ip address for this computer.
+    public static readonly string HostIPAdress = "125.130.126.148";
     public static Managers s_instance;
 
     public static ushort Port { get; private set; }

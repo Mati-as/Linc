@@ -143,6 +143,7 @@ public class UI_InstrumentSelection : UI_Popup
             Scene_MultiMode.InGame_MultiMode.GetComponentInChildren<UI_MainController_NetworkInvolved>().UI_Lobby.SetActive(false);
         }
         
+        gameObject.SetActive(false);
        Scene_MultiMode.InGame_MultiMode.GetComponentInChildren<UI_MainController_NetworkInvolved>().ShowStartBtn();
         
         

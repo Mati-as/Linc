@@ -16,9 +16,11 @@ public class ClientListener : MonoBehaviour
     public void ListenBroadcastMessage()
     {
         // register a handler to listen for the broadcasted message
-        Managers.Network.Client.Connect(Managers.UdpSocketFactory.Address);
+        //Managers.Network.Client.Connect(Managers.UdpSocketFactory.Address);
        // Managers.Network.Client.MessageHandler.RegisterHandler<ServerBroadcastMessage>(OnReceiveBroadcast());
-        Logger.Log("Listening for broadcast messages...");
+
+       Logger.Log($" Connecting To : {Managers.HostIPAdress}");
+       Logger.Log("Listening for broadcast messages...");
     }
 
     // this function will be triggered when the client receives a broadcast message
