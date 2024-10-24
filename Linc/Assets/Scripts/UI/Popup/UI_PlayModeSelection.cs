@@ -18,7 +18,7 @@ public class UI_PlayModeSelection : UI_Popup
             gameObject.SetActive(false);
         }
         
-        if(!Managers.Network.Server.IsHost)  gameObject.SetActive(false);
+        if(Managers.Network != null && !Managers.Network.Server.IsHost)  gameObject.SetActive(false);
         
         BindButton(typeof(Btns));
         GetButton((int)Btns.Btn_RhythmGameMode).gameObject.BindEvent(OnRythmGameModeBtnClicked);

@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-public class Scene_MultiMode :MonoBehaviour
+public class Scene_Modes :MonoBehaviour
 {
 
 
     public static GameObject InGame_MultiMode;
+    public static GameObject SingleMode;
+
 
     private void Start()
     {
@@ -23,6 +25,8 @@ public class Scene_MultiMode :MonoBehaviour
         InGame_MultiMode = GameObject.Find("InGame_Multimode");
         InGame_MultiMode.SetActive(false);
       
+        SingleMode = GameObject.Find("UI_Maincontroller_SinglePlay");
+        
        // SceneType = Define.Scene.Dev;
         // Managers.UI.ShowSceneUI<UI_MainController_NetworkInvolved>();
         Managers.UI.ShowPopupUI<UI_Loading>();

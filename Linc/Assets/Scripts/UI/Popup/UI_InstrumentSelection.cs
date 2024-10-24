@@ -76,7 +76,7 @@ public class UI_InstrumentSelection : UI_Popup
             Managers.ContentInfo.PlayData.HostInstrument = (int)instrumentA;
             Managers.ContentInfo.PlayData.ClientInstrument = (int)instrumentB;
             Managers.UI.ClosePopupUI(this);
-            Managers.UI.SceneUI.GetComponent<UI_Maincontroller_SinglePlay>().ShowStartBtn();
+            Scene_Modes.SingleMode.GetComponent<UI_Maincontroller_SinglePlay>().ShowStartBtn();
             
             return;
         }
@@ -140,11 +140,11 @@ public class UI_InstrumentSelection : UI_Popup
                 Logger.LogError("해당하는 NetworkIdentity 객체를 찾을 수 없습니다.");
             }
             
-            Scene_MultiMode.InGame_MultiMode.GetComponentInChildren<UI_MainController_NetworkInvolved>().UI_Lobby.SetActive(false);
+            Scene_Modes.InGame_MultiMode.GetComponentInChildren<UI_MainController_NetworkInvolved>().UI_Lobby.SetActive(false);
         }
         
         gameObject.SetActive(false);
-       Scene_MultiMode.InGame_MultiMode.GetComponentInChildren<UI_MainController_NetworkInvolved>().ShowStartBtn();
+       Scene_Modes.InGame_MultiMode.GetComponentInChildren<UI_MainController_NetworkInvolved>().ShowStartBtn();
         
         
     }

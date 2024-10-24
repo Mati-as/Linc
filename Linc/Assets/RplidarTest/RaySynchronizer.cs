@@ -81,7 +81,7 @@ public class RaySynchronizer : MonoBehaviour
     /// <summary>
     ///     OnEnable,Disable에서 InputSystem관련 Action을 사용여부를 끄거나 켜줘야합니다.(구독,해제)
     /// </summary>
-    public void OnEnable()
+    public virtual void OnEnable()
     {
      Debug.Assert(_spaceAction != null);
      

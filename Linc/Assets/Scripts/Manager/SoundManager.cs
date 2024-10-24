@@ -348,7 +348,7 @@ public class SoundManager : MonoBehaviour
 
 
 #if UNITY_EDITOR
-        Debug.Log($"{sound} is muted");
+//        Debug.Log($"{sound} is muted");
 #endif
     }
 }

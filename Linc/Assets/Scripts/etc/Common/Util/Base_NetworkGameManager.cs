@@ -148,7 +148,7 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
     /// </summary>
     public virtual void OnRaySynced()
     {
-        
+        Logger.Log($"RaySynced : =>{gameObject.name}");
     }
 
 
@@ -210,7 +210,7 @@ public abstract class Base_NetworkGameManager : NetworkBehaviour
         if (_isEventBinded) return;
         _isEventBinded = true;
 #if UNITY_EDITOR
-        Debug.Log("Ray Sync Subscribed, RayHits being Shared");
+        Debug.Log($"Ray Sync Subscribed, RayHits being Shared{gameObject.name}");
 #endif
         //1차적으로 하드웨어에서 동기화된 Ray를 GameManger에서 읽어옵니다.
         RaySynchronizer.OnGetInputFromUser -= OnOriginallyRaySynced;

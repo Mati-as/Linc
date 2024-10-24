@@ -12,7 +12,7 @@ public class UI_Setting : UI_Popup
     private enum Btns
     {
         Btn_Close,
-        Btn_SensorRefresh
+       // Btn_SensorRefresh
     }
 
     public enum Sliders
